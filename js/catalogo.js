@@ -1,9 +1,6 @@
 const CATALOGO_JUEGOS = [
-    // TALLERES EP
     { id: "taller_ep", nombre: "Kit Taller EP", familia: "Educación Popular", jugadores: "10-30", icono: "fa-hands-holding-circle", color: "#ca8a04", reglas: { objetivo: "Facilitar la reflexión.", preparacion: "Imprimir cartas.", turno: "Buscar la mitad." }, adaptacion_ep: { objetivo: "Visibilizar problemáticas.", preguntas: ["¿Qué refrán se parece a tu realidad?"] } },
     { id: "taller_vih", nombre: "Taller VIH Tarapacá", familia: "Salud y Género", jugadores: "10-25", icono: "fa-heart-pulse", color: "#8B3A3A", reglas: { objetivo: "Derribar mitos.", preparacion: "Descargar guía.", turno: "Seguir fases." }, adaptacion_ep: { objetivo: "Tejer red de cuidado.", preguntas: ["¿Qué mitos conocías?"] } },
-    
-    // JUEGOS BASE Y EXPANSIONES
     { id: "pandemic", nombre: "Pandemic", familia: "Cooperativo", jugadores: "2-4", icono: "fa-virus", color: "#dc2626", reglas: { objetivo: "Erradicar enfermedades.", preparacion: "Repartir roles.", turno: "Moverse o tratar." }, adaptacion_ep: { objetivo: "Salud como derecho.", preguntas: ["¿Cómo nos organizamos?"] } },
     { id: "catan", nombre: "Colonos de Catán", familia: "Gestión", jugadores: "3-4", icono: "fa-tree", color: "#15803d", reglas: { objetivo: "Llegar a 10 puntos.", preparacion: "Armar tablero.", turno: "Tirar dados y comerciar." }, adaptacion_ep: { objetivo: "Recursos comunitarios.", preguntas: ["¿Cómo se negocia?"] } },
     { id: "dixit", nombre: "Dixit", familia: "Asociación", jugadores: "3-8", icono: "fa-moon", color: "#6d28d9", reglas: { objetivo: "Adivinar la carta.", preparacion: "Repartir 6.", turno: "Dar pista y votar." }, adaptacion_ep: { objetivo: "Interpretación subjetiva.", preguntas: ["¿Por qué vemos distinto?"] } },
@@ -25,13 +22,20 @@ const CATALOGO_JUEGOS = [
     { id: "dobble", nombre: "Dobble", familia: "Reflejos", jugadores: "2-8", icono: "fa-brands fa-fly", color: "#0284c7", reglas: { objetivo: "Encontrar símbolo.", preparacion: "Barajar.", turno: "Gritar el símbolo igual." }, adaptacion_ep: { objetivo: "Agudeza visual.", preguntas: ["¿Qué sesgos tenemos al mirar?"] } },
     { id: "wavelength", nombre: "Wavelength", familia: "Telepatía", jugadores: "2-12", icono: "fa-gauge-high", color: "#be123c", reglas: { objetivo: "Adivinar escala.", preparacion: "Colocar dial.", turno: "Dar pista subjetiva." }, adaptacion_ep: { objetivo: "Percepción colectiva.", preguntas: ["¿Por qué diferimos en la escala?"] } },
     { id: "skyteam", nombre: "Sky Team", familia: "Cooperativo", jugadores: "2", icono: "fa-plane", color: "#1e293b", reglas: { objetivo: "Aterrizar avión.", preparacion: "Panel de vuelo.", turno: "Asignar dados a ejes." }, adaptacion_ep: { objetivo: "Confianza ciega.", preguntas: ["¿Cómo coordinamos sin hablar?"] } },
-    { id: "hitster", nombre: "Hitster", familia: "Música", jugadores: "2-10", icono: "fa-timeline", color: "#be123c", reglas: { objetivo: "Ordenar canciones.", preparacion: "Línea de tiempo.", turno: "Adivinar año de canción." }, adaptacion_ep: { objetivo: "Memoria histórica.", preguntas: ["¿Qué canciones marcaron el barrio?"] } },
-    
-    // NUEVOS JUEGOS EXACTOS
+    { id: "hitster", nombre: "Hitster", familia: "Fiesta Musical", jugadores: "2-10", icono: "fa-headphones", color: "#6d28d9", reglas: { objetivo: "Ordenar 10 canciones en tu línea de tiempo.", preparacion: "Repartir 2 fichas y 1 carta inicial.", turno: "Escuchar canción y colocarla en el orden correcto." }, adaptacion_ep: { objetivo: "Memoria musical y colectiva.", preguntas: ["¿Qué canciones marcaron la historia de tu comunidad?", "¿Cómo la música puede unir o dividir?"] } },
     { id: "munchkin_exacto", nombre: "Munchkin (Exacto)", familia: "Cartas", jugadores: "3-6", icono: "fa-hat-wizard", color: "#b91c1c", reglas: { objetivo: "Llegar al nivel 10.", preparacion: "Repartir 4 cartas.", turno: "Abrir puerta, combatir monstruo o saquear." }, adaptacion_ep: { objetivo: "Analizar el individualismo.", preguntas: ["¿Ayudaste a otros o preferiste ganar solo?"] } },
     { id: "ciudadelas_deluxe", nombre: "Ciudadelas Deluxe", familia: "Roles Ocultos", jugadores: "2-8", icono: "fa-chess-rook", color: "#78350f", reglas: { objetivo: "Construir la ciudad más valiosa.", preparacion: "Repartir distritos y monedas.", turno: "Elegir un personaje en secreto y actuar." }, adaptacion_ep: { objetivo: "Reflexionar sobre la corrupción.", preguntas: ["¿Qué personaje representa mejor a un líder?"] } },
     { id: "root_exacto", nombre: "Root (Base)", familia: "Asimétrico", jugadores: "2-4", icono: "fa-tree", color: "#15803d", reglas: { objetivo: "Dominar el bosque.", preparacion: "Elegir facción.", turno: "Jugar cartas de acción." }, adaptacion_ep: { objetivo: "Poder asimétrico.", preguntas: ["¿Es justo que cada bando tenga reglas distintas?"] } },
-    { id: "arkham_lcg", nombre: "Arkham Horror LCG", familia: "Cooperativo", jugadores: "1-4", icono: "fa-eye", color: "#1e293b", reglas: { objetivo: "Resolver el misterio.", preparacion: "Elegir investigador.", turno: "Jugar cartas, investigar." }, adaptacion_ep: { objetivo: "Enfrentar el miedo colectivo.", preguntas: ["¿Cómo se organiza la comunidad ante lo desconocido?"] } }
+    { id: "arkham_lcg", nombre: "Arkham Horror LCG", familia: "Cooperativo", jugadores: "1-4", icono: "fa-eye", color: "#1e293b", reglas: { objetivo: "Resolver el misterio.", preparacion: "Elegir investigador.", turno: "Jugar cartas, investigar." }, adaptacion_ep: { objetivo: "Enfrentar el miedo colectivo.", preguntas: ["¿Cómo se organiza la comunidad ante lo desconocido?"] } },
+    { id: "la_llamada", nombre: "La Llamada (Endgame)", familia: "Rol", jugadores: "2-12", icono: "fa-key", color: "#4c1d95", reglas: { objetivo: "Encontrar las 3 llaves.", preparacion: "Repartir linajes.", turno: "Resolver acertijos." }, adaptacion_ep: { objetivo: "Búsqueda colectiva.", preguntas: ["¿Cómo se reparte el liderazgo?"] } },
+    { id: "rick_morty", nombre: "Rick and Morty (D&D)", familia: "Rol", jugadores: "2-5", icono: "fa-dice-d20", color: "#b91c1c", reglas: { objetivo: "Completar la aventura.", preparacion: "Elegir personaje.", turno: "Explorar y combatir." }, adaptacion_ep: { objetivo: "Humor y crítica.", preguntas: ["¿Cómo usamos el humor para criticar?"] } },
+    { id: "criaturas", nombre: "Criaturas (Monstruos)", familia: "Cartas", jugadores: "2-6", icono: "fa-dragon", color: "#78350f", reglas: { objetivo: "Capturar mortales.", preparacion: "Barajar criaturas.", turno: "Jugar cartas de ataque." }, adaptacion_ep: { objetivo: "Faroleo y engaño.", preguntas: ["¿Cuándo es justificable mentir?"] } },
+    { id: "spellcrafting", nombre: "SpellCrafting", familia: "Cartas", jugadores: "2-6", icono: "fa-wand-magic-sparkles", color: "#6d28d9", reglas: { objetivo: "Formar la palabra más valiosa.", preparacion: "Repartir letras.", turno: "Elegir cartas y formar palabras." }, adaptacion_ep: { objetivo: "Poder del lenguaje.", preguntas: ["¿Qué palabras tienen más poder?"] } },
+    { id: "xanathar", nombre: "D&D Xanathar", familia: "Rol", jugadores: "2-6", icono: "fa-book-sparkles", color: "#ca8a04", reglas: { objetivo: "Lanzar conjuros.", preparacion: "Repartir cartas de conjuro.", turno: "Usar conjuros en la aventura." }, adaptacion_ep: { objetivo: "Creatividad mágica.", preguntas: ["¿Qué poder elegirías y para qué?"] } },
+    { id: "strixhaven", nombre: "Strixhaven (D&D)", familia: "Rol", jugadores: "2-6", icono: "fa-graduation-cap", color: "#4c1d95", reglas: { objetivo: "Aprender magia.", preparacion: "Elegir estudiante.", turno: "Asistir a clases y resolver misterios." }, adaptacion_ep: { objetivo: "Educación y poder.", preguntas: ["¿Qué se aprende en la escuela de la vida?"] } },
+    { id: "carcassonne_plus", nombre: "Carcassonne Plus", familia: "Losetas", jugadores: "2-6", icono: "fa-map", color: "#15803d", reglas: { objetivo: "Construir el mapa más grande.", preparacion: "Mezclar 160 losetas.", turno: "Colocar loseta y meeple." }, adaptacion_ep: { objetivo: "Expansión territorial.", preguntas: ["¿Cómo crece la comunidad?"] } },
+    { id: "catan_navegantes", nombre: "Catán Navegantes", familia: "Expansión", jugadores: "3-4", icono: "fa-ship", color: "#0284c7", reglas: { objetivo: "Explorar islas.", preparacion: "Añadir hexágonos de mar.", turno: "Construir barcos y comerciar." }, adaptacion_ep: { objetivo: "Migración y recursos.", preguntas: ["¿Qué implica llegar a un territorio nuevo?"] } },
+    { id: "zombies", nombre: "Zombies!!! (2ª Ed.)", familia: "Toma Eso / Supervivencia", jugadores: "2-6", icono: "fa-biohazard", color: "#15803d", reglas: { objetivo: "Ser el primero en matar 25 zombis o llegar al helipuerto.", preparacion: "Colocar loseta inicial, repartir 3 cartas de evento y contadores.", turno: "Colocar loseta, mover, combatir zombis, jugar eventos." }, adaptacion_ep: { objetivo: "Trabajo en equipo frente a crisis.", preguntas: ["¿Cómo se organiza la comunidad ante una amenaza?", "¿Qué recursos son vitales y cuáles se malgastan?"] } }
 ];
 
 let juegoSeleccionadoEnCatalogo = null;
@@ -103,7 +107,6 @@ async function cargarComponentesJuego(id) {
             }
         }
 
-        // --- CARGA EXHAUSTIVA EXACTA ---
         if (id === 'taller_ep') {
             if(typeof insertarCartaRefran === 'function' && typeof insertarTelaranaEP === 'function') {
                 insertarTelaranaEP(50, 50);
@@ -214,9 +217,12 @@ async function cargarComponentesJuego(id) {
         }
         else if (id === 'wavelength') {
             cat_insertarDialWavelength(50, 50);
+            for(let i=0; i<84; i++) { cat_insertarCartaWavelength(); await new Promise(r=>setTimeout(r,5)); }
         }
         else if (id === 'skyteam') {
             cat_insertarSkyTeam(50, 50);
+            for(let i=0; i<8; i++) { insertarDadoBang(600 + i*60, 50); }
+            for(let i=0; i<12; i++) { insertarFichaTaller('lana', 600 + (i%6)*40, 150 + Math.floor(i/6)*40); }
         }
         else if (id === 'hitster') {
             cat_insertarLineaTiempoHitster(50, 50);
@@ -244,6 +250,48 @@ async function cargarComponentesJuego(id) {
             for(let i=0; i<30; i++) { cat_insertarCartaArkhamEscenario(); await new Promise(r=>setTimeout(r,5)); }
             for(let i=0; i<44; i++) { cat_insertarFichaArkham('caos', 600 + (i%11)*40, 50 + Math.floor(i/11)*40); }
             for(let i=0; i<51; i++) { cat_insertarFichaArkham('recurso', 600 + (i%11)*40, 250 + Math.floor(i/11)*40); }
+        }
+        else if (id === 'la_llamada') {
+            for(let i=0; i<12; i++) { cat_insertarCartaLaLlamada(); await new Promise(r=>setTimeout(r,10)); }
+            for(let i=0; i<3; i++) { insertarFichaTaller('corazon', 600 + i*60, 50); }
+        }
+        else if (id === 'rick_morty') {
+            for(let i=0; i<5; i++) { cat_insertarCartaRickMorty(); await new Promise(r=>setTimeout(r,10)); }
+            for(let i=0; i<11; i++) { insertarDadoBang(600 + (i%6)*60, 50 + Math.floor(i/6)*60); }
+        }
+        else if (id === 'criaturas') {
+            for(let i=0; i<37; i++) { cat_insertarCartaCriaturas(); await new Promise(r=>setTimeout(r,5)); }
+            for(let i=0; i<50; i++) { cat_insertarCartaCriaturas(); await new Promise(r=>setTimeout(r,5)); }
+            for(let i=0; i<9; i++) { insertarFichaTaller('lana', 600 + i*40, 50); }
+        }
+        else if (id === 'spellcrafting') {
+            for(let i=0; i<26; i++) { cat_insertarCartaSpellCrafting(); await new Promise(r=>setTimeout(r,5)); }
+            for(let i=0; i<26; i++) { cat_insertarCartaSpellCrafting(); await new Promise(r=>setTimeout(r,5)); }
+        }
+        else if (id === 'xanathar') {
+            for(let i=0; i<96; i++) { cat_insertarCartaXanathar(); await new Promise(r=>setTimeout(r,5)); }
+        }
+        else if (id === 'strixhaven') {
+            for(let i=0; i<5; i++) { cat_insertarCartaStrixhaven(); await new Promise(r=>setTimeout(r,10)); }
+            for(let i=0; i<2; i++) { cat_insertarCartaStrixhaven(); }
+        }
+        else if (id === 'carcassonne_plus') {
+            for(let i=0; i<160; i++) { cat_insertarCartaCarcassonnePlus(); await new Promise(r=>setTimeout(r,5)); }
+            for(let i=0; i<12; i++) { cat_insertarCartaCarcassonnePlus(); await new Promise(r=>setTimeout(r,5)); }
+        }
+        else if (id === 'catan_navegantes') {
+            insertarTableroCompletoCatan(50, 50);
+            for(let i=0; i<60; i++) { cat_insertarCartaCatanNavegantes(); await new Promise(r=>setTimeout(r,5)); }
+            for(let i=0; i<30; i++) { insertarCartaRecursoCatan('madera', 600 + (i%10)*80, 50 + Math.floor(i/10)*100); }
+        }
+        else if (id === 'zombies') {
+            for(let i=0; i<30; i++) { cat_insertarLosetaZombies(50 + (i%6)*110, 50 + Math.floor(i/6)*110); await new Promise(r=>setTimeout(r,5)); }
+            for(let i=0; i<50; i++) { cat_insertarCartaEventoZombies(); await new Promise(r=>setTimeout(r,3)); }
+            for(let i=0; i<100; i++) { cat_insertarZombieMiniatura(600 + (i%20)*30, 50 + Math.floor(i/20)*40); }
+            for(let i=0; i<6; i++) { cat_insertarPersonajeZombies(600 + (i%6)*50, 300); }
+            for(let i=0; i<30; i++) { cat_insertarContadorZombies('vida', 600 + (i%10)*40, 380 + Math.floor(i/10)*40); }
+            for(let i=0; i<60; i++) { cat_insertarContadorZombies('bala', 600 + (i%15)*35, 500 + Math.floor(i/15)*35); }
+            for(let i=0; i<2; i++) { cat_insertarDadoZombies(600 + i*60, 650); }
         }
 
         if(typeof ocultarLoading === 'function') ocultarLoading();
