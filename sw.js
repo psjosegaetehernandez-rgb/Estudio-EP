@@ -1,4 +1,4 @@
-const CACHE_NAME = 'estudio-ep-v240';
+const CACHE_NAME = 'estudio-ep-v241';
 const urlsToCache = [
   './',
   './index.html',

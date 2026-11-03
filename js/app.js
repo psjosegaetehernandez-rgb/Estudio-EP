@@ -1427,3 +1427,120 @@ window.generarPDFFinal = async function() {
         showToast("Error: " + error.message, "error");
     }
 };
+
+
+// ================= EXPORTACIÓN MOSAICO A3/A2 (v241.0) =================
+// Añadimos una función para exportar tableros grandes en varias hojas A4
+window.exportarTableroMosaico = async function() {
+    const { cards, largeBoards, smallTokens } = clasificarElementos();
+    if (largeBoards.length === 0) {
+        if(typeof showToast === 'function') showToast("No hay tableros grandes para exportar", "warning");
+        return;
+    }
+    
+    mostrarLoading("Generando Mosaico A4...", "Cortando tableros grandes...");
+    
+    try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        
+        for (let board of largeBoards) {
+            // 1. Capturamos el tablero como una imagen grande
+            const bW = board.offsetWidth || 500;
+            const bH = board.offsetHeight || 500;
+            
+            const stage = document.createElement('div');
+            stage.style.position = 'fixed'; stage.style.left = '-9999px'; stage.style.top = '0';
+            stage.style.width = bW + 'px'; stage.style.height = bH + 'px';
+            stage.style.overflow = 'hidden'; stage.style.background = '#ffffff';
+            
+            const clone = board.cloneNode(true);
+            clone.querySelectorAll('.floating-actions').forEach(m => m.remove());
+            clone.style.setProperty('position', 'relative', 'important');
+            clone.style.setProperty('margin', '0', 'important');
+            clone.style.setProperty('transform', 'none', 'important');
+            
+            stage.appendChild(clone);
+            document.body.appendChild(stage);
+            
+            const canvas = await html2canvas(stage, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+            document.body.removeChild(stage);
+            
+            const imgData = canvas.toDataURL('image/jpeg', 0.95);
+            
+            // 2. Lógica para cortar la imagen en hojas A4 (210x297mm)
+            // Supongamos que el tablero es A3 (2 hojas A4)
+            // Si es más grande, se corta en 4, 6, etc.
+            const a4Width = 210; 
+            const a4Height = 297;
+            
+            // Calculamos cuántas hojas necesitamos
+            const cols = Math.ceil(bW / (a4Width * 3.78)); // 3.78 px = 1 mm aprox
+            const rows = Math.ceil(bH / (a4Height * 3.78));
+            
+            if (cols === 1 && rows === 1) {
+                // Cabe en una hoja
+                pdf.addPage();
+                pdf.addImage(imgData, 'JPEG', 0, 0, a4Width, a4Height);
+            } else {
+                // Se divide en varias hojas
+                const pageW = bW / cols;
+                const pageH = bH / rows;
+                
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        pdf.addPage();
+                        
+                        // Creamos un canvas temporal para cortar
+                        const tempCanvas = document.createElement('canvas');
+                        tempCanvas.width = pageW;
+                        tempCanvas.height = pageH;
+                        const ctx = tempCanvas.getContext('2d');
+                        
+                        // Dibujamos solo la porción de la imagen que necesitamos
+                        ctx.drawImage(canvas, c * pageW, r * pageH, pageW, pageH, 0, 0, pageW, pageH);
+                        
+                        // Añadimos al PDF
+                        const slicedImg = tempCanvas.toDataURL('image/jpeg', 0.95);
+                        
+                        // Escalamos para que quepa en la hoja A4 (con un margen pequeño)
+                        const margin = 5;
+                        pdf.addImage(slicedImg, 'JPEG', margin, margin, a4Width - (margin*2), a4Height - (margin*2));
+                        
+                        // Añadimos marcas de corte (guías)
+                        pdf.setDrawColor(200, 200, 200);
+                        pdf.setLineDashPattern([2, 2], 0);
+                        pdf.line(0, margin, a4Width, margin);
+                        pdf.line(0, a4Height - margin, a4Width, a4Height - margin);
+                        pdf.line(margin, 0, margin, a4Height);
+                        pdf.line(a4Width - margin, 0, a4Width - margin, a4Height);
+                        pdf.setLineDashPattern([], 0);
+                    }
+                }
+            }
+        }
+        
+        pdf.save('Estudio_EP_Tableros_Mosaico.pdf');
+        if(typeof ocultarLoading === 'function') ocultarLoading();
+        if(typeof showToast === 'function') showToast("Mosaico A4 generado", "success");
+        
+    } catch (error) {
+        console.error("Error generando mosaico:", error);
+        if(typeof ocultarLoading === 'function') ocultarLoading();
+        if(typeof showToast === 'function') showToast("Error al generar mosaico", "error");
+    }
+};
+
+// Añadimos un botón en el modal de impresión para el mosaico
+const printModal = document.getElementById('print-modal');
+if (printModal) {
+    const btnContainer = printModal.querySelector('.modal-content div[style*="width: 250px"]');
+    if (btnContainer) {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-outline';
+        btn.style.cssText = 'width: 100%; padding: 10px; margin-top: 10px; color: #0284c7; border-color: #0284c7;';
+        btn.innerHTML = '<i class="fa-solid fa-puzzle-piece"></i> Exportar Tableros A3/A2';
+        btn.onclick = window.exportarTableroMosaico;
+        btnContainer.appendChild(btn);
+    }
+}
