@@ -1,4 +1,12 @@
 const CATALOGO_JUEGOS = [
+    { id: "taller_ep", nombre: "Kit Taller EP", familia: "Educación Popular", jugadores: "10-30", icono: "fa-hands-holding-circle", color: "#ca8a04",
+      reglas: { objetivo: "Facilitar la reflexión sobre el contexto comunitario.", preparacion: "Imprimir cartas de refranes.", turno: "Los participantes buscan su otra mitad." },
+      adaptacion_ep: { objetivo: "Visibilizar problemáticas locales.", preguntas: ["¿Qué refrán se parece a tu realidad?", "¿Cómo se vive el contexto en tu barrio?"] }
+    },
+    { id: "taller_vih", nombre: "Taller VIH Tarapacá", familia: "Salud y Género", jugadores: "10-25", icono: "fa-heart-pulse", color: "#8B3A3A",
+      reglas: { objetivo: "Derribar mitos y reflexionar sobre la violencia de género.", preparacion: "Descargar guía, cartas y cubo.", turno: "Seguir las 5 fases del facilitador." },
+      adaptacion_ep: { objetivo: "Tejer una red de cuidado colectivo.", preguntas: ["¿Qué mitos sobre el VIH conocías?", "¿Cómo se manifiesta la violencia en la pareja?"] }
+    },
     { id: "pandemic", nombre: "Pandemic", familia: "Cooperativo", jugadores: "2-4", icono: "fa-virus", color: "#dc2626",
       reglas: { objetivo: "Erradicar las enfermedades.", preparacion: "Repartir roles, colocar cubos.", turno: "Moverse o tratar enfermedades." },
       adaptacion_ep: { objetivo: "Reflexionar sobre la salud como derecho.", preguntas: ["¿Quién tiene acceso al sistema de salud?", "¿Cómo nos organizamos ante una emergencia?"] }
@@ -191,10 +199,134 @@ async function cargarComponentesJuego(id) {
             for(let i=0; i<4; i++) insertarCartaBangPersonaje();
         }
 
+                if (id === 'taller_ep') {
+            if(typeof insertarCartaRefran === 'function' && typeof insertarTelaranaEP === 'function') {
+                // Tablero y Fichas
+                insertarTelaranaEP(50, 50);
+                for(let i=0; i<5; i++) insertarFichaTaller('lana', 450 + i*60, 100);
+                
+                // Cartas de Refranes
+                const refranes = [
+                    "Análisis de contexto",
+                    "No hay mal que dure cien años",
+                    "A quien madruga, Dios lo ayuda",
+                    "Más vale pájaro en mano que cien volando",
+                    "El que ríe último, ríe mejor",
+                    "No es oro todo lo que reluce"
+                ];
+                refranes.forEach((refran, i) => {
+                    const col = i % 3;
+                    const row = Math.floor(i / 3);
+                    insertarCartaRefran(refran, 50 + col * 270, 450 + row * 360);
+                });
+            }
+        }
+        else if (id === 'taller_vih') {
+            if(typeof insertarCartaMitoVIH === 'function' && typeof insertarGuiaFacilitadorVIH === 'function') {
+                // Guía y Tableros Principales
+                insertarGuiaFacilitadorVIH(50, 50);
+                insertarCuboReflexionVIH(500, 50);
+                insertarRutaCuidadoVIH(50, 650);
+                insertarArbolProblemasVIH(750, 50);
+                insertarSemaforoVIH(1200, 50);
+                
+                // Fichas de Poder
+                for(let i=0; i<3; i++) insertarFichaTaller('escudo', 500, 450 + i*60);
+                for(let i=0; i<3; i++) insertarFichaTaller('rayo', 600, 450 + i*60);
+                for(let i=0; i<3; i++) insertarFichaTaller('corazon', 700, 450 + i*60);
+                
+                // Mazo de Mitos
+                const mitos = [
+                    { t: "El Contagio", x: "Si tengo VIH, mi pareja se va a contagiar seguro, aunque me cuide." },
+                    { t: "El Examen", x: "El test duele, es caro y todo el pueblo se va a enterar de mi resultado." },
+                    { t: "El Estigma", x: "Solo las personas promiscuas o los homosexuales se contagian de VIH." },
+                    { t: "El Matrimonio", x: "Una mujer casada no necesita cuidarse, su esposo la protege de todo." },
+                    { t: "Las ITS", x: "Si tengo una infección como sífilis o gonorrea, se me quita sola con el tiempo." },
+                    { t: "El Futuro", x: "El VIH es una sentencia de muerte. Si me sale positivo, mi vida se acaba." }
+                ];
+                mitos.forEach((mito, i) => {
+                    const col = i % 3;
+                    const row = Math.floor(i / 3);
+                    insertarCartaMitoVIH('mito', mito.t, mito.x, 50 + col * 270, 850 + row * 360);
+                });
+
+                // Mazo de Situaciones
+                const situaciones = [
+                    { t: "Violencia", x: "Tu pareja se enoja y te grita porque le pediste usar condón. ¿Qué haces?" },
+                    { t: "La Infidelidad", x: "Descubres que tu pareja te fue infiel. Tienes miedo de hacerte el test. ¿Cómo lo enfrentas?" },
+                    { t: "La Amiga", x: "Una amiga te confiesa que tiene miedo de tener VIH, pero no va al médico por vergüenza. ¿Cómo la apoyas?" }
+                ];
+                situaciones.forEach((sit, i) => {
+                    insertarCartaMitoVIH('situacion', sit.t, sit.x, 950 + i * 270, 850);
+                });
+            }
+        }
         if(typeof ocultarLoading === 'function') ocultarLoading();
         if(typeof showToast === 'function') showToast(`¡Materiales de ${juego.nombre} cargados!`, "success");
     } catch (error) {
-        console.error("Error cargando juego:", error); if(typeof ocultarLoading === 'function') ocultarLoading();
+        console.error("Error cargando juego:", error);         if (id === 'taller_ep') {
+            if(typeof insertarCartaRefran === 'function' && typeof insertarTelaranaEP === 'function') {
+                // Tablero y Fichas
+                insertarTelaranaEP(50, 50);
+                for(let i=0; i<5; i++) insertarFichaTaller('lana', 450 + i*60, 100);
+                
+                // Cartas de Refranes
+                const refranes = [
+                    "Análisis de contexto",
+                    "No hay mal que dure cien años",
+                    "A quien madruga, Dios lo ayuda",
+                    "Más vale pájaro en mano que cien volando",
+                    "El que ríe último, ríe mejor",
+                    "No es oro todo lo que reluce"
+                ];
+                refranes.forEach((refran, i) => {
+                    const col = i % 3;
+                    const row = Math.floor(i / 3);
+                    insertarCartaRefran(refran, 50 + col * 270, 450 + row * 360);
+                });
+            }
+        }
+        else if (id === 'taller_vih') {
+            if(typeof insertarCartaMitoVIH === 'function' && typeof insertarGuiaFacilitadorVIH === 'function') {
+                // Guía y Tableros Principales
+                insertarGuiaFacilitadorVIH(50, 50);
+                insertarCuboReflexionVIH(500, 50);
+                insertarRutaCuidadoVIH(50, 650);
+                insertarArbolProblemasVIH(750, 50);
+                insertarSemaforoVIH(1200, 50);
+                
+                // Fichas de Poder
+                for(let i=0; i<3; i++) insertarFichaTaller('escudo', 500, 450 + i*60);
+                for(let i=0; i<3; i++) insertarFichaTaller('rayo', 600, 450 + i*60);
+                for(let i=0; i<3; i++) insertarFichaTaller('corazon', 700, 450 + i*60);
+                
+                // Mazo de Mitos
+                const mitos = [
+                    { t: "El Contagio", x: "Si tengo VIH, mi pareja se va a contagiar seguro, aunque me cuide." },
+                    { t: "El Examen", x: "El test duele, es caro y todo el pueblo se va a enterar de mi resultado." },
+                    { t: "El Estigma", x: "Solo las personas promiscuas o los homosexuales se contagian de VIH." },
+                    { t: "El Matrimonio", x: "Una mujer casada no necesita cuidarse, su esposo la protege de todo." },
+                    { t: "Las ITS", x: "Si tengo una infección como sífilis o gonorrea, se me quita sola con el tiempo." },
+                    { t: "El Futuro", x: "El VIH es una sentencia de muerte. Si me sale positivo, mi vida se acaba." }
+                ];
+                mitos.forEach((mito, i) => {
+                    const col = i % 3;
+                    const row = Math.floor(i / 3);
+                    insertarCartaMitoVIH('mito', mito.t, mito.x, 50 + col * 270, 850 + row * 360);
+                });
+
+                // Mazo de Situaciones
+                const situaciones = [
+                    { t: "Violencia", x: "Tu pareja se enoja y te grita porque le pediste usar condón. ¿Qué haces?" },
+                    { t: "La Infidelidad", x: "Descubres que tu pareja te fue infiel. Tienes miedo de hacerte el test. ¿Cómo lo enfrentas?" },
+                    { t: "La Amiga", x: "Una amiga te confiesa que tiene miedo de tener VIH, pero no va al médico por vergüenza. ¿Cómo la apoyas?" }
+                ];
+                situaciones.forEach((sit, i) => {
+                    insertarCartaMitoVIH('situacion', sit.t, sit.x, 950 + i * 270, 850);
+                });
+            }
+        }
+        if(typeof ocultarLoading === 'function') ocultarLoading();
     }
 }
 
