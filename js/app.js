@@ -1074,3 +1074,17 @@ window.generarPDFFinal = async function() {
         showToast("Error: " + error.message, "error");
     }
 };
+
+
+// ================= NAVEGACIÓN DE PESTAÑAS (v209.0) =================
+function switchTool(tabName, btn) {
+    // Ocultar todos los contenidos
+    document.querySelectorAll('.tool-content').forEach(el => el.classList.remove('active'));
+    // Quitar clase activa a todos los botones
+    document.querySelectorAll('.tool-tab').forEach(el => el.classList.remove('active'));
+    
+    // Mostrar el contenido seleccionado y activar el botón
+    const targetContent = document.getElementById('tool-' + tabName);
+    if(targetContent) targetContent.classList.add('active');
+    if(btn) btn.classList.add('active');
+}

@@ -1,22 +1,31 @@
 const CATALOGO_JUEGOS = [
-    { id: "pandemic", nombre: "Pandemic", familia: "Cooperativo", jugadores: "2-4", icono: "fa-virus", color: "#dc2626" },
-    { id: "catan", nombre: "Colonos de Catán", familia: "Gestión de Recursos", jugadores: "3-4", icono: "fa-tree", color: "#15803d" },
-    { id: "catan_ciudades", nombre: "Catán: Ciudades y Caballeros", familia: "Expansión", jugadores: "3-4", icono: "fa-city", color: "#b91c1c" },
-    { id: "catan_navegantes", nombre: "Catán: Navegantes", familia: "Expansión", jugadores: "3-4", icono: "fa-ship", color: "#0284c7" },
-    { id: "dixit", nombre: "Dixit", familia: "Asociación Visual", jugadores: "3-8", icono: "fa-moon", color: "#6d28d9" },
-    { id: "virus", nombre: "Virus!", familia: "Toma Eso / Cartas", jugadores: "2-6", icono: "fa-biohazard", color: "#14532d" },
-    { id: "sushi_go", nombre: "Sushi Go!", familia: "Drafting", jugadores: "2-5", icono: "fa-utensils", color: "#ca8a04" },
-    { id: "hombres_lobo", nombre: "Los Hombres Lobo", familia: "Roles Ocultos", jugadores: "3-18", icono: "fa-paw", color: "#1e293b" },
-    { id: "codigo_secreto", nombre: "Código Secreto", familia: "Deducción", jugadores: "2-8", icono: "fa-user-secret", color: "#dc2626" },
-    { id: "root", nombre: "Root", familia: "Asimétrico", jugadores: "2-4", icono: "fa-tree", color: "#15803d" },
-    { id: "ciudadelas", nombre: "Ciudadelas", familia: "Roles Ocultos", jugadores: "2-8", icono: "fa-chess-rook", color: "#78350f" },
-    { id: "polilla", nombre: "Polilla Tramposa", familia: "Fiesta", jugadores: "2-6", icono: "fa-bug", color: "#6d28d9" },
-    { id: "bang", nombre: "Bang! Dados", familia: "Dados", jugadores: "3-8", icono: "fa-cowboy", color: "#b91c1c" },
-    { id: "wingspan", nombre: "Wingspan", familia: "Eurogame", jugadores: "1-5", icono: "fa-feather", color: "#0284c7" },
-    { id: "munchkin", nombre: "Munchkin", familia: "Cartas", jugadores: "3-6", icono: "fa-hat-wizard", color: "#b91c1c" },
-    { id: "jungle", nombre: "Jungle Speed", familia: "Reflejos", jugadores: "2-8", icono: "fa-hand-fist", color: "#eab308" },
-    { id: "coup", nombre: "Coup", familia: "Deducción", jugadores: "2-6", icono: "fa-mask", color: "#9a3412" }
+    { id: "pandemic", nombre: "Pandemic", familia: "Cooperativo", jugadores: "2-4", icono: "fa-virus", color: "#dc2626",
+      reglas: { objetivo: "Erradicar las enfermedades.", preparacion: "Repartir roles, colocar cubos.", turno: "Moverse o tratar enfermedades." },
+      adaptacion_ep: { objetivo: "Reflexionar sobre la salud como derecho.", preguntas: ["¿Quién tiene acceso al sistema de salud?", "¿Cómo nos organizamos ante una emergencia?"] }
+    },
+    { id: "catan", nombre: "Colonos de Catán", familia: "Gestión de Recursos", jugadores: "3-4", icono: "fa-tree", color: "#15803d",
+      reglas: { objetivo: "Llegar a 10 puntos.", preparacion: "Armar el tablero hexagonal.", turno: "Tirar dados, recolectar, comerciar." },
+      adaptacion_ep: { objetivo: "Simular la gestión de recursos comunitarios.", preguntas: ["¿Qué recursos son los más disputados?", "¿Cómo se negocia en igualdad?"] }
+    },
+    { id: "catan_ciudades", nombre: "Catán: Ciudades y Caballeros", familia: "Expansión", jugadores: "3-4", icono: "fa-city", color: "#b91c1c",
+      reglas: { objetivo: "Mejorar ciudades y defender la isla.", preparacion: "Añadir cuarteles y mercancías.", turno: "Producción, Comercio, Construcción." },
+      adaptacion_ep: { objetivo: "Analizar la defensa colectiva.", preguntas: ["¿Cómo decidimos qué mejoras construir?", "¿Qué pasa si la comunidad no se une?"] }
+    },
+    { id: "catan_navegantes", nombre: "Catán: Navegantes", familia: "Expansión", jugadores: "3-4", icono: "fa-ship", color: "#0284c7",
+      reglas: { objetivo: "Explorar islas desconocidas.", preparacion: "Añadir barcos y hexágonos de mar.", turno: "Construir barcos en lugar de caminos." },
+      adaptacion_ep: { objetivo: "Hablar sobre migración.", preguntas: ["¿Qué implica llegar a un territorio nuevo?", "¿Cómo se reparten los recursos?"] }
+    },
+    { id: "dixit", nombre: "Dixit", familia: "Asociación Visual", jugadores: "3-8", icono: "fa-moon", color: "#6d28d9",
+      reglas: { objetivo: "Adivinar la carta del narrador.", preparacion: "Repartir 6 cartas.", turno: "El narrador da una pista, los demás votan." },
+      adaptacion_ep: { objetivo: "Trabajar la interpretación subjetiva.", preguntas: ["¿Por qué vemos cosas distintas?", "¿Cómo se construye un relato colectivo?"] }
+    },
+    { id: "virus", nombre: "Virus!", familia: "Toma Eso / Cartas", jugadores: "2-6", icono: "fa-biohazard", color: "#14532d",
+      reglas: { objetivo: "Construir un cuerpo sano.", preparacion: "Barajar los mazos.", turno: "Jugar órgano, virus o medicina." },
+      adaptacion_ep: { objetivo: "Visibilizar conflictos de poder en salud.", preguntas: ["¿Los órganos son derechos?", "¿Los virus son recortes y las medicinas acciones colectivas?"] }
+    }
 ];
+
+let juegoSeleccionadoEnCatalogo = null;
 
 function renderCatalogo() {
     const grid = document.getElementById('catalogo-grid');
@@ -43,53 +52,64 @@ function filtrarCatalogo(texto) {
 }
 
 function mostrarDetalleJuego(juego) {
-    if(confirm(`¿Cargar los componentes de ${juego.nombre} en el lienzo?`)) {
-        cargarComponentesJuego(juego.id);
+    juegoSeleccionadoEnCatalogo = juego;
+    
+    const pEmpty = document.getElementById('props-empty');
+    const pContent = document.getElementById('props-content');
+    const pActions = document.getElementById('props-actions');
+    const cPanel = document.getElementById('catalogo-detalle-panel');
+
+    if(pEmpty) pEmpty.style.display = 'none';
+    if(pContent) pContent.style.display = 'none';
+    if(pActions) pActions.style.display = 'none';
+    if(cPanel) cPanel.style.display = 'flex';
+
+    if(document.getElementById('cat-nombre')) document.getElementById('cat-nombre').innerText = juego.nombre;
+    if(document.getElementById('cat-familia')) document.getElementById('cat-familia').innerText = juego.familia;
+    if(document.getElementById('cat-objetivo')) document.getElementById('cat-objetivo').querySelector('span').innerText = juego.reglas.objetivo;
+    if(document.getElementById('cat-preparacion')) document.getElementById('cat-preparacion').querySelector('span').innerText = juego.reglas.preparacion;
+    if(document.getElementById('cat-turno')) document.getElementById('cat-turno').querySelector('span').innerText = juego.reglas.turno;
+    if(document.getElementById('cat-ep-objetivo')) document.getElementById('cat-ep-objetivo').querySelector('span').innerText = juego.adaptacion_ep.objetivo;
+    
+    const ul = document.getElementById('cat-ep-preguntas');
+    if(ul) {
+        ul.innerHTML = '';
+        juego.adaptacion_ep.preguntas.forEach(p => { ul.innerHTML += `<li>${p}</li>`; });
     }
+}
+
+function cargarDesdePanelCatalogo() {
+    if(juegoSeleccionadoEnCatalogo) cargarComponentesJuego(juegoSeleccionadoEnCatalogo.id);
 }
 
 async function cargarComponentesJuego(id) {
     const juego = CATALOGO_JUEGOS.find(j => j.id === id);
     if(!juego) return;
-
-    if(typeof mostrarLoading === 'function') mostrarLoading(`Generando ${juego.nombre}`, "Por favor, espera...");
+    if(typeof mostrarLoading === 'function') mostrarLoading(`Generando ${juego.nombre}`, "Espera...");
     await new Promise(r => setTimeout(r, 100));
-
     try {
         if (document.querySelectorAll('#canvas > .canvas-element').length > 0) {
             if(confirm("El lienzo tiene elementos. ¿Deseas limpiarlo antes de cargar este juego?")) {
                 if (typeof limpiarLienzo === 'function') limpiarLienzo();
-            } else {
-                if(typeof ocultarLoading === 'function') ocultarLoading();
-                return;
             }
         }
-
-        // --- CARGA MAESTRA ---
         if (id === 'catan') {
             insertarTableroCompletoCatan(50, 50);
             insertarTableroJugadorCatan(600, 50);
             for(let i=0; i<18; i++) insertarFichasNumeroCatan(50 + i*50, 580);
             const recs = ['madera', 'trigo', 'ladrillo', 'oveja', 'piedra'];
             recs.forEach((rec, i) => insertarCartaRecursoCatan(rec, 600 + i*260, 350));
-            insertarKitJugadorCatan('#dc2626', 50, 680);
-            insertarKitJugadorCatan('#0284c7', 230, 680);
-            insertarKitJugadorCatan('#15803d', 410, 680);
-            insertarKitJugadorCatan('#ca8a04', 590, 680);
-            insertarLadronCatan(800, 680);
-            insertarPuertoCatan(850, 680); insertarPuertoCatan(910, 680);
+            insertarKitJugadorCatan('#dc2626', 50, 680); insertarKitJugadorCatan('#0284c7', 230, 680);
+            insertarKitJugadorCatan('#15803d', 410, 680); insertarKitJugadorCatan('#ca8a04', 590, 680);
+            insertarLadronCatan(800, 680); insertarPuertoCatan(850, 680); insertarPuertoCatan(910, 680);
         }
         else if (id === 'catan_ciudades') {
-            insertarTableroCompletoCatan(50, 50);
-            insertarKitJugadorCatan('#dc2626', 600, 50);
-            insertarFichaCaballeroCatan(600, 250);
-            insertarFichaMetropoliCatan(680, 250);
-            insertarFichaMercanciaCatan(760, 250);
-            insertarCartaRecursoCatan('madera', 50, 600);
+            insertarTableroCompletoCatan(50, 50); insertarKitJugadorCatan('#dc2626', 600, 50);
+            insertarFichaCaballeroCatan(600, 250); insertarFichaMetropoliCatan(680, 250);
+            insertarFichaMercanciaCatan(760, 250); insertarCartaRecursoCatan('madera', 50, 600);
         }
         else if (id === 'catan_navegantes') {
-            insertarTableroCompletoCatan(50, 50);
-            insertarKitJugadorCatan('#0284c7', 600, 50);
+            insertarTableroCompletoCatan(50, 50); insertarKitJugadorCatan('#0284c7', 600, 50);
             for(let i=0; i<4; i++) insertarBarcoNavegante(600 + i*80, 250);
         }
         else if (id === 'pandemic') {
@@ -98,40 +118,12 @@ async function cargarComponentesJuego(id) {
             for(let i=0; i<4; i++) insertarMeeplePandemic(600 + i*60, 180);
             for(let i=0; i<3; i++) insertarEventoPandemic(50 + i*280, 400);
         }
-        else if (id === 'sushi_go') { for(let i=0; i<10; i++) insertarCartaSushi(); }
         else if (id === 'dixit') { for(let i=0; i<10; i++) insertarCartaDixit(); }
-        else if (id === 'hombres_lobo') { for(let i=0; i<10; i++) insertarCartaHombreLobo(); }
-        else if (id === 'codigo_secreto') { for(let i=0; i<10; i++) insertarCartaCodename(); }
-        else if (id === 'wingspan') { for(let i=0; i<8; i++) insertarCartaWingspan(); }
-        else if (id === 'munchkin') { for(let i=0; i<8; i++) insertarCartaMunchkin(); }
-        else if (id === 'jungle') { for(let i=0; i<8; i++) insertarCartaJungleSpeed(); }
-        else if (id === 'coup') { for(let i=0; i<8; i++) insertarCartaCoup(); }
-        else if (id === 'virus') {
-            for(let i=0; i<4; i++) { insertarCartaVirusOrgano(); insertarCartaVirusInfeccion(); insertarCartaVirusMedicina(); }
-        }
-        else if (id === 'root') {
-            insertarCartaRoot('marquesado'); insertarCartaRoot('nido'); insertarCartaRoot('alianza'); insertarCartaRoot('vagabundo');
-        }
-        else if (id === 'ciudadelas') {
-            for(let i=0; i<8; i++) insertarCartaCiudadelasPersonaje();
-            for(let i=0; i<4; i++) insertarCartaCiudadelasDistrito();
-        }
-        else if (id === 'polilla') {
-            for(let i=0; i<8; i++) insertarCartaPolillaNum();
-            for(let i=0; i<4; i++) insertarCartaPolillaTramposa();
-        }
-        else if (id === 'bang') {
-            for(let i=0; i<4; i++) insertarCartaBangRol();
-            for(let i=0; i<4; i++) insertarCartaBangPersonaje();
-        }
-
+        else if (id === 'virus') { for(let i=0; i<4; i++) { insertarCartaVirusOrgano(); insertarCartaVirusInfeccion(); insertarCartaVirusMedicina(); } }
         if(typeof ocultarLoading === 'function') ocultarLoading();
         if(typeof showToast === 'function') showToast(`¡Materiales de ${juego.nombre} cargados!`, "success");
-
     } catch (error) {
-        console.error("Error cargando juego:", error);
-        if(typeof ocultarLoading === 'function') ocultarLoading();
-        if(typeof showToast === 'function') showToast("Error al cargar: " + error.message, "error");
+        console.error(error); if(typeof ocultarLoading === 'function') ocultarLoading();
     }
 }
 
