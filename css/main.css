@@ -295,3 +295,33 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover { background: #475569; }
 }
 .carta-realidad-header { background: #16a34a; color: white; padding: 10px; text-align: center; font-family: 'Inter'; font-weight: bold; text-transform: uppercase; font-size: 14px; }
 .carta-realidad-texto { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; font-family: 'Merriweather'; font-size: 16px; color: #14532d; }
+/* --- LIVE MODE / PROYECTOR (v109.0) --- */
+body.live-mode .tools-panel, 
+body.live-mode .properties-panel,
+body.live-mode .editor-topbar .topbar-left,
+body.live-mode .editor-topbar .topbar-actions,
+body.live-mode #canvas-hint {
+    display: none !important;
+}
+body.live-mode .editor-workspace {
+    grid-template-columns: 1fr !important;
+}
+body.live-mode .canvas-area {
+    background-color: #1e293b !important; /* Fondo oscuro para proyector */
+    background-image: none !important;
+    cursor: crosshair;
+}
+body.live-mode .editor-topbar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    z-index: 1000;
+}
+body.live-mode .editor-topbar::after {
+    content: 'Presiona ESC para salir del Modo Proyector';
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    font-family: 'Inter';
+}

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/canvas.css">
     <link rel="stylesheet" href="css/cartas.css">
     <link rel="stylesheet" href="css/epes.css">`n    <link rel="stylesheet" href="css/game-components.css">
-</head>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>`n</head>
 <body>
         <!-- SKELETON LOADER -->
     <div id="loading-overlay">
@@ -114,6 +114,8 @@
                     <span id="autosave-status" style="font-size: 11px; color: #64748b; font-weight: bold; margin-right: 5px;">Guardado ✔</span>
                     <button class="btn btn-outline" onclick="toggleTema()" title="Modo Oscuro"><i class="fa-solid fa-moon"></i></button>
                     <button class="btn btn-outline" onclick="toggleFocusMode()" title="Modo Enfoque (Ocultar Paneles)"><i class="fa-solid fa-expand"></i></button>
+                    <button class="btn btn-outline" onclick="toggleLiveMode()" title="Modo Proyector" style="color:#1e293b; border-color:#1e293b;"><i class="fa-solid fa-tv"></i> Proyector</button>
+                    <button class="btn btn-outline" onclick="abrirPuenteIA()" title="Generar Cartas con IA" style="color:#a855f7; border-color:#a855f7;"><i class="fa-solid fa-robot"></i> IA</button>
                     <button class="btn btn-outline" onclick="abrirWizard()" title="Asistente de Taller" style="color:#8B3A3A; border-color:#8B3A3A; font-weight:bold;"><i class="fa-solid fa-wand-magic-sparkles"></i> Asistente</button>
                     <button class="btn btn-outline" onclick="toggleVistaPrevia()" title="Vista Previa"><i class="fa-solid fa-eye"></i></button>
                     <button class="btn btn-outline" onclick="toggleMesa()" title="Mesa"><i class="fa-solid fa-tree"></i></button>
@@ -510,11 +512,36 @@
         </div>
     </div>
     <script src="js/utilities.js"></script>
+        <!-- MODAL PUENTE IA (v109.0) -->
+    <div id="modal-ia" class="modal-overlay" style="z-index: 10000; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);">
+        <div class="modal-content" style="max-width: 600px; width: 90%; padding: 30px; background: #FDFBF7; border-radius: 12px; border: 2px solid #a855f7;">
+            <h2 style="font-family:'Playfair Display'; color:#a855f7; margin-bottom: 10px;"><i class="fa-solid fa-robot"></i> Asistente Freire (IA)</h2>
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Genera mazos masivos usando ChatGPT o Gemini.</p>
+            
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="font-weight: bold; color: #1e293b;">1. Tema del Taller</label>
+                <input type="text" id="ia-tema" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;" placeholder="Ej: Mitos sobre salud sexual en jóvenes">
+            </div>
+
+            <button class="btn btn-outline" onclick="generarPromptIA()" style="width: 100%; margin-bottom: 15px; color: #a855f7; border-color: #a855f7;"><i class="fa-solid fa-clipboard-list"></i> 2. Copiar Prompt para la IA</button>
+            
+            <div class="form-group" style="margin-bottom: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
+                <label style="font-weight: bold; color: #1e293b;">3. Pega el JSON que te dio la IA</label>
+                <textarea id="ia-json-input" style="width: 100%; height: 100px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace; font-size: 12px;" placeholder='[{"frente": "Mito 1", "dorso": "Realidad 1"}, ...]'></textarea>
+            </div>
+
+            <div style="text-align: right; display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="btn btn-outline" onclick="document.getElementById('modal-ia').classList.remove('active')">Cancelar</button>
+                <button class="btn btn-primary" onclick="procesarJSONIA()" style="background: #a855f7; border: none;"><i class="fa-solid fa-magic"></i> Generar Cartas</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/pwa-ia-live.js"></script>
     <script src="js/app.js"></script>
     <script src="js/drag-drop.js"></script>
     <script src="js/herramientas.js"></script>
     <script src="js/panel-derecho.js"></script>
     <script src="js/modo-mazo.js"></script>
     <script src="js/plantillas.js"></script>
-</body>
+<script>if("serviceWorker" in navigator) { window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js"); }); }</script>`n</body>
 </html>

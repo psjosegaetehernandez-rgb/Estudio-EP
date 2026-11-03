@@ -180,7 +180,7 @@ function cambiarColorDorsoUniversal(color) {
 function subirImagenDorsoUniversal(event) {
     const file = event.target.files[0]; if(!file || !elementoSeleccionado) return;
     const reader = new FileReader();
-    reader.onload = function(e) {
+    comprimirYSubir(file, (base64) => {
         const card = obtenerContenedorCarta(elementoSeleccionado);
         const nativeBack = card.querySelector('.carta-back');
         

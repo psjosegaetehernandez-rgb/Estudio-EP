@@ -1,13 +1,14 @@
 {
-  "name": "Estudio EP",
-  "short_name": "EP",
-  "start_url": "index.html",
+  "name": "Estudio EP - Educación Popular",
+  "short_name": "Estudio EP",
+  "description": "Taller Digital de Educación Popular",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f4f1ea",
-  "theme_color": "#9a3412",
+  "background_color": "#FDFBF7",
+  "theme_color": "#8B3A3A",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2662/2662503.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/1048/1048953.png",
       "sizes": "512x512",
       "type": "image/png"
     }
