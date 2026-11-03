@@ -1,0 +1,128 @@
+/* ================= LIMPIEZA VISUAL Y BARRA SUPERIOR (v116.0) ================= */
+
+/* 1. BARRA SUPERIOR PREMIUM */
+.editor-topbar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    gap: 10px;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+#project-title-input {
+    border: 1px solid transparent;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+#project-title-input:hover, #project-title-input:focus {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    outline: none;
+}
+
+.topbar-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+    flex: 2;
+}
+
+/* Agrupaciones de botones */
+.topbar-group {
+    display: flex;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid #e2e8f0;
+    gap: 2px;
+}
+
+.topbar-group .btn-outline {
+    border: none !important;
+    padding: 8px 12px !important;
+    background: transparent !important;
+    border-radius: 6px;
+    color: #475569;
+    transition: 0.2s;
+    font-size: 13px;
+}
+.topbar-group .btn-outline:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+/* Botón de Exportar Destacado */
+.btn-cta {
+    background: #8B3A3A !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    box-shadow: 0 4px 10px rgba(139, 58, 58, 0.3);
+    font-weight: bold;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+.btn-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(139, 58, 58, 0.4);
+}
+
+/* Ocultar divisores verticales antiguos */
+.topbar-divider {
+    display: none !important;
+}
+
+/* 2. ACORDEONES NATIVOS (Estética final) */
+.ux-details {
+    margin-bottom: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+.ux-details summary {
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #334155;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    transition: background 0.2s;
+}
+.ux-details summary::-webkit-details-marker { display: none; }
+.ux-details summary:hover { background: #e2e8f0; }
+.ux-details summary::after {
+    content: '\f078';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 10px;
+    color: #64748b;
+    transition: transform 0.3s ease;
+}
+.ux-details[open] summary::after { transform: rotate(180deg); }
+.ux-details-content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: #ffffff;
+}

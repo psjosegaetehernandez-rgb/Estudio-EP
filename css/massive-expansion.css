@@ -1,0 +1,59 @@
+/* ================= GRAN EXPANSIÓN DE COMPONENTES (v112.0) ================= */
+
+/* 1. LÍNEA DE TIEMPO */
+.timeline-widget {
+    display: flex; align-items: center; background: #f8fafc; border: 2px solid #0284c7; border-radius: 12px;
+    padding: 10px; gap: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); width: 600px;
+}
+.timeline-slot {
+    flex: 1; height: 80px; background: white; border: 2px dashed #94a3b8; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display';
+    font-size: 20px; font-weight: bold; color: #0284c7; text-align: center; cursor: text;
+}
+.timeline-slot:focus { outline: none; border-color: #0284c7; background: #e0f2fe; }
+
+/* 2. NUEVOS TABLEROS */
+.board-skyteam { width: 500px; background: #1e293b; border-radius: 12px; padding: 20px; display: flex; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.skyteam-col { flex: 1; background: #334155; border-radius: 8px; padding: 15px; }
+.skyteam-col h4 { color: white; text-align: center; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; }
+.skyteam-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.skyteam-slot { height: 50px; border: 2px dashed #94a3b8; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; }
+
+.board-rollwrite { width: 400px; height: 400px; background: #f8fafc; border: 2px solid #333; background-image: radial-gradient(#cbd5e1 2px, transparent 2px); background-size: 40px 40px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.rollwrite-text { position: absolute; top: 10px; left: 10px; background: white; padding: 5px 10px; border: 1px solid #ccc; font-size: 12px; font-family: 'Inter'; }
+
+.board-bingo { display: grid; grid-template-columns: repeat(5, 60px); grid-template-rows: repeat(5, 60px); gap: 5px; background: #1e293b; padding: 10px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.bingo-cell { background: white; display: flex; align-items: center; justify-content: center; font-family: 'Inter'; font-size: 18px; font-weight: bold; color: #1e293b; border-radius: 4px; }
+.bingo-cell.libre { background: #f8fafc; font-size: 12px; color: #64748b; }
+
+/* 3. NUEVOS FORMATOS DE CARTAS (Todos compatibles con el dorso 3D) */
+/* Top Trumps */
+.carta-toptrumps { width: 200px; height: 300px; background: #fef2f2; border: 3px solid #b91c1c; border-radius: 10px; display: flex; flex-direction: column; padding: 15px; box-sizing: border-box; }
+.toptrumps-header { text-align: center; font-family: 'Playfair Display'; font-size: 18px; font-weight: bold; color: #b91c1c; margin-bottom: 10px; border-bottom: 2px solid #b91c1c; padding-bottom: 5px; }
+.toptrumps-stats { flex: 1; display: flex; flex-direction: column; justify-content: space-around; font-family: 'Inter'; font-size: 12px; }
+.toptrumps-stat-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #cbd5e1; padding-bottom: 3px; }
+.toptrumps-stat-value { font-weight: bold; color: #b91c1c; }
+
+/* Sushi Go */
+.carta-sushi { width: 180px; height: 260px; background: white; border: 3px solid #333; border-radius: 10px; border-top: 15px solid #f59e0b; display: flex; flex-direction: column; align-items: center; position: relative; }
+.sushi-header { background: #f59e0b; color: white; text-align: center; padding: 5px; font-weight: bold; font-size: 12px; width: 100%; margin-top: -15px; border-radius: 6px 6px 0 0; }
+.sushi-points { font-size: 40px; font-weight: 900; color: #f59e0b; margin-top: 10px; }
+.sushi-text { flex: 1; padding: 10px; text-align: center; font-family: 'Patrick Hand'; font-size: 18px; }
+
+/* Virus! */
+.carta-virus-org { width: 120px; height: 180px; background: #fff; border: 4px solid #16a34a; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+.carta-virus-atk { width: 120px; height: 180px; background: #fef2f2; border: 4px solid #dc2626; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+
+/* Charada */
+.carta-charada { width: 250px; height: 150px; background: #fee2e2; border: 4px solid #ef4444; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+.charada-cat { font-size: 12px; text-transform: uppercase; color: #ef4444; margin-bottom: 5px; font-weight: bold; }
+.charada-texto { font-family: 'Patrick Hand'; font-size: 32px; color: #991b1b; }
+
+/* Rol Oculto */
+.carta-rol-oculto { width: 200px; height: 300px; background: #1e1b4b; border: 4px solid #4c1d95; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); color: white; }
+
+/* 4. NUEVOS TOKENS */
+.token-train { width: 50px; height: 35px; background: #dc2626; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.3); color: white; font-size: 18px; }
+.token-boat { width: 50px; height: 25px; background: #0284c7; border-radius: 10px 10px 2px 2px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+.token-coin { width: 40px; height: 40px; background: #fbbf24; border-radius: 50%; border: 3px solid #b45309; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #b45309; font-family: 'Inter'; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+.token-heart { width: 40px; height: 40px; background: #dc2626; clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'); filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3)); }

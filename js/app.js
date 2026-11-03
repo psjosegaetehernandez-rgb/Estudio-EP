@@ -201,9 +201,18 @@ function actualizarVistaPrevia() {
     const isDuplex = document.getElementById('print-dorsos').checked;
     const previewArea = document.getElementById('print-preview-area'); previewArea.innerHTML = '';
 
+    const isMosaico = document.getElementById('print-mosaico') ? document.getElementById('print-mosaico').checked : false;
+    
     const elements = Array.from(document.querySelectorAll('#canvas > .canvas-element, #canvas > .doc-element')).filter(el => el.offsetWidth > 0);
     const cards = elements.filter(el => esElementoCarta(el));
-    const others = elements.filter(el => !esElementoCarta(el));
+    
+    // Separar los "otros" en grandes (tableros) y pequeños si el mosaico está activo
+    let others = elements.filter(el => !esElementoCarta(el));
+    let largeBoards = [];
+    if(isMosaico) {
+        largeBoards = others.filter(el => el.offsetWidth > 300 || el.offsetHeight > 300);
+        others = others.filter(el => !(el.offsetWidth > 300 || el.offsetHeight > 300));
+    }
 
     if(elements.length === 0) { previewArea.innerHTML = '<p style="color:#666; text-align:center; width:100%; margin-top:50px;">No hay elementos en el lienzo.</p>'; document.getElementById('print-stats').innerText = '0 hojas necesarias.'; return; }
 
@@ -213,8 +222,9 @@ function actualizarVistaPrevia() {
     const frontPages = Math.ceil(cards.length / itemsPerPage);
     const backPages = isDuplex ? frontPages : 0;
     const otherPages = Math.ceil(others.length / itemsPerPage);
+    const largePages = largeBoards.length; // Cada tablero grande ocupa 1 hoja completa
 
-    document.getElementById('print-stats').innerHTML = `Cartas: <b>${cards.length}</b> | Otros: <b>${others.length}</b><br>Hojas totales: <b>${frontPages + backPages + otherPages}</b>`;
+    document.getElementById('print-stats').innerHTML = `Cartas: <b>${cards.length}</b> | Otros: <b>${others.length}</b> | Tableros Grandes: <b>${largeBoards.length}</b><br>Hojas totales: <b>${frontPages + backPages + otherPages + largePages}</b>`;
 
     function crearHoja(titulo, cols, rows) {
         const pageDiv = document.createElement('div');
@@ -265,6 +275,19 @@ function actualizarVistaPrevia() {
         const page = crearHoja(`Hoja ${frontPages+backPages+p+1} - Otros`, cols, rows); const cells = page.querySelectorAll('div:not(:first-child)');
         for(let i=0; i<itemsPerPage; i++) { const idx = p * itemsPerPage + i; if(idx >= others.length) break; const clone = clonarVisual(others[idx], isBW, isEco, false); clone.style.transform = 'scale(0.15)'; cells[i].appendChild(clone); }
         previewArea.appendChild(page);
+    }
+
+    // RENDERIZAR TABLEROS GRANDES (Mosaico)
+    for(let p=0; p<largePages; p++) {
+        const pageDiv = document.createElement('div');
+        pageDiv.style.cssText = `width:100%; max-width:500px; aspect-ratio:1/1.414; background:white; padding:20px; position:relative; box-shadow:0 5px 15px rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center;`;
+        const title = document.createElement('div'); title.style.cssText = 'position:absolute; top:2px; left:5px; font-size:10px; color:#999;'; title.innerText = `Hoja ${frontPages+backPages+otherPages+p+1} - Tablero`; pageDiv.appendChild(title);
+        
+        const clone = clonarVisual(largeBoards[p], isBW, isEco, false);
+        // Escalar para que quepa en la hoja completa (aproximadamente)
+        clone.style.transform = 'scale(0.8)'; 
+        pageDiv.appendChild(clone);
+        previewArea.appendChild(pageDiv);
     }
 }
 
@@ -336,7 +359,15 @@ async function generarPDFFinal() {
         pdf.line(x + w + offset, y + h + offset, x + w + offset, y + h + offset + markSize);
     }
 
-    const cards = elements.filter(el => esElementoCarta(el)); const others = elements.filter(el => !esElementoCarta(el));
+    const isMosaico = document.getElementById('print-mosaico') ? document.getElementById('print-mosaico').checked : false;
+    
+    const cards = elements.filter(el => esElementoCarta(el)); 
+    let others = elements.filter(el => !esElementoCarta(el));
+    let largeBoards = [];
+    if(isMosaico) {
+        largeBoards = others.filter(el => el.offsetWidth > 300 || el.offsetHeight > 300);
+        others = others.filter(el => !(el.offsetWidth > 300 || el.offsetHeight > 300));
+    }
     
     const processBatch = async (items, isBackMode, mirror) => {
         pdf.addPage();
@@ -352,6 +383,23 @@ async function generarPDFFinal() {
     if (cards.length > 0) await processBatch(cards, false, false);
     if (isDuplex && cards.length > 0) await processBatch(cards, true, true);
     if (others.length > 0) await processBatch(others, false, false);
+
+    // PROCESAR TABLEROS GRANDES (Página Completa)
+    if (largeBoards.length > 0) {
+        for (let board of largeBoards) {
+            pdf.addPage();
+            const imgData = await capturar(board, false);
+            const p = pdf.getImageProperties(imgData);
+            // Escalar al 90% del ancho de la hoja A4 (190mm de 210mm)
+            let w = 180; 
+            let h = (p.height * w) / p.width;
+            if (h > 260) { h = 260; w = (p.width * h) / p.height; }
+            // Centrar en la hoja
+            const x = (210 - w) / 2;
+            const y = (297 - h) / 2;
+            pdf.addImage(imgData, 'JPEG', x, y, w, h);
+        }
+    }
     
     pdf.save("Estudio_EP_Export.pdf"); showToast("PDF generado", "success");
 }
@@ -381,3 +429,37 @@ document.addEventListener('keydown', (e) => {
         toggleFocusMode();
     }
 });
+// ================= IMPORTAR PROYECTO (Capa Comunitaria v110.0) =================
+function importarProyecto(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (!data.html) { showToast("El archivo no es un proyecto válido de Estudio EP", "error"); return; }
+            
+            // Crear un nuevo proyecto con los datos importados
+            const nuevo = { 
+                id: 'proj_' + Date.now(), 
+                nombre: (data.nombre || 'Proyecto Importado') + ' (Copia)', 
+                html: data.html, 
+                canvasBg: data.canvasBg || null, 
+                canvasClass: data.canvasClass || 'canvas-area' 
+            };
+            
+            proyectos.push(nuevo);
+            guardarEnLocalStorage();
+            abrirProyecto(nuevo.id);
+            
+            showToast("¡Proyecto importado con éxito!", "success");
+            document.getElementById('input-importar-json').value = '';
+            
+        } catch (err) {
+            showToast("Error al leer el archivo JSON", "error");
+            console.error(err);
+        }
+    };
+    reader.readAsText(file);
+}

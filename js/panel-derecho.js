@@ -2,8 +2,15 @@ let elementoSeleccionado = null;
 let tokenSeleccionado = null;
 
 function seleccionarElemento(elmnt) {
-    if(elementoSeleccionado) elementoSeleccionado.classList.remove('selected');
+    if(elementoSeleccionado) {
+        elementoSeleccionado.classList.remove('selected');
+        const oldMenu = elementoSeleccionado.querySelector('.floating-actions');
+        if(oldMenu) oldMenu.remove();
+    }
     elementoSeleccionado = elmnt; elmnt.classList.add('selected');
+    
+    // Mostrar el menú flotante de acciones (v114.0)
+    mostrarMenuFlotante(elmnt);
     
     // Ocultar el Anexo si estaba abierto
     const anexo = document.getElementById('anexo-facilitacion');
@@ -328,11 +335,45 @@ function quitarImagenToken() {
 }
 
 // ================= ACCIONES GENERALES =================
+
+// ================= MENÚ FLOTANTE DE ACCIONES (v114.0) =================
+function mostrarMenuFlotante(elmnt) {
+    // Eliminar menús anteriores
+    document.querySelectorAll('.floating-actions').forEach(m => m.remove());
+    
+    const menu = document.createElement('div');
+    menu.className = 'floating-actions';
+    menu.innerHTML = `
+        <button onclick="event.stopPropagation(); activarEdicionInline()" title="Editar Texto"><i class="fa-solid fa-pen"></i></button>
+        <button onclick="event.stopPropagation(); duplicarElemento()" title="Duplicar"><i class="fa-regular fa-clone"></i></button>
+        <button class="btn-del" onclick="event.stopPropagation(); pedirEliminar()" title="Eliminar"><i class="fa-regular fa-trash-can"></i></button>
+    `;
+    elmnt.appendChild(menu);
+}
+
+function activarEdicionInline() {
+    if(!elementoSeleccionado) return;
+    let target = elementoSeleccionado.querySelector('[contenteditable="true"]') || elementoSeleccionado;
+    
+    if(target) {
+        target.setAttribute('contenteditable', 'true');
+        target.focus();
+        // Seleccionar todo el texto
+        if (window.getSelection && document.createRange) {
+            var range = document.createRange();
+            range.selectNodeContents(target);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+}
 function pedirEliminar() {
     if(!elementoSeleccionado) return;
     if(confirm("¿Eliminar este elemento del lienzo?")) {
         elementoSeleccionado.remove(); elementoSeleccionado = null; tokenSeleccionado = null;
         document.getElementById('props-empty').style.display = 'block'; document.getElementById('props-content').style.display = 'none'; document.getElementById('props-actions').style.display = 'none'; autosave(); showToast("Elemento eliminado", "success");
+    document.querySelectorAll('.floating-actions').forEach(m => m.remove());
     }
 }
 
