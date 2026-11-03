@@ -993,24 +993,7 @@ function cat_insertarSobreEscape(posX, posY) {
 }
 
 // --- CANDADO DE CÓDIGO ---
-function cat_insertarCandadoEscape(digitos, posX, posY) {
-    const numDigitos = digitos || 3;
-    const ancho = 40 * numDigitos;
-    let ruedas = '';
-    for(let i=0; i<numDigitos; i++) {
-        ruedas += `<div style="width: 30px; height: 40px; background: #1e293b; border: 2px solid #0f172a; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px; margin: 0 2px;">?</div>`;
-    }
-    const html = `
-        <div style="display: flex; flex-direction: column; align-items: center; width: ${ancho}px;">
-            <div style="width: 20px; height: 30px; border: 4px solid #1e293b; border-bottom: none; border-radius: 10px 10px 0 0; margin-bottom: -5px;"></div>
-            <div style="background: #334155; padding: 8px; border-radius: 8px; display: flex; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                ${ruedas}
-            </div>
-            <span style="font-size: 10px; color: #64748b; margin-top: 5px;">CANDADO ${numDigitos} DÍGITOS</span>
-        </div>
-    `;
-    EP.insertarCartaEnCanvas(html, ancho + 20, 80, posX, posY);
-}
+
 
 // --- CARTA DE NARRATIVA / PERSONAJE ---
 function cat_insertarCartaNarrativaEscape(rol, posX, posY) {
@@ -1171,4 +1154,146 @@ function cat_insertarPanelContrasena(posX, posY) {
         </div>
     `;
     EP.insertarCartaEnCanvas(html, 250, 350, posX, posY);
+}
+
+
+// ================= MOTORES DE ESCAPE PRO (v235.0) =================
+
+function cat_insertarCartaIntroEscape(titulo, mision, posX, posY) {
+    const front = `
+        <div class="carta-pro" style="background: #fdfbf7; border: 4px double #8B4513; border-radius: 8px; display: flex; flex-direction: column; padding: 20px; box-sizing: border-box;">
+            <h3 style="font-family: 'Merriweather'; font-size: 18px; color: #8B4513; text-align: center; border-bottom: 2px solid #8B4513; padding-bottom: 10px; margin-bottom: 15px;">${titulo}</h3>
+            <p style="font-family: 'Inter'; font-size: 11px; color: #334155; line-height: 1.5; text-align: justify;">${mision}</p>
+            <div style="margin-top: auto; text-align: center; font-size: 24px; color: #8B4513;"><i class="fa-solid fa-scroll"></i></div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#fef3c7; border-radius:8px; display:flex; align-items:center; justify-content:center; border: 2px solid #8B4513;"><i class="fa-solid fa-lock" style="font-size:50px; color:#8B4513;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330, posX, posY);
+}
+
+function cat_insertarRuedaCifrado(posX, posY) {
+    const html = `
+        <div style="width: 200px; height: 200px; background: #fdfbf7; border: 3px solid #1e293b; border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+            <!-- Círculo exterior -->
+            <div style="width: 180px; height: 180px; border: 2px dashed #64748b; border-radius: 50%; position: absolute; display: flex; align-items: center; justify-content: center;">
+                <span style="position: absolute; top: 5px; font-family: monospace; font-size: 12px; font-weight: bold; color: #64748b;">A</span>
+                <span style="position: absolute; bottom: 5px; font-family: monospace; font-size: 12px; font-weight: bold; color: #64748b;">N</span>
+                <span style="position: absolute; left: 5px; font-family: monospace; font-size: 12px; font-weight: bold; color: #64748b;">G</span>
+                <span style="position: absolute; right: 5px; font-family: monospace; font-size: 12px; font-weight: bold; color: #64748b;">T</span>
+            </div>
+            <!-- Círculo interior -->
+            <div style="width: 100px; height: 100px; background: #e2e8f0; border: 2px solid #1e293b; border-radius: 50%; z-index: 2; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-gear" style="font-size: 30px; color: #1e293b;"></i>
+            </div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 200, 200, posX, posY);
+}
+
+function cat_insertarLinternaUV(posX, posY) {
+    const html = `
+        <div style="width: 250px; height: 100px; background: #0f172a; border-radius: 50px; position: relative; display: flex; align-items: center; padding: 10px; box-sizing: border-box; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+            <div style="width: 60px; height: 80px; background: #334155; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-bolt" style="color: #a855f7; font-size: 24px;"></i>
+            </div>
+            <div style="flex: 1; height: 40px; background: linear-gradient(90deg, rgba(168,85,247,0.8) 0%, rgba(168,85,247,0) 100%); border-radius: 0 20px 20px 0; margin-left: 10px;"></div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 250, 100, posX, posY);
+}
+
+function cat_insertarConsolaGM_Escape(posX, posY) {
+    const html = `
+        <div style="width: 400px; height: 300px; background: #1e293b; border: 4px solid #0f172a; border-radius: 12px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+            <h4 style="color: white; font-family: 'Merriweather'; text-align: center; margin-bottom: 15px; font-size: 16px;"><i class="fa-solid fa-gamepad"></i> Consola del Game Master</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1;">
+                <button style="background:#dc2626; color:white; border:none; border-radius:8px; font-weight:bold; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; cursor:pointer;"><i class="fa-solid fa-volume-high" style="font-size:24px;"></i> RUIDO</button>
+                <button style="background:#ca8a04; color:white; border:none; border-radius:8px; font-weight:bold; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; cursor:pointer;"><i class="fa-solid fa-lightbulb" style="font-size:24px;"></i> PISTA</button>
+                <button style="background:#0284c7; color:white; border:none; border-radius:8px; font-weight:bold; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; cursor:pointer;"><i class="fa-solid fa-clock" style="font-size:24px;"></i> +5 MIN</button>
+                <button style="background:#6d28d9; color:white; border:none; border-radius:8px; font-weight:bold; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; cursor:pointer;"><i class="fa-solid fa-ghost" style="font-size:24px;"></i> EVENTO</button>
+            </div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 400, 300, posX, posY);
+}
+
+function cat_insertarObjetoClave(tipo, posX, posY) {
+    const objetos = {
+        'llave': { n: 'Llave Antigua', i: 'fa-key', c: '#ca8a04' },
+        'foto': { n: 'Foto Rasgada', i: 'fa-image', c: '#64748b' },
+        'libro': { n: 'Libro de Hechizos', i: 'fa-book', c: '#6d28d9' },
+        'pocion': { n: 'Poción', i: 'fa-flask', c: '#15803d' },
+        'engranaje': { n: 'Engranaje', i: 'fa-gear', c: '#475569' }
+    };
+    const o = objetos[tipo] || objetos['llave'];
+    const front = `
+        <div class="carta-pro" style="background: #fdfbf7; border: 3px solid ${o.c}; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+            <i class="fa-solid ${o.i}" style="font-size: 60px; color: ${o.c}; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 14px; font-weight: bold; color: ${o.c}; text-align: center;">${o.n}</div>
+            <div style="font-size: 9px; color: #64748b; margin-top: 5px;">OBJETO CLAVE</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#334155; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-box" style="font-size:50px; color:#94a3b8;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330, posX, posY);
+}
+
+
+// ================= MOTORES DE ESCAPE JUGABLE (v238.0) =================
+
+function cat_insertarCandadoEscape(digitos, codigoReal, posX, posY) {
+    const numDigitos = digitos || 3;
+    const ancho = 40 * numDigitos;
+    let ruedas = '';
+    for(let i=0; i<numDigitos; i++) {
+        ruedas += `<div style="width: 30px; height: 40px; background: #1e293b; border: 2px solid #0f172a; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #dc2626; font-weight: bold; font-size: 20px; margin: 0 2px;">?</div>`;
+    }
+    
+    // Si hay un código real, lo mostramos en el reverso (lado del GM)
+    const codigoStr = codigoReal ? codigoReal.split('').join(' - ') : '?';
+    
+    const front = `
+        <div style="display: flex; flex-direction: column; align-items: center; width: ${ancho}px;">
+            <div style="width: 20px; height: 30px; border: 4px solid #1e293b; border-bottom: none; border-radius: 10px 10px 0 0; margin-bottom: -5px;"></div>
+            <div style="background: #334155; padding: 8px; border-radius: 8px; display: flex; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                ${ruedas}
+            </div>
+            <span style="font-size: 10px; color: #64748b; margin-top: 5px;">CANDADO ${numDigitos} DÍGITOS</span>
+        </div>
+    `;
+    const back = `
+        <div style="width: 100%; height: 100%; background: #fef3c7; border: 3px dashed #b91c1c; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; box-sizing: border-box;">
+            <span style="font-size: 10px; color: #64748b; margin-bottom: 5px;">SOLUCIÓN GM</span>
+            <div style="font-family: 'Courier New', monospace; font-size: 24px; font-weight: bold; color: #b91c1c;">${codigoStr}</div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, ancho + 20, 80), ancho + 20, 80, posX, posY);
+}
+
+function cat_insertarPistaTextoEscape(titulo, texto, posX, posY) {
+    const front = `
+        <div class="carta-pro" style="background: #fdfbf7; border: 2px solid #ca8a04; border-radius: 8px; display: flex; flex-direction: column; padding: 15px; box-sizing: border-box;">
+            <h4 style="font-family: 'Merriweather'; font-size: 12px; color: #ca8a04; text-transform: uppercase; border-bottom: 1px solid #ca8a04; padding-bottom: 5px; margin-bottom: 10px;">${titulo}</h4>
+            <p style="font-family: 'Inter'; font-size: 11px; color: #334155; flex: 1;">${texto}</p>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#ca8a04; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-lightbulb" style="font-size:50px; color:white;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330, posX, posY);
+}
+
+function cat_insertarHojaPistasEscape(titulo, soluciones, posX, posY) {
+    let lista = '';
+    soluciones.forEach(s => {
+        lista += `<li style="margin-bottom: 5px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 3px;"><b>${s.p}:</b> ${s.r}</li>`;
+    });
+    
+    const html = `
+        <div style="width: 300px; height: 400px; background: #f8fafc; border: 3px solid #1e293b; border-radius: 8px; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column;">
+            <h4 style="color: #1e293b; font-family: 'Merriweather'; text-align: center; margin-bottom: 10px; font-size: 14px;">${titulo}</h4>
+            <ul style="font-size: 10px; color: #475569; padding-left: 15px; flex: 1; overflow-y: auto;">
+                ${lista}
+            </ul>
+            <div style="font-size: 9px; color: #b91c1c; text-align: center; font-weight: bold; margin-top: 5px;">CONFIDENCIAL - SOLO GAME MASTER</div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 300, 400, posX, posY);
 }

@@ -40,7 +40,10 @@ const CATALOGO_JUEGOS = [
     { id: "escape_diy", nombre: "Escape Room DIY", familia: "Escape Room", jugadores: "2-6", icono: "fa-puzzle-piece", color: "#6d28d9", reglas: { objetivo: "Escapar de la habitación resolviendo puzzles.", preparacion: "Imprimir puzzles, preparar candados y sobres.", turno: "Resolver puzzles para obtener códigos." }, adaptacion_ep: { objetivo: "Resolución de problemas en equipo.", preguntas: ["¿Qué estrategia usaron para resolver los puzzles?", "¿Cómo se sintieron bajo presión?"] } },
     { id: "escape_caso_cerrado", nombre: "Caso Cerrado (Expediente)", familia: "Escape Room", jugadores: "2-8", icono: "fa-folder-open", color: "#1e293b", reglas: { objetivo: "Resolver un misterio analizando testimonios y pruebas.", preparacion: "Leer el expediente y organizar las pistas.", turno: "Deducir al culpable." }, adaptacion_ep: { objetivo: "Análisis crítico de la información.", preguntas: ["¿Qué contradicciones encontraron?", "¿Cómo afectan los sesgos a la investigación?"] } },
     { id: "escape_cluedo", nombre: "Cluedo en Vivo", familia: "Escape Room", jugadores: "4-12", icono: "fa-user-secret", color: "#b91c1c", reglas: { objetivo: "Descubrir al asesino entre los personajes.", preparacion: "Repartir roles y pruebas.", turno: "Interrogar y deducir." }, adaptacion_ep: { objetivo: "Role-play y empatía.", preguntas: ["¿Cómo se sintieron al interpretar un papel?", "¿Qué pistas fueron clave?"] } },
-    { id: "escape_kit_generico", nombre: "Kit de Escape Genérico", familia: "Escape Room", jugadores: "2-8", icono: "fa-lock", color: "#475569", reglas: { objetivo: "Abrir el candado final resolviendo 5 puzzles.", preparacion: "Imprimir 48 puzzles, preparar candados.", turno: "Resolver puzzles de dificultad creciente." }, adaptacion_ep: { objetivo: "Pensamiento lógico y colaboración.", preguntas: ["¿Qué tipo de puzzle les resultó más fácil?", "¿Cómo se dividieron el trabajo?"] } }
+    { id: "escape_kit_generico", nombre: "Kit de Escape Genérico", familia: "Escape Room", jugadores: "2-8", icono: "fa-lock", color: "#475569", reglas: { objetivo: "Abrir el candado final resolviendo 5 puzzles.", preparacion: "Imprimir 48 puzzles, preparar candados.", turno: "Resolver puzzles de dificultad creciente." }, adaptacion_ep: { objetivo: "Pensamiento lógico y colaboración.", preguntas: ["¿Qué tipo de puzzle les resultó más fácil?", "¿Cómo se dividieron el trabajo?"] } },
+    { id: "escape_laboratorio", nombre: "Escape: Laboratorio Abandonado", familia: "Escape Room", jugadores: "2-6", icono: "fa-flask", color: "#15803d", reglas: { objetivo: "Escapar del laboratorio antes de que el virus se libere.", preparacion: "Preparar las 5 pistas químicas.", turno: "Resolver los puzzles usando la linterna UV." }, adaptacion_ep: { objetivo: "Trabajo en equipo bajo presión.", preguntas: ["¿Cómo se organizaron para resolver los códigos?", "¿Qué sintieron al no poder ver todo a simple vista?"] } },
+    { id: "escape_mansion", nombre: "Escape: Mansión del Misterio", familia: "Escape Room", jugadores: "2-8", icono: "fa-magnifying-glass", color: "#78350f", reglas: { objetivo: "Resolver el asesinato y encontrar la salida secreta.", preparacion: "Leer el expediente y examinar las pruebas.", turno: "Interrogar a los sospechosos y usar la lupa." }, adaptacion_ep: { objetivo: "Análisis crítico y empatía.", preguntas: ["¿Cómo detectaron las contradicciones?", "¿Qué sesgos afectaron la investigación?"] } },
+    { id: "escape_tiempo", nombre: "Escape: Máquina del Tiempo", familia: "Escape Room", jugadores: "2-6", icono: "fa-clock", color: "#0284c7", reglas: { objetivo: "Reparar la máquina del tiempo usando engranajes y códigos.", preparacion: "Colocar la rueda de cifrado.", turno: "Descifrar el mensaje del futuro." }, adaptacion_ep: { objetivo: "Pensamiento lógico y causa-efecto.", preguntas: ["¿Qué harían si pudieran cambiar el pasado?", "¿Cómo se coordinaron para armar el mecanismo?"] } }
 ];
 
 let juegoSeleccionadoEnCatalogo = null;
@@ -298,7 +301,7 @@ async function cargarComponentesJuego(id) {
             for(let i=0; i<60; i++) { cat_insertarContadorZombies('bala', 600 + (i%15)*35, 500 + Math.floor(i/15)*35); }
             for(let i=0; i<2; i++) { cat_insertarDadoZombies(600 + i*60, 650); }
         }
-        // NUEVOS KITS DE ESCAPE CON TABLEROS (v234.0)
+        // ESCAPE ROOMS CLÁSICOS
         else if (id === 'escape_tesoro') {
             cat_insertarMapaEscape(50, 50);
             for(let i=0; i<5; i++) { cat_insertarPistaEscape('acertijo', 'Pista ' + (i+1), 50 + i*260, 300); await new Promise(r=>setTimeout(r,10)); }
@@ -307,7 +310,7 @@ async function cargarComponentesJuego(id) {
         }
         else if (id === 'escape_diy') {
             cat_insertarTableroEscenario(50, 50);
-            for(let i=0; i<3; i++) { cat_insertarCandadoEscape(3 + i, 500 + i*200, 50); }
+            for(let i=0; i<3; i++) { cat_insertarCandadoEscape(3 + i, null, 500 + i*200, 50); }
             for(let i=0; i<3; i++) { cat_insertarSobreEscape(500 + i*250, 200); }
             for(let i=0; i<5; i++) { cat_insertarPistaEscape(['acertijo','codigo','cifrado','logica','observacion'][i], 'Puzzle ' + (i+1), 50 + i*260, 500); await new Promise(r=>setTimeout(r,10)); }
             cat_insertarPanelContrasena(1200, 50);
@@ -330,10 +333,81 @@ async function cargarComponentesJuego(id) {
             cat_insertarPlanoEscape(50, 50);
             for(let i=0; i<5; i++) { cat_insertarPistaEscape(['acertijo','codigo','cifrado','logica','observacion'][i], 'Puzzle ' + (i+1), 50 + i*260, 400); await new Promise(r=>setTimeout(r,10)); }
             cat_insertarPanelContrasena(500, 400);
-            cat_insertarCandadoEscape(4, 800, 400);
+            cat_insertarCandadoEscape(4, null, 800, 400);
             cat_insertarSobreEscape(500, 800);
             cat_insertarTimerEscape(800, 800);
             cat_insertarHojaPistasEscape(1050, 50);
+        }
+        // NUEVOS ESCAPE ROOMS TEMÁTICOS
+        else if (id === 'escape_laboratorio') {
+            cat_insertarConsolaGM_Escape(50, 50);
+            cat_insertarCartaIntroEscape('PROTOCOLO DE CUARENTENA', 'El virus "T-Virus" se ha liberado. Tienen 60 minutos para encontrar el antídoto. Usen la linterna UV para revelar los códigos ocultos en las paredes y encontrar la salida.', 500, 50);
+            cat_insertarLinternaUV(50, 400);
+            cat_insertarObjetoClave('pocion', 500, 400);
+            
+            // Pistas y Soluciones
+            cat_insertarPistaTextoEscape('Pista 1: Fórmula', 'La primera cifra es el número de átomos de Oxígeno en el agua (H2O).', 50, 600);
+            cat_insertarPistaTextoEscape('Pista 2: Biología', 'La segunda cifra es el número de cámaras del corazón humano menos 2.', 300, 600);
+            cat_insertarPistaTextoEscape('Pista 3: Botánica', 'La tercera cifra es el número de pétalos de una flor de 5 hojas menos 1.', 550, 600);
+            cat_insertarPistaTextoEscape('Pista 4: Código Final', 'La última cifra es el número de patas de una araña.', 800, 600);
+            
+            cat_insertarCandadoEscape(4, '1218', 800, 400); // Código real: 1218
+            
+            const solucionesLab = [
+                { p: 'Pista 1', r: '1 (H2O tiene 1 de Oxígeno)' },
+                { p: 'Pista 2', r: '2 (4 cámaras - 2)' },
+                { p: 'Pista 3', r: '1 (5 - 1)' },
+                { p: 'Pista 4', r: '8 (Araña)' },
+                { p: 'CÓDIGO', r: '1218' }
+            ];
+            cat_insertarHojaPistasEscape('HOJA DE PISTAS: LABORATORIO', solucionesLab, 1100, 50);
+            cat_insertarTimerEscape(1100, 500);
+        }
+        else if (id === 'escape_mansion') {
+            cat_insertarConsolaGM_Escape(50, 50);
+            cat_insertarCartaIntroEscape('EL CASO DEL MAYORDOMO', 'El Sr. Blackwood ha sido asesinado. El asesino sigue en la mansión. Interroguen a los sospechosos, encuentren la salida secreta y escapen antes de que sea tarde.', 500, 50);
+            cat_insertarMapaEvidencias(50, 400);
+            cat_insertarObjetoClave('foto', 600, 400);
+            cat_insertarObjetoClave('llave', 880, 400);
+            
+            // Pistas y Soluciones
+            cat_insertarPistaTextoEscape('Testimonio 1', 'El mayordomo dice: "Estaba en la cocina a las 10 PM". Pero la cocina estaba cerrada con llave.', 50, 800);
+            cat_insertarPistaTextoEscape('Testimonio 2', 'La Sra. White dice: "Vi una sombra en el jardín". Tenía barro en sus zapatos.', 300, 800);
+            cat_insertarPistaTextoEscape('Evidencia Física', 'Una nota arrugada dice: "Encuentra la llave bajo el reloj de la sala".', 550, 800);
+            
+            cat_insertarCandadoEscape(3, '314', 800, 800); // Código real: 314
+            
+            const solucionesMansion = [
+                { p: 'Sospechoso', r: 'El Mayordomo (mintió sobre la cocina)' },
+                { p: 'Ubicación', r: 'Reloj de la Sala' },
+                { p: 'Código Candado', r: '314' }
+            ];
+            cat_insertarHojaPistasEscape('EXPEDIENTE: SOLUCIONES', solucionesMansion, 1100, 50);
+            cat_insertarTimerEscape(1100, 500);
+        }
+        else if (id === 'escape_tiempo') {
+            cat_insertarConsolaGM_Escape(50, 50);
+            cat_insertarCartaIntroEscape('PARADOJA TEMPORAL', 'La máquina ha fallado y están atrapados en 1885. Deben alinear los engranajes y descifrar el código del mecanismo para volver a casa.', 500, 50);
+            cat_insertarRuedaCifrado(50, 400);
+            cat_insertarObjetoClave('engranaje', 300, 400);
+            cat_insertarObjetoClave('libro', 580, 400);
+            
+            // Pistas y Soluciones
+            cat_insertarPistaTextoEscape('Engranaje A', 'El engranaje A debe girar 3 veces a la derecha.', 50, 650);
+            cat_insertarPistaTextoEscape('Engranaje B', 'El engranaje B debe girar 1 vez a la izquierda.', 300, 650);
+            cat_insertarPistaTextoEscape('Cifrado César', 'Desplaza 3 letras: "K H Q F".', 550, 650); // HECHO -> K H Q F (Desplazamiento +3) -> HECHO
+            cat_insertarPistaTextoEscape('El Retorno', 'El año que deben poner es el mismo en el que están atrapados.', 800, 650);
+            
+            cat_insertarCandadoEscape(4, '1885', 800, 400); // Código real: 1885
+            
+            const solucionesTiempo = [
+                { p: 'Engranaje A', r: '3' },
+                { p: 'Engranaje B', r: '1' },
+                { p: 'Cifrado', r: 'HECHO (Retroceder 3 letras)' },
+                { p: 'Código Final', r: '1885' }
+            ];
+            cat_insertarHojaPistasEscape('MANUAL: MÁQUINA DEL TIEMPO', solucionesTiempo, 1100, 50);
+            cat_insertarTimerEscape(1100, 500);
         }
 
         if(typeof ocultarLoading === 'function') ocultarLoading();
