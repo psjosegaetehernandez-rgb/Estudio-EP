@@ -18,8 +18,22 @@ function seleccionarElemento(elmnt) {
     document.getElementById('props-carta').style.display = 'none';
     document.getElementById('props-especifico').style.display = 'none';
     document.getElementById('grupo-dorso-universal').style.display = 'none';
+    document.getElementById('grupo-tablero').style.display = 'none'; // Ocultar tablero por defecto
 
-    if (elmnt.classList.contains('token-wrapper')) {
+    // ¿Es un tablero de Eurogame o Party?
+    if (elmnt.classList.contains('board-hexagono') || elmnt.classList.contains('board-mapa') || elmnt.classList.contains('board-player') || elmnt.classList.contains('board-mercado') || elmnt.classList.contains('board-dial') || elmnt.classList.contains('board-trivial') || elmnt.classList.contains('board-grid') || elmnt.classList.contains('board-dobble') || elmnt.classList.contains('board-perimetro')) {
+        document.getElementById('grupo-tablero').style.display = 'block';
+        document.getElementById('props-content').style.display = 'block'; // Asegurar que el contenedor padre esté visible
+        const bg = elmnt.style.backgroundImage;
+        if(bg && bg !== 'none') {
+            document.getElementById('controles-img-tablero').style.display = 'block';
+        } else {
+            document.getElementById('controles-img-tablero').style.display = 'none';
+        }
+        return; // Salir para no cargar las propiedades de carta/token
+    }
+
+    if (elmnt.classList.contains('token-wrapper') || elmnt.classList.contains('token-meeple-css') || elmnt.classList.contains('token-cube-3d')) {
         document.getElementById('grupo-token').style.display = 'block';
         seleccionarToken(elmnt);
     } 
@@ -54,8 +68,19 @@ function mostrarDorsoUniversal(elmnt) {
     const gDorso = document.getElementById('grupo-dorso-universal');
     if(gDorso) {
         gDorso.style.display = 'block';
-        const back = elmnt.querySelector('.dorso-universal');
-        if(back) document.getElementById('prop-dorso-color').value = rgbToHex(back.style.backgroundColor || '#1e293b');
+        const back = elmnt.querySelector('.carta-back') || elmnt.querySelector('.dorso-universal');
+        if(back) {
+            document.getElementById('prop-dorso-color').value = rgbToHex(back.style.backgroundColor || '#1e293b');
+            const controles = document.getElementById('controles-img-dorso');
+            if(controles) {
+                // Si la carta ya tiene una imagen en el dorso, mostramos los controles
+                if(back.style.backgroundImage && back.style.backgroundImage !== 'none') {
+                    controles.style.display = 'block';
+                } else {
+                    controles.style.display = 'none';
+                }
+            }
+        }
     }
 }
 
@@ -71,6 +96,8 @@ function actualizarPropiedad(prop, valor) {
         else if(elementoSeleccionado.querySelector('.carta-rol')) elementoSeleccionado.querySelector('.carta-rol-texto').innerText = valor;
         else if(elementoSeleccionado.classList.contains('nota-adhesiva')) elementoSeleccionado.innerText = valor;
         else if(elementoSeleccionado.classList.contains('token-wrapper')) { const txt = elementoSeleccionado.querySelector('.token-text'); if(txt) txt.innerText = valor; }
+        else if(elementoSeleccionado.classList.contains('token-meeple-css')) { elementoSeleccionado.style.setProperty('--meeple-color', valor); }
+        else if(elementoSeleccionado.classList.contains('token-cube-3d')) { elementoSeleccionado.style.setProperty('--cube-color', valor); }
     }
     autosave();
 }
@@ -93,10 +120,12 @@ function cambiarColorDorsoUniversal(color) {
     if(!elementoSeleccionado) return;
     const card = obtenerContenedorCarta(elementoSeleccionado);
     const back = card.querySelector('.carta-back');
-    if(back) { back.style.backgroundColor = color; } 
+    if(back) { 
+        back.style.backgroundColor = color; 
+    } 
     else {
         let dorso = card.querySelector('.dorso-universal');
-        if(!dorso) { dorso = document.createElement('div'); dorso.className = 'dorso-universal'; card.insertBefore(dorso, card.firstChild); }
+        if(!dorso) { dorso = document.createElement('div'); dorso.className = 'dorso-universal'; card.appendChild(dorso); }
         dorso.style.backgroundColor = color;
     }
     autosave();
@@ -107,14 +136,30 @@ function subirImagenDorsoUniversal(event) {
     const reader = new FileReader();
     reader.onload = function(e) {
         const card = obtenerContenedorCarta(elementoSeleccionado);
-        let dorso = card.querySelector('.dorso-universal');
-        if(!dorso) { dorso = document.createElement('div'); dorso.className = 'dorso-universal'; card.insertBefore(dorso, card.firstChild); }
-        dorso.style.backgroundImage = `url(${e.target.result})`;
+        const nativeBack = card.querySelector('.carta-back');
+        
+        if (nativeBack) {
+            // Carta 3D (Boleto, Tren, Catán, etc.)
+            nativeBack.style.backgroundImage = `url(${e.target.result})`;
+            nativeBack.style.backgroundSize = 'cover';
+            nativeBack.style.backgroundPosition = 'center';
+            // Ocultar el contenido por defecto (textos o íconos) para que se vea la foto
+            Array.from(nativeBack.children).forEach(child => child.style.display = 'none');
+            
+            // Voltear automáticamente para que veas la imagen
+            if(!card.classList.contains('flipped')) card.classList.add('flipped');
+        } else {
+            // Cartas legacy (rol, evento) que usan capa superpuesta
+            let dorso = card.querySelector('.dorso-universal');
+            if(!dorso) { dorso = document.createElement('div'); dorso.className = 'dorso-universal'; card.appendChild(dorso); }
+            dorso.style.backgroundImage = `url(${e.target.result})`;
+            dorso.style.backgroundSize = 'cover';
+            dorso.style.backgroundPosition = 'center';
+            if(dorso.style.display !== 'flex') voltearCartaUniversal();
+        }
+
         const controles = document.getElementById('controles-img-dorso');
         if(controles) controles.style.display = 'block';
-        
-        // Cambiar a vista de dorso si no está activo
-        if(dorso.style.display !== 'flex') voltearCartaUniversal();
         
         autosave(); showToast("Imagen de dorso cargada", "success");
     };
@@ -124,8 +169,9 @@ function subirImagenDorsoUniversal(event) {
 function ajustarImagenDorso(tipo, valor) {
     if(!elementoSeleccionado) return;
     const card = obtenerContenedorCarta(elementoSeleccionado);
-    const dorso = card.querySelector('.dorso-universal');
+    const dorso = card.querySelector('.carta-back') || card.querySelector('.dorso-universal');
     if(!dorso) return;
+    
     if(tipo === 'zoom') dorso.style.backgroundSize = (valor * 100) + '%';
     else if (tipo === 'x' || tipo === 'y') {
         let currentPos = dorso.style.backgroundPosition || '50% 50%';
@@ -220,4 +266,92 @@ function rgbToHex(rgb) {
     const a = rgb.split("(")[1].split(")")[0].split(",");
     const b = a.map(x => { x = parseInt(x).toString(16); return (x.length == 1) ? "0" + x : x; });
     return "#" + b.join("");
+}
+
+
+// ================= IMAGEN PARA CARTAS (v93.0) =================
+function subirImagenCarta(event) {
+    const file = event.target.files[0]; if(!file || !elementoSeleccionado) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const front = elementoSeleccionado.querySelector('.carta-front');
+        if(front) {
+            front.style.backgroundImage = `url(${e.target.result})`;
+            front.style.backgroundSize = 'cover';
+            front.style.backgroundPosition = 'center';
+            front.classList.add('con-imagen-fondo');
+            
+            const controles = document.getElementById('controles-img-carta');
+            if(controles) controles.style.display = 'block';
+            
+            autosave(); showToast("Imagen añadida a la carta", "success");
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+function ajustarImagenCarta(tipo, valor) {
+    if(!elementoSeleccionado) return;
+    const front = elementoSeleccionado.querySelector('.carta-front');
+    if(!front) return;
+    
+    if(tipo === 'zoom') {
+        // Como estamos usando cover, el zoom se simula escalando el fondo, 
+        // pero para ser precisos, usamos background-size
+        front.style.backgroundSize = (valor * 100) + '%';
+    }
+    else if (tipo === 'x' || tipo === 'y') {
+        let currentPos = front.style.backgroundPosition || '50% 50%';
+        let parts = currentPos.split(' ');
+        let x = parts[0]; let y = parts[1] || '50%';
+        if(tipo === 'x') x = valor + '%'; if(tipo === 'y') y = valor + '%';
+        front.style.backgroundPosition = `${x} ${y}`;
+    }
+    autosave();
+}
+
+
+// ================= IMAGEN PARA TABLEROS (v99.0) =================
+function subirImagenTablero(event) {
+    const file = event.target.files[0]; if(!file || !elementoSeleccionado) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        // Aplicamos la imagen al fondo del tablero
+        elementoSeleccionado.style.backgroundImage = `url(${e.target.result})`;
+        elementoSeleccionado.style.backgroundSize = 'cover';
+        elementoSeleccionado.style.backgroundPosition = 'center';
+        
+        // Hacemos que los colores originales sean semi-transparentes para que se vea la imagen
+        // Pero manteniendo la forma (clip-path) intacta.
+        
+        const controles = document.getElementById('controles-img-tablero');
+        if(controles) controles.style.display = 'block';
+        
+        autosave(); showToast("Imagen de tablero cargada", "success");
+    };
+    reader.readAsDataURL(file);
+}
+
+function ajustarImagenTablero(tipo, valor) {
+    if(!elementoSeleccionado) return;
+    
+    if(tipo === 'zoom') {
+        elementoSeleccionado.style.backgroundSize = (valor * 100) + '%';
+    }
+    else if (tipo === 'x' || tipo === 'y') {
+        let currentPos = elementoSeleccionado.style.backgroundPosition || '50% 50%';
+        let parts = currentPos.split(' ');
+        let x = parts[0]; let y = parts[1] || '50%';
+        if(tipo === 'x') x = valor + '%'; if(tipo === 'y') y = valor + '%';
+        elementoSeleccionado.style.backgroundPosition = `${x} ${y}`;
+    }
+    autosave();
+}
+
+function quitarImagenTablero() {
+    if(!elementoSeleccionado) return;
+    elementoSeleccionado.style.backgroundImage = 'none';
+    const controles = document.getElementById('controles-img-tablero');
+    if(controles) controles.style.display = 'none';
+    autosave(); showToast("Imagen del tablero eliminada", "info");
 }

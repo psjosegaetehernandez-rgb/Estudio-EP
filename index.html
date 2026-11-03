@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/canvas.css">
     <link rel="stylesheet" href="css/cartas.css">
-    <link rel="stylesheet" href="css/epes.css">
+    <link rel="stylesheet" href="css/epes.css">`n    <link rel="stylesheet" href="css/game-components.css">
 </head>
 <body>
     <div id="toast-container"></div>
@@ -229,7 +229,28 @@
                     <div id="props-empty" class="props-placeholder">Selecciona un elemento para editarlo.</div>
                     <div id="props-content" style="display:none;">
                         <!-- TOKENS -->
-                        <div class="form-group" id="grupo-token" style="display:none; border-top: 2px solid #4c1d95; padding-top: 10px; margin-top: 10px; background: #f8fafc; padding: 10px; border-radius: 6px;">
+                        <!-- TABLEROS Y MAPAS -->
+<div class="form-group" id="grupo-tablero" style="display:none; border-top: 2px solid #0284c7; padding-top: 10px; margin-top: 10px; background: #f0f9ff; padding: 10px; border-radius: 6px;">
+    <h4 style="color: #0284c7; margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-map"></i> Personalizar Tablero</h4>
+    
+    <div class="form-group" style="border-top:1px dashed #ccc; padding-top:10px;">
+        <label>Subir Imagen al Tablero</label>
+        <input type="file" id="input-img-tablero" accept="image/*" onchange="subirImagenTablero(event)" style="width:100%; font-size:11px; margin-bottom:5px;">
+    </div>
+
+    <!-- Sliders de Ajuste -->
+    <div id="controles-img-tablero" style="display:none; background: #e0f2fe; padding: 10px; border-radius: 6px;">
+        <label style="font-size:10px; color:#0284c7;">Zoom</label>
+        <input type="range" id="tablero-zoom" min="1" max="3" step="0.1" value="1" oninput="ajustarImagenTablero('zoom', this.value)" style="width:100%;">
+        <label style="font-size:10px; color:#0284c7;">Pos X</label>
+        <input type="range" id="tablero-posx" min="0" max="100" value="50" oninput="ajustarImagenTablero('x', this.value)" style="width:100%;">
+        <label style="font-size:10px; color:#0284c7;">Pos Y</label>
+        <input type="range" id="tablero-posy" min="0" max="100" value="50" oninput="ajustarImagenTablero('y', this.value)" style="width:100%;">
+    </div>
+    
+    <button class="btn btn-outline" style="width:100%; margin-top:10px; color:#ef4444; border-color:#ef4444;" onclick="quitarImagenTablero()"><i class="fa-solid fa-trash"></i> Quitar Imagen</button>
+</div>
+<div class="form-group" id="grupo-token" style="display:none; border-top: 2px solid #4c1d95; padding-top: 10px; margin-top: 10px; background: #f8fafc; padding: 10px; border-radius: 6px;">
                             <h4 style="color: #4c1d95; margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-coins"></i> Editor de Ficha</h4>
                             <div class="form-group">
                                 <label>Forma</label>
@@ -266,6 +287,18 @@
                         <div id="props-carta" style="display:none;">
                             <div class="form-group"><label>Anverso</label><textarea id="prop-text" oninput="actualizarPropiedad('texto', this.value)"></textarea></div>
                             <div class="form-group"><label>Dorso (Guía)</label><textarea id="prop-instrucciones" oninput="actualizarPropiedad('instrucciones', this.value)"></textarea></div>
+                            <div class="form-group" style="border-top: 1px dashed #ccc; padding-top: 10px; margin-top: 10px;">
+                                <label>Subir Imagen a la Carta</label>
+                                <input type="file" id="input-img-carta" accept="image/*" onchange="subirImagenCarta(event)" style="width:100%; font-size:11px; margin-bottom:5px;">
+                                <div id="controles-img-carta" style="display:none; background: #e0f2fe; padding: 10px; border-radius: 6px;">
+                                    <label style="font-size:10px; color:#0284c7;">Zoom</label>
+                                    <input type="range" id="carta-zoom" min="1" max="3" step="0.1" value="1" oninput="ajustarImagenCarta('zoom', this.value)" style="width:100%;">
+                                    <label style="font-size:10px; color:#0284c7;">Pos X</label>
+                                    <input type="range" id="carta-posx" min="0" max="100" value="50" oninput="ajustarImagenCarta('x', this.value)" style="width:100%;">
+                                    <label style="font-size:10px; color:#0284c7;">Pos Y</label>
+                                    <input type="range" id="carta-posy" min="0" max="100" value="50" oninput="ajustarImagenCarta('y', this.value)" style="width:100%;">
+                                </div>
+                            </div>
                             <button class="btn btn-secondary" style="width:100%; margin-bottom:10px;" onclick="voltearCarta()"><i class="fa-solid fa-rotate"></i> Voltear</button>
                         </div>
 
@@ -378,7 +411,7 @@
     
     
     <script src="js/catalogo.js"></script>
-    <script src="js/componentes-extra.js"></script>`n    <script src="js/app.js"></script>
+    <script src="js/componentes-extra.js"></script>`n    <script src="js/components-engine.js"></script>`n    <script src="js/app.js"></script>
     <script src="js/drag-drop.js"></script>
     <script src="js/herramientas.js"></script>
     <script src="js/panel-derecho.js"></script>

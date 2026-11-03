@@ -1,59 +1,213 @@
-// ================= CATÁLOGO MAESTRO v82.0 =================
+// ================= CATÁLOGO MAESTRO v32.0 (Fichas Técnicas Exactas) =================
 const CATALOGO_JUEGOS = [
+    // --- 3.1. PANDEMIC ---
     {
-        id: "uno", nombre: "UNO", familia: "Cartas / Combos", 
-        jugadores: "2-10", duracion: "15 min", icono: "fa-solid fa-clone", color: "#dc2626",
-        componentes: { tableros: [], cartas: [{ tipo: "uno", cantidad: 108 }], tokens: [] },
-        reglas: { objetivo: "Quedarse sin cartas en la mano.", preparacion: "Se reparten 7 cartas a cada jugador.", turno: "Emparejar por color, número o símbolo. Usa cartas de acción." },
-        adaptacion_ep: { objetivo: "Simula el flujo de poder y las alianzas.", preguntas: ["¿Quién tenía el poder en el juego?", "¿Cómo se sintieron cuando los bloquearon con un '+2'?"] }
+        id: "pandemic", nombre: "Pandemic", familia: "Cooperativo", 
+        jugadores: "2-4", duracion: "45-60 min", icono: "fa-solid fa-virus-slash", color: "#dc2626",
+        componentes: { 
+            tableros: [{ tipo: "perimetro", cantidad: 1 }], 
+            cartas: [{ tipo: "pandemic_evento", cantidad: 59 }, { tipo: "pandemic_ciudad", cantidad: 48 }], 
+            tokens: [{ tipo: "circulo", cantidad: 96 }, { tipo: "meeple", cantidad: 7 }] 
+        },
+        reglas: { 
+            objetivo: "Cooperar para descubrir las curas de las 4 enfermedades antes de que se agoten las cartas o haya 8 brotes.", 
+            preparacion: "Colocar el tablero, repartir roles, infectar 9 ciudades iniciales y preparar los mazos.", 
+            turno: "Realizar 4 acciones (moverse, tratar, compartir conocimiento, curar), luego robar 2 cartas e infectar ciudades." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Simular la respuesta comunitaria ante una crisis de salud (falta de agua, desempleo). Las 'curas' son soluciones estructurales que requieren cooperación.", 
+            preguntas: ["¿Cómo se organizaron para priorizar las curas?", "¿Qué pasa si cada uno juega por su lado en una crisis?"] 
+        }
     },
+    // --- 3.2. CATÁN (BASE) ---
     {
-        id: "dixit", nombre: "Dixit", familia: "Asociación / Narrativa", 
+        id: "catan_base", nombre: "Colonos de Catán", familia: "Gestión de Recursos", 
+        jugadores: "3-4", duracion: "60-120 min", icono: "fa-solid fa-hexagon", color: "#9a3412",
+        componentes: { 
+            tableros: [{ tipo: "hex", cantidad: 19 }, { tipo: "perimetro", cantidad: 6 }], 
+            cartas: [{ tipo: "recurso_catan", cantidad: 95 }, { tipo: "evento", cantidad: 25 }], 
+            tokens: [{ tipo: "circulo", cantidad: 18 }, { tipo: "meeple", cantidad: 36 }] 
+        },
+        reglas: { 
+            objetivo: "Ser el primero en alcanzar 10 puntos de victoria mediante construcción y comercio.", 
+            preparacion: "Montar el tablero hexagonal, colocar fichas numéricas y puertos. Cada jugador coloca 2 poblados y 2 carreteras.", 
+            turno: "Tirar dados para producir recursos, comerciar y construir carreteras, poblados, ciudades o comprar cartas de desarrollo." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Simular la gestión de recursos comunitarios y la negociación por el bien común. Los recursos pueden ser agua, alimentos, vivienda.", 
+            preguntas: ["¿Qué recursos fueron los más disputados?", "¿Cómo se relaciona esta escasez con el acceso al agua o vivienda en nuestra comunidad?"] 
+        }
+    },
+    // --- 3.2.1. CATÁN: CIUDADES Y CABALLEROS ---
+    {
+        id: "catan_ciudades", nombre: "Catán: Ciudades y Caballeros", familia: "Expansión", 
+        jugadores: "3-4", duracion: "90-120 min", icono: "fa-solid fa-chess-rook", color: "#b91c1c",
+        componentes: { 
+            tableros: [{ tipo: "loseta", cantidad: 4 }], 
+            cartas: [{ tipo: "recurso_catan", cantidad: 90 }, { tipo: "evento", cantidad: 6 }], 
+            tokens: [{ tipo: "cuadrado", cantidad: 60 }, { tipo: "circulo", cantidad: 24 }] 
+        },
+        reglas: { 
+            objetivo: "Mejorar ciudades a metrópolis y defender Catán de las invasiones bárbaras.", 
+            preparacion: "Requiere el juego base. Añadir el tablero de la flota bárbara y repartir los cuadros de mejora.", 
+            turno: "Fase de Producción, Fase de Comercio y Construcción, y Fase de Progreso." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Reflexionar sobre la defensa colectiva y la inversión en el bien común.", 
+            preguntas: ["¿Cómo decidieron qué mejoras construir?", "¿Qué pasa si la comunidad no se une ante una amenaza externa?"] 
+        }
+    },
+    // --- 3.2.2. CATÁN: NAVEGANTES ---
+    {
+        id: "catan_navegantes", nombre: "Catán: Navegantes", familia: "Expansión", 
+        jugadores: "3-4", duracion: "90-120 min", icono: "fa-solid fa-ship", color: "#0284c7",
+        componentes: { 
+            tableros: [{ tipo: "hex", cantidad: 30 }, { tipo: "perimetro", cantidad: 2 }], 
+            cartas: [{ tipo: "recurso_catan", cantidad: 95 }], 
+            tokens: [{ tipo: "cuadrado", cantidad: 60 }, { tipo: "circulo", cantidad: 20 }] 
+        },
+        reglas: { 
+            objetivo: "Explorar islas desconocidas y establecer rutas marítimas.", 
+            preparacion: "Requiere el juego base. Montar el tablero con hexágonos de mar y tierra.", 
+            turno: "Igual que el juego base, pero puedes construir barcos en lugar de caminos." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Hablar sobre migración, exploración y límites territoriales.", 
+            preguntas: ["¿Qué implica dejar tu tierra para explorar lo desconocido?", "¿Cómo se reparten los recursos en las nuevas islas?"] 
+        }
+    },
+    // --- 3.3. DIXIT ---
+    {
+        id: "dixit", nombre: "Dixit", familia: "Asociación Visual", 
         jugadores: "3-8", duracion: "30 min", icono: "fa-solid fa-moon", color: "#4c1d95",
-        componentes: { tableros: [{ tipo: "perimetro", cantidad: 1 }], cartas: [{ tipo: "dixit", cantidad: 84 }], tokens: [{ tipo: "meeple", cantidad: 8 }] },
-        reglas: { objetivo: "Adivinar la carta del cuentacuentos.", preparacion: "Repartir cartas y dar los diales de votación.", turno: "El cuentacuentos da una pista. Los demás eligen una carta que encaje. Se vota en secreto." },
-        adaptacion_ep: { objetivo: "Comunicación asertiva y empatía usando imágenes como metáfora.", preguntas: ["¿Por qué elegimos ciertas imágenes?", "¿Qué nos dicen de nuestra comunidad?"] }
+        componentes: { 
+            tableros: [{ tipo: "perimetro", cantidad: 1 }], 
+            cartas: [{ tipo: "dixit", cantidad: 84 }], 
+            tokens: [{ tipo: "meeple", cantidad: 8 }] 
+        },
+        reglas: { 
+            objetivo: "Obtener la mayor cantidad de puntos adivinando la carta del cuentacuentos y engañando a los demás.", 
+            preparacion: "Repartir 6 cartas a cada jugador y dar los diales de votación.", 
+            turno: "El cuentacuentos da una pista. Los demás eligen una carta que encaje. Se vota en secreto." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Herramienta poderosa para la comunicación asertiva y la empatía. Expresar sentimientos usando las imágenes como metáfora.", 
+            preguntas: ["¿Por qué elegimos ciertas imágenes?", "¿Qué nos dicen de nuestra comunidad?"] 
+        }
     },
-    {
-        id: "carcassonne", nombre: "Carcassonne", familia: "Colocación de Losetas", 
-        jugadores: "2-5", duracion: "45 min", icono: "fa-solid fa-map", color: "#15803d",
-        componentes: { tableros: [{ tipo: "loseta", cantidad: 84 }], cartas: [], tokens: [{ tipo: "meeple", cantidad: 40 }] },
-        reglas: { objetivo: "Formar un mapa medieval y desplegar meeples.", preparacion: "Colocar la loseta inicial. Repartir 7 meeples.", turno: "Robar loseta, colocarla conectando caminos/ciudades y desplegar meeple para puntuar." },
-        adaptacion_ep: { objetivo: "Simula la construcción colectiva del territorio.", preguntas: ["¿Cómo construimos juntos el territorio?", "¿Qué partes de nuestra comunidad estamos priorizando?"] }
-    },
+    // --- 3.4. VIRUS! ---
     {
         id: "virus", nombre: "Virus!", familia: "Toma Eso / Gestión de Mano", 
         jugadores: "2-6", duracion: "20 min", icono: "fa-solid fa-virus", color: "#16a34a",
-        componentes: { tableros: [], cartas: [{ tipo: "virus", cantidad: 68 }], tokens: [] },
-        reglas: { objetivo: "Construir un cuerpo sano (4 órganos) mientras infectas o destruyes los rivales.", preparacion: "Barajar el mazo y repartir 3 cartas a cada jugador.", turno: "Robar una carta, jugar cartas para poner órganos o lanzar virus/medicinas a los rivales." },
-        adaptacion_ep: { objetivo: "Visibilizar conflictos y dinámicas de poder.", preguntas: ["Los 'Órganos' son Derechos. Los 'Virus' son recortes. ¿Cómo defendemos lo público?"] }
+        componentes: { 
+            tableros: [], 
+            cartas: [{ tipo: "virus", cantidad: 68 }], 
+            tokens: [] 
+        },
+        reglas: { 
+            objetivo: "Construir un cuerpo sano (4 órganos) mientras infectas o destruyes los órganos de los rivales.", 
+            preparacion: "Barajar el mazo y repartir 3 cartas a cada jugador.", 
+            turno: "Robar una carta, jugar cartas para poner órganos o lanzar virus/medicinas a los rivales." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Visibilizar conflictos y dinámicas de poder. Los Órganos son Derechos, los Virus son recortes, las Medicinas son acciones colectivas.", 
+            preguntas: ["¿Cómo defendemos lo público ante los 'recortes'?", "¿Qué alianzas hicieron para proteger sus derechos?"] 
+        }
     },
+    // --- 3.5. SUSHI GO! ---
     {
         id: "sushi_go", nombre: "Sushi Go!", familia: "Drafting / Colección de Sets", 
         jugadores: "2-5", duracion: "15 min", icono: "fa-solid fa-utensils", color: "#f59e0b",
-        componentes: { tableros: [], cartas: [{ tipo: "sushi", cantidad: 108 }], tokens: [] },
-        reglas: { objetivo: "Formar el mejor menú de sushi y ganar puntos.", preparacion: "Barajar y repartir 10 cartas a cada jugador.", turno: "Elegir una carta, pasar el resto al jugador de la izquierda. Repetir hasta agotar." },
-        adaptacion_ep: { objetivo: "Simula la priorización de recursos en un proyecto.", preguntas: ["En lugar de sushi, estas cartas son Recursos Comunitarios. ¿Cuál drafteaste primero y por qué?"] }
+        componentes: { 
+            tableros: [], 
+            cartas: [{ tipo: "sushi", cantidad: 108 }], 
+            tokens: [] 
+        },
+        reglas: { 
+            objetivo: "Formar el mejor menú de sushi y ganar puntos.", 
+            preparacion: "Barajar y repartir 10 cartas a cada jugador.", 
+            turno: "Elegir una carta, pasar el resto al jugador de la izquierda. Repetir hasta agotar." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Simula la priorización de recursos en un proyecto comunitario (Tiempo, Dinero, Voluntarios).", 
+            preguntas: ["En lugar de sushi, estas cartas son Recursos. ¿Cuál drafteaste primero y por qué?"] 
+        }
     },
+    // --- 3.6. HOMBRES LOBO ---
     {
-        id: "hombres_lobo", nombre: "Los Hombres Lobo", familia: "Roles Ocultos / Deducción", 
+        id: "hombres_lobo", nombre: "Los Hombres Lobo", familia: "Roles Ocultos", 
         jugadores: "8-18", duracion: "30 min", icono: "fa-solid fa-user-secret", color: "#1e293b",
-        componentes: { tableros: [], cartas: [{ tipo: "rol", cantidad: 25 }], tokens: [] },
-        reglas: { objetivo: "Los lobos deben eliminar aldeanos; los aldeanos deben descubrir a los lobos.", preparacion: "Repartir un rol secreto a cada jugador.", turno: "Fase nocturna (los lobos matan, la vidente investiga) y fase diurna (debate y linchamiento)." },
-        adaptacion_ep: { objetivo: "Analizar rumores, silencios y confianza en la comunidad.", preguntas: ["¿Cómo identificamos a los 'Barras Bravas' o 'Intereses Creados' en una asamblea?"] }
+        componentes: { 
+            tableros: [], 
+            cartas: [{ tipo: "rol", cantidad: 47 }, { tipo: "evento", cantidad: 36 }], 
+            tokens: [{ tipo: "circulo", cantidad: 29 }] 
+        },
+        reglas: { 
+            objetivo: "Los lobos deben eliminar aldeanos; los aldeanos deben descubrir a los lobos.", 
+            preparacion: "Repartir un rol secreto a cada jugador.", 
+            turno: "Fase nocturna (los lobos matan, la vidente investiga) y fase diurna (debate y linchamiento)." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Analizar rumores, silencios y confianza en la comunidad.", 
+            preguntas: ["¿Cómo identificamos a los 'Barras Bravas' o 'Intereses Creados' en una asamblea?"] 
+        }
     },
-    // --- MANTENEMOS CATÁN Y PANDEMIC DE LA VERSIÓN ANTERIOR ---
+    // --- 3.7. CODENAMES ---
     {
-        id: "catan_base", nombre: "Colonos de Catán", familia: "Gestión de Recursos", jugadores: "3-4", duracion: "60-120 min", icono: "fa-solid fa-hexagon", color: "#9a3412",
-        componentes: { tableros: [{ tipo: "hex", cantidad: 19 }], cartas: [{ tipo: "recurso_catan", cantidad: 95 }], tokens: [{ tipo: "circulo", cantidad: 60 }] },
-        reglas: { objetivo: "Alcanzar 10 puntos de victoria.", preparacion: "Montar el tablero hexagonal y colocar poblados iniciales.", turno: "Tirar dados, producir recursos, comerciar y construir." },
-        adaptacion_ep: { objetivo: "Simular la gestión de recursos comunitarios.", preguntas: ["¿Qué recursos fueron los más disputados?", "¿Cómo se relaciona con el acceso al agua o vivienda?"] }
+        id: "codenames", nombre: "Código Secreto (Codenames)", familia: "Deducción", 
+        jugadores: "2-8+", duracion: "15-30 min", icono: "fa-solid fa-mask", color: "#9a3412",
+        componentes: { 
+            tableros: [], 
+            cartas: [{ tipo: "codenames", cantidad: 200 }, { tipo: "evento", cantidad: 40 }], 
+            tokens: [{ tipo: "circulo", cantidad: 25 }] 
+        },
+        reglas: { 
+            objetivo: "Encontrar a todos los agentes de tu equipo antes que el rival.", 
+            preparacion: "Colocar 25 cartas de palabras en una cuadrícula de 5x5. Los espías jefes miran la tarjeta clave.", 
+            turno: "El espía jefe da una pista de una palabra y un número. Su equipo adivina cuáles son las palabras." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Analizar cómo se construyen los rumores y la desinformación en una comunidad.", 
+            preguntas: ["¿Fue fácil dar pistas sin ser demasiado obvio?", "¿Cómo se sintieron al adivinar mal?"] 
+        }
     },
+    // --- 3.8. CARCASSONNE ---
     {
-        id: "pandemic", nombre: "Pandemic", familia: "Cooperativo", jugadores: "2-4", duracion: "45-60 min", icono: "fa-solid fa-virus-slash", color: "#dc2626",
-        componentes: { tableros: [{ tipo: "perimetro", cantidad: 1 }], cartas: [{ tipo: "evento", cantidad: 15 }], tokens: [{ tipo: "circulo", cantidad: 24 }] },
-        reglas: { objetivo: "Cooperar para erradicar enfermedades.", preparacion: "Colocar el tablero y repartir roles.", turno: "Realizar 4 acciones y luego robar e infectar ciudades." },
-        adaptacion_ep: { objetivo: "Enseñar la acción colectiva frente a crisis.", preguntas: ["¿Qué pasa si cada uno juega por su lado?"] }
+        id: "carcassonne", nombre: "Carcassonne", familia: "Colocación de Losetas", 
+        jugadores: "2-5", duracion: "45 min", icono: "fa-solid fa-map", color: "#15803d",
+        componentes: { 
+            tableros: [{ tipo: "loseta", cantidad: 84 }], 
+            cartas: [], 
+            tokens: [{ tipo: "meeple", cantidad: 40 }] 
+        },
+        reglas: { 
+            objetivo: "Construir el mejor paisaje medieval y controlar las ciudades, caminos y monasterios.", 
+            preparacion: "Colocar la loseta inicial en el centro de la mesa y repartir 7 meeples a cada jugador.", 
+            turno: "Robar una loseta, colocarla conectando caminos o ciudades, y opcionalmente colocar un meeple." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Simula la construcción colectiva del territorio. Cada loseta puede ser un 'actor social' o un 'recurso comunitario'.", 
+            preguntas: ["¿Cómo construimos juntos el territorio?", "¿Qué partes de nuestra comunidad estamos priorizando?"] 
+        }
+    },
+    // --- 3.9. TICKET TO RIDE ---
+    {
+        id: "ticket_to_ride", nombre: "Aventureros al Tren", familia: "Rutas y Conexiones", 
+        jugadores: "2-5", duracion: "60 min", icono: "fa-solid fa-train", color: "#0284c7",
+        componentes: { 
+            tableros: [{ tipo: "perimetro", cantidad: 1 }], 
+            cartas: [{ tipo: "tren_ticket", cantidad: 110 }, { tipo: "boleto_ticket", cantidad: 30 }], 
+            tokens: [{ tipo: "cuadrado", cantidad: 240 }, { tipo: "meeple", cantidad: 5 }] 
+        },
+        reglas: { 
+            objetivo: "Coleccionar cartas de colores para reclamar rutas en el tablero y conectar ciudades.", 
+            preparacion: "Repartir 4 cartas de tren y 3 boletos de destino a cada jugador. Colocar los trenes en el tablero.", 
+            turno: "Robar cartas de tren, reclamar una ruta conectando ciudades, o robar nuevos boletos de destino." 
+        },
+        adaptacion_ep: { 
+            objetivo: "Mapear las rutas de transporte público y las barreras de acceso a los servicios en la comunidad.", 
+            preguntas: ["¿Qué rutas son más importantes para nuestra comunidad?", "¿Qué pasa con las zonas desconectadas?"] 
+        }
     }
 ];
 
@@ -75,7 +229,7 @@ function asegurarModalCompleto() {
                     <span><i class="fa-solid fa-users" style="color:#0284c7;"></i> <span id="cat-detalle-jugadores"></span></span>
                     <span><i class="fa-regular fa-clock" style="color:#0284c7;"></i> <span id="cat-detalle-duracion"></span></span>
                 </div>
-                <div style="margin-bottom:20px;"><h4 style="font-size:14px; color:#333; margin-bottom:10px;"><i class="fa-solid fa-puzzle-piece"></i> Componentes</h4><div id="cat-detalle-componentes" style="font-size:13px; color:#475569; background:#f8fafc; padding:15px; border-radius:8px; border-left:4px solid #64748b;"></div></div>
+                <div style="margin-bottom:20px;"><h4 style="font-size:14px; color:#333; margin-bottom:10px;"><i class="fa-solid fa-puzzle-piece"></i> Componentes del Juego</h4><div id="cat-detalle-componentes" style="font-size:13px; color:#475569; background:#f8fafc; padding:15px; border-radius:8px; border-left:4px solid #64748b;"></div></div>
                 <div style="margin-bottom:20px;"><h4 style="font-size:14px; color:#333; margin-bottom:10px;"><i class="fa-solid fa-scroll"></i> Reglas Básicas</h4><div id="cat-detalle-reglas" style="font-size:13px; color:#475569; background:#f8fafc; padding:15px; border-radius:8px; border-left:4px solid #64748b;"><p style="margin-bottom:8px;"><strong>Objetivo:</strong> <span id="cat-regla-objetivo"></span></p><p style="margin-bottom:8px;"><strong>Preparación:</strong> <span id="cat-regla-preparacion"></span></p><p><strong>Turno:</strong> <span id="cat-regla-turno"></span></p></div></div>
                 <div style="margin-bottom:20px; border-left:4px solid #9a3412; padding-left:15px; background:#fff7ed; padding:10px 15px; border-radius:0 8px 8px 0;"><h4 style="font-size:14px; color:#9a3412; margin-bottom:10px;"><i class="fa-solid fa-hands-holding-circle"></i> Adaptación EP</h4><p id="cat-detalle-ep" style="font-size:13px; color:#333; line-height:1.5; font-style:italic;"></p></div>
                 <div style="text-align:right;"><button id="cat-btn-cargar" class="btn btn-primary" style="padding:12px 24px; font-size:14px; box-shadow:0 4px 10px rgba(154,52,18,0.3);"><i class="fa-solid fa-wand-magic-sparkles"></i> Cargar Componentes</button></div>
@@ -120,9 +274,9 @@ function abrirDetalleJuego(id) {
     document.getElementById('cat-detalle-ep').innerHTML = epHtml;
 
     let compHtml = '<ul>';
-    if(juego.componentes.tableros) juego.componentes.tableros.forEach(t => compHtml += `<li>${t.cantidad}x Tablero/Loseta (${t.tipo})</li>`);
-    if(juego.componentes.cartas) juego.componentes.cartas.forEach(c => compHtml += `<li>${c.cantidad}x Cartas (${c.tipo})</li>`);
-    if(juego.componentes.tokens) juego.componentes.tokens.forEach(t => compHtml += `<li>${t.cantidad}x Fichas (${t.tipo})</li>`);
+    if(juego.componentes.tableros && juego.componentes.tableros.length > 0) juego.componentes.tableros.forEach(t => compHtml += `<li>${t.cantidad}x Tablero (${t.tipo})</li>`);
+    if(juego.componentes.cartas && juego.componentes.cartas.length > 0) juego.componentes.cartas.forEach(c => compHtml += `<li>${c.cantidad}x Cartas (${c.tipo})</li>`);
+    if(juego.componentes.tokens && juego.componentes.tokens.length > 0) juego.componentes.tokens.forEach(t => compHtml += `<li>${t.cantidad}x Fichas (${t.tipo})</li>`);
     compHtml += '</ul>';
     document.getElementById('cat-detalle-componentes').innerHTML = compHtml;
     
@@ -155,14 +309,27 @@ async function cargarComponentesJuego(id) {
     if(juego.componentes.cartas) { 
         for(let c of juego.componentes.cartas) { 
             for(let i=0; i<c.cantidad; i++) { 
-                if(c.tipo === 'naipe' && typeof insertarCartaNaipe === 'function') insertarCartaNaipe(); 
+                if(c.tipo === 'recurso_catan' && typeof insertarCartaRecursoCatan === 'function') {
+                    const recs = ['Madera', 'Ladrillo', 'Oveja', 'Trigo', 'Mineral'];
+                    const rec = recs[i % recs.length];
+                    insertarCartaRecursoCatan(rec, '#8B5A2B');
+                }
+                else if(c.tipo === 'tren_ticket' && typeof insertarCartaTrenTicket === 'function') {
+                    const colores = ['#dc2626', '#2563eb', '#16a34a', '#eab308', '#1e293b', '#ffffff', '#f97316', '#a855f7'];
+                    const col = colores[i % colores.length];
+                    insertarCartaTrenTicket(col);
+                }
+                else if(c.tipo === 'boleto_ticket' && typeof insertarBoletoTicket === 'function') insertarBoletoTicket();
+                else if(c.tipo === 'pandemic_ciudad' && typeof insertarCartaPandemic === 'function') insertarCartaPandemic('#dc2626');
+                else if(c.tipo === 'pandemic_evento' && typeof insertarCartaEvento === 'function') insertarCartaEvento();
+                else if(c.tipo === 'codenames' && typeof insertarCartaCodenames === 'function') insertarCartaCodenames();
+                else if(c.tipo === 'naipe' && typeof insertarCartaNaipe === 'function') insertarCartaNaipe(); 
                 else if (c.tipo === 'dixit' && typeof insertarCartaDixit === 'function') insertarCartaDixit(); 
                 else if (c.tipo === 'uno' && typeof insertarCartaUno === 'function') insertarCartaUno(); 
                 else if (c.tipo === 'evento' && typeof insertarCartaEvento === 'function') insertarCartaEvento(); 
                 else if (c.tipo === 'virus' && typeof insertarCartaVirus === 'function') insertarCartaVirus(); 
                 else if (c.tipo === 'sushi' && typeof insertarCartaSushi === 'function') insertarCartaSushi(); 
                 else if (c.tipo === 'rol' && typeof insertarCartaRol === 'function') insertarCartaRol(); 
-                else if (c.tipo === 'recurso_catan' && typeof insertarCartaNaipe === 'function') insertarCartaNaipe(); 
                 await delay(50); 
             } 
         } 
@@ -171,12 +338,13 @@ async function cargarComponentesJuego(id) {
         for(let t of juego.componentes.tokens) { 
             for(let i=0; i<t.cantidad; i++) { 
                 if(t.tipo === 'meeple' && typeof insertarMeeple === 'function') insertarMeeple(); 
+                else if (t.tipo === 'cuadrado' && typeof insertarCuboPandemic === 'function') insertarCuboPandemic(); 
                 else if (typeof insertarGeneradorTokens === 'function') insertarGeneradorTokens(); 
                 await delay(50); 
             } 
         } 
     }
-    showToast(`¡Materiales cargados!`, "success");
+    showToast(`¡Materiales de ${juego.nombre} cargados!`, "success");
 }
 
 // ================= ANEXO DE FACILITACIÓN =================
