@@ -105,7 +105,7 @@ function filtrarCatalogo(texto) {
 
 function mostrarDetalleJuego(juego) {
     juegoSeleccionadoEnCatalogo = juego;
-    
+
     const pEmpty = document.getElementById('props-empty');
     const pContent = document.getElementById('props-content');
     const pActions = document.getElementById('props-actions');
@@ -122,7 +122,7 @@ function mostrarDetalleJuego(juego) {
     if(document.getElementById('cat-preparacion')) document.getElementById('cat-preparacion').querySelector('span').innerText = juego.reglas.preparacion;
     if(document.getElementById('cat-turno')) document.getElementById('cat-turno').querySelector('span').innerText = juego.reglas.turno;
     if(document.getElementById('cat-ep-objetivo')) document.getElementById('cat-ep-objetivo').querySelector('span').innerText = juego.adaptacion_ep.objetivo;
-    
+
     const ul = document.getElementById('cat-ep-preguntas');
     if(ul) {
         ul.innerHTML = '';
@@ -137,196 +137,151 @@ function cargarDesdePanelCatalogo() {
 async function cargarComponentesJuego(id) {
     const juego = CATALOGO_JUEGOS.find(j => j.id === id);
     if(!juego) return;
-    if(typeof mostrarLoading === 'function') mostrarLoading(`Generando ${juego.nombre}`, "Espera...");
+    if(typeof mostrarLoading === 'function') mostrarLoading(`Generando ${juego.nombre}`, "Preparando todos los materiales...");
     await new Promise(r => setTimeout(r, 100));
+
     try {
         if (document.querySelectorAll('#canvas > .canvas-element').length > 0) {
             if(confirm("El lienzo tiene elementos. ¿Deseas limpiarlo antes de cargar este juego?")) {
                 if (typeof limpiarLienzo === 'function') limpiarLienzo();
+            } else {
+                if(typeof ocultarLoading === 'function') ocultarLoading();
+                return;
             }
         }
-        
-        // CARGA DE COMPONENTES ESPECÍFICOS
-        if (id === 'catan') {
+
+        if (id === 'taller_ep') {
+            if(typeof insertarCartaRefran === 'function' && typeof insertarTelaranaEP === 'function') {
+                insertarTelaranaEP(50, 50);
+                for(let i=0; i<5; i++) insertarFichaTaller('lana', 450 + i*60, 100);
+                const refranes = ["Análisis de contexto", "No hay mal que dure cien años", "A quien madruga, Dios lo ayuda", "Más vale pájaro en mano que cien volando", "El que ríe último, ríe mejor", "No es oro todo lo que reluce"];
+                for(let i = 0; i < refranes.length; i++) {
+                    insertarCartaRefran(refranes[i], 50 + (i%3)*270, 450 + Math.floor(i/3)*360);
+                }
+            }
+        }
+        else if (id === 'taller_vih') {
+            if(typeof insertarCartaMitoVIH === 'function' && typeof insertarGuiaFacilitadorVIH === 'function') {
+                insertarGuiaFacilitadorVIH(50, 50);
+                insertarCuboReflexionVIH(500, 50);
+                insertarRutaCuidadoVIH(50, 650);
+                insertarArbolProblemasVIH(750, 50);
+                insertarSemaforoVIH(1200, 50);
+
+                for(let i=0; i<3; i++) insertarFichaTaller('escudo', 500, 450 + i*60);
+                for(let i=0; i<3; i++) insertarFichaTaller('rayo', 600, 450 + i*60);
+                for(let i=0; i<3; i++) insertarFichaTaller('corazon', 700, 450 + i*60);
+
+                const mitos = [
+                    { t: "El Contagio", x: "Si tengo VIH, mi pareja se va a contagiar seguro, aunque me cuide." },
+                    { t: "El Examen", x: "El test duele, es caro y todo el pueblo se va a enterar de mi resultado." },
+                    { t: "El Estigma", x: "Solo las personas promiscuas o los homosexuales se contagian de VIH." },
+                    { t: "El Matrimonio", x: "Una mujer casada no necesita cuidarse, su esposo la protege de todo." },
+                    { t: "Las ITS", x: "Si tengo una infección como sífilis o gonorrea, se me quita sola con el tiempo." },
+                    { t: "El Futuro", x: "El VIH es una sentencia de muerte. Si me sale positivo, mi vida se acaba." }
+                ];
+                for(let i = 0; i < mitos.length; i++) {
+                    insertarCartaMitoVIH('mito', mitos[i].t, mitos[i].x, 50 + (i%3)*270, 850 + Math.floor(i/3)*360);
+                }
+
+                const situaciones = [
+                    { t: "Violencia", x: "Tu pareja se enoja y te grita porque le pediste usar condón. ¿Qué haces?" },
+                    { t: "La Infidelidad", x: "Descubres que tu pareja te fue infiel. Tienes miedo de hacerte el test. ¿Cómo lo enfrentas?" },
+                    { t: "La Amiga", x: "Una amiga te confiesa que tiene miedo de tener VIH, pero no va al médico por vergüenza. ¿Cómo la apoyas?" }
+                ];
+                for(let i = 0; i < situaciones.length; i++) {
+                    insertarCartaMitoVIH('situacion', situaciones[i].t, situaciones[i].x, 950 + i * 270, 850);
+                }
+            }
+        }
+        else if (id === 'catan') {
             insertarTableroCompletoCatan(50, 50);
             insertarTableroJugadorCatan(600, 50);
             for(let i=0; i<18; i++) insertarFichasNumeroCatan(50 + i*50, 580);
             const recs = ['madera', 'trigo', 'ladrillo', 'oveja', 'piedra'];
-            recs.forEach((rec, i) => insertarCartaRecursoCatan(rec, 600 + i*260, 350));
+            let rX = 600; let rY = 350;
+            for(let x=0; x<5; x++) {
+                recs.forEach((rec, i) => { insertarCartaRecursoCatan(rec, rX + i*260, rY); });
+                rY += 360;
+            }
             insertarKitJugadorCatan('#dc2626', 50, 680); insertarKitJugadorCatan('#0284c7', 230, 680);
             insertarKitJugadorCatan('#15803d', 410, 680); insertarKitJugadorCatan('#ca8a04', 590, 680);
             insertarLadronCatan(800, 680); insertarPuertoCatan(850, 680); insertarPuertoCatan(910, 680);
         }
         else if (id === 'catan_ciudades') {
-            insertarTableroCompletoCatan(50, 50); insertarKitJugadorCatan('#dc2626', 600, 50);
-            insertarFichaCaballeroCatan(600, 250); insertarFichaMetropoliCatan(680, 250);
-            insertarFichaMercanciaCatan(760, 250); insertarCartaRecursoCatan('madera', 50, 600);
+            insertarTableroCompletoCatan(50, 50);
+            insertarKitJugadorCatan('#dc2626', 600, 50);
+            insertarFichaCaballeroCatan(600, 250); insertarFichaMetropoliCatan(680, 250); insertarFichaMercanciaCatan(760, 250);
+            for(let i=0; i<5; i++) { insertarCartaRecursoCatan('madera', 50 + i*260, 600); }
         }
         else if (id === 'catan_navegantes') {
-            insertarTableroCompletoCatan(50, 50); insertarKitJugadorCatan('#0284c7', 600, 50);
-            for(let i=0; i<4; i++) insertarBarcoNavegante(600 + i*80, 250);
+            insertarTableroCompletoCatan(50, 50);
+            insertarKitJugadorCatan('#0284c7', 600, 50);
+            for(let i=0; i<8; i++) insertarBarcoNavegante(600 + (i%4)*80, 250 + Math.floor(i/4)*60);
         }
         else if (id === 'pandemic') {
             insertarTableroPandemic(50, 50);
-            for(let i=0; i<8; i++) insertarCuboPandemic(600 + (i%4)*50, 50 + Math.floor(i/4)*50);
-            for(let i=0; i<4; i++) insertarMeeplePandemic(600 + i*60, 180);
-            for(let i=0; i<3; i++) insertarEventoPandemic(50 + i*280, 400);
+            for(let i=0; i<48; i++) {
+                insertarCuboPandemic(600 + (i%8)*40, 50 + Math.floor(i/8)*40);
+                await new Promise(r=>setTimeout(r,5));
+            }
+            for(let i=0; i<4; i++) insertarMeeplePandemic(600 + i*60, 300);
+            for(let i=0; i<6; i++) insertarEventoPandemic(50 + i*260, 400);
         }
-        else if (id === 'sushi_go') { for(let i=0; i<10; i++) insertarCartaSushi(); }
-        else if (id === 'dixit') { for(let i=0; i<10; i++) insertarCartaDixit(); }
-        else if (id === 'hombres_lobo') { for(let i=0; i<10; i++) insertarCartaHombreLobo(); }
-        else if (id === 'codigo_secreto') { for(let i=0; i<10; i++) insertarCartaCodename(); }
-        else if (id === 'wingspan') { for(let i=0; i<8; i++) insertarCartaWingspan(); }
-        else if (id === 'munchkin') { for(let i=0; i<8; i++) insertarCartaMunchkin(); }
-        else if (id === 'jungle') { for(let i=0; i<8; i++) insertarCartaJungleSpeed(); }
-        else if (id === 'coup') { for(let i=0; i<8; i++) insertarCartaCoup(); }
+        else if (id === 'sushi_go') {
+            for(let i=0; i<24; i++) { insertarCartaSushi(); await new Promise(r=>setTimeout(r,10)); }
+        }
+        else if (id === 'dixit') {
+            for(let i=0; i<20; i++) { insertarCartaDixit(); await new Promise(r=>setTimeout(r,10)); }
+        }
+        else if (id === 'hombres_lobo') {
+            for(let i=0; i<18; i++) { insertarCartaHombreLobo(); await new Promise(r=>setTimeout(r,10)); }
+        }
+        else if (id === 'codigo_secreto') {
+            for(let i=0; i<25; i++) { insertarCartaCodename(); await new Promise(r=>setTimeout(r,10)); }
+        }
+        else if (id === 'wingspan') {
+            for(let i=0; i<15; i++) { insertarCartaWingspan(); await new Promise(r=>setTimeout(r,10)); }
+        }
+        else if (id === 'munchkin') {
+            for(let i=0; i<20; i++) { insertarCartaMunchkin(); await new Promise(r=>setTimeout(r,10)); }
+        }
+        else if (id === 'jungle') {
+            for(let i=0; i<20; i++) { insertarCartaJungleSpeed(); await new Promise(r=>setTimeout(r,10)); }
+        }
+        else if (id === 'coup') {
+            for(let i=0; i<15; i++) { insertarCartaCoup(); await new Promise(r=>setTimeout(r,10)); }
+        }
         else if (id === 'virus') {
-            for(let i=0; i<4; i++) { insertarCartaVirusOrgano(); insertarCartaVirusInfeccion(); insertarCartaVirusMedicina(); }
+            for(let i=0; i<8; i++) {
+                insertarCartaVirusOrgano(); insertarCartaVirusInfeccion(); insertarCartaVirusMedicina();
+                await new Promise(r=>setTimeout(r,10));
+            }
         }
         else if (id === 'root') {
             insertarCartaRoot('marquesado'); insertarCartaRoot('nido'); insertarCartaRoot('alianza'); insertarCartaRoot('vagabundo');
+            for(let i=0; i<12; i++) { insertarCartaRoot(['marquesado', 'nido', 'alianza', 'vagabundo'][i%4]); await new Promise(r=>setTimeout(r,10)); }
         }
         else if (id === 'ciudadelas') {
-            for(let i=0; i<8; i++) insertarCartaCiudadelasPersonaje();
-            for(let i=0; i<4; i++) insertarCartaCiudadelasDistrito();
+            for(let i=0; i<8; i++) { insertarCartaCiudadelasPersonaje(); await new Promise(r=>setTimeout(r,10)); }
+            for(let i=0; i<16; i++) { insertarCartaCiudadelasDistrito(); await new Promise(r=>setTimeout(r,10)); }
         }
         else if (id === 'polilla') {
-            for(let i=0; i<8; i++) insertarCartaPolillaNum();
-            for(let i=0; i<4; i++) insertarCartaPolillaTramposa();
+            for(let i=0; i<15; i++) { insertarCartaPolillaNum(); await new Promise(r=>setTimeout(r,10)); }
+            for(let i=0; i<5; i++) { insertarCartaPolillaTramposa(); await new Promise(r=>setTimeout(r,10)); }
         }
         else if (id === 'bang') {
             for(let i=0; i<4; i++) insertarCartaBangRol();
-            for(let i=0; i<4; i++) insertarCartaBangPersonaje();
+            for(let i=0; i<8; i++) { insertarCartaBangPersonaje(); await new Promise(r=>setTimeout(r,10)); }
         }
 
-                if (id === 'taller_ep') {
-            if(typeof insertarCartaRefran === 'function' && typeof insertarTelaranaEP === 'function') {
-                // Tablero y Fichas
-                insertarTelaranaEP(50, 50);
-                for(let i=0; i<5; i++) insertarFichaTaller('lana', 450 + i*60, 100);
-                
-                // Cartas de Refranes
-                const refranes = [
-                    "Análisis de contexto",
-                    "No hay mal que dure cien años",
-                    "A quien madruga, Dios lo ayuda",
-                    "Más vale pájaro en mano que cien volando",
-                    "El que ríe último, ríe mejor",
-                    "No es oro todo lo que reluce"
-                ];
-                refranes.forEach((refran, i) => {
-                    const col = i % 3;
-                    const row = Math.floor(i / 3);
-                    insertarCartaRefran(refran, 50 + col * 270, 450 + row * 360);
-                });
-            }
-        }
-        else if (id === 'taller_vih') {
-            if(typeof insertarCartaMitoVIH === 'function' && typeof insertarGuiaFacilitadorVIH === 'function') {
-                // Guía y Tableros Principales
-                insertarGuiaFacilitadorVIH(50, 50);
-                insertarCuboReflexionVIH(500, 50);
-                insertarRutaCuidadoVIH(50, 650);
-                insertarArbolProblemasVIH(750, 50);
-                insertarSemaforoVIH(1200, 50);
-                
-                // Fichas de Poder
-                for(let i=0; i<3; i++) insertarFichaTaller('escudo', 500, 450 + i*60);
-                for(let i=0; i<3; i++) insertarFichaTaller('rayo', 600, 450 + i*60);
-                for(let i=0; i<3; i++) insertarFichaTaller('corazon', 700, 450 + i*60);
-                
-                // Mazo de Mitos
-                const mitos = [
-                    { t: "El Contagio", x: "Si tengo VIH, mi pareja se va a contagiar seguro, aunque me cuide." },
-                    { t: "El Examen", x: "El test duele, es caro y todo el pueblo se va a enterar de mi resultado." },
-                    { t: "El Estigma", x: "Solo las personas promiscuas o los homosexuales se contagian de VIH." },
-                    { t: "El Matrimonio", x: "Una mujer casada no necesita cuidarse, su esposo la protege de todo." },
-                    { t: "Las ITS", x: "Si tengo una infección como sífilis o gonorrea, se me quita sola con el tiempo." },
-                    { t: "El Futuro", x: "El VIH es una sentencia de muerte. Si me sale positivo, mi vida se acaba." }
-                ];
-                mitos.forEach((mito, i) => {
-                    const col = i % 3;
-                    const row = Math.floor(i / 3);
-                    insertarCartaMitoVIH('mito', mito.t, mito.x, 50 + col * 270, 850 + row * 360);
-                });
-
-                // Mazo de Situaciones
-                const situaciones = [
-                    { t: "Violencia", x: "Tu pareja se enoja y te grita porque le pediste usar condón. ¿Qué haces?" },
-                    { t: "La Infidelidad", x: "Descubres que tu pareja te fue infiel. Tienes miedo de hacerte el test. ¿Cómo lo enfrentas?" },
-                    { t: "La Amiga", x: "Una amiga te confiesa que tiene miedo de tener VIH, pero no va al médico por vergüenza. ¿Cómo la apoyas?" }
-                ];
-                situaciones.forEach((sit, i) => {
-                    insertarCartaMitoVIH('situacion', sit.t, sit.x, 950 + i * 270, 850);
-                });
-            }
-        }
         if(typeof ocultarLoading === 'function') ocultarLoading();
-        if(typeof showToast === 'function') showToast(`¡Materiales de ${juego.nombre} cargados!`, "success");
+        if(typeof showToast === 'function') showToast(`¡Todo el material de ${juego.nombre} cargado!`, "success");
+
     } catch (error) {
-        console.error("Error cargando juego:", error);         if (id === 'taller_ep') {
-            if(typeof insertarCartaRefran === 'function' && typeof insertarTelaranaEP === 'function') {
-                // Tablero y Fichas
-                insertarTelaranaEP(50, 50);
-                for(let i=0; i<5; i++) insertarFichaTaller('lana', 450 + i*60, 100);
-                
-                // Cartas de Refranes
-                const refranes = [
-                    "Análisis de contexto",
-                    "No hay mal que dure cien años",
-                    "A quien madruga, Dios lo ayuda",
-                    "Más vale pájaro en mano que cien volando",
-                    "El que ríe último, ríe mejor",
-                    "No es oro todo lo que reluce"
-                ];
-                refranes.forEach((refran, i) => {
-                    const col = i % 3;
-                    const row = Math.floor(i / 3);
-                    insertarCartaRefran(refran, 50 + col * 270, 450 + row * 360);
-                });
-            }
-        }
-        else if (id === 'taller_vih') {
-            if(typeof insertarCartaMitoVIH === 'function' && typeof insertarGuiaFacilitadorVIH === 'function') {
-                // Guía y Tableros Principales
-                insertarGuiaFacilitadorVIH(50, 50);
-                insertarCuboReflexionVIH(500, 50);
-                insertarRutaCuidadoVIH(50, 650);
-                insertarArbolProblemasVIH(750, 50);
-                insertarSemaforoVIH(1200, 50);
-                
-                // Fichas de Poder
-                for(let i=0; i<3; i++) insertarFichaTaller('escudo', 500, 450 + i*60);
-                for(let i=0; i<3; i++) insertarFichaTaller('rayo', 600, 450 + i*60);
-                for(let i=0; i<3; i++) insertarFichaTaller('corazon', 700, 450 + i*60);
-                
-                // Mazo de Mitos
-                const mitos = [
-                    { t: "El Contagio", x: "Si tengo VIH, mi pareja se va a contagiar seguro, aunque me cuide." },
-                    { t: "El Examen", x: "El test duele, es caro y todo el pueblo se va a enterar de mi resultado." },
-                    { t: "El Estigma", x: "Solo las personas promiscuas o los homosexuales se contagian de VIH." },
-                    { t: "El Matrimonio", x: "Una mujer casada no necesita cuidarse, su esposo la protege de todo." },
-                    { t: "Las ITS", x: "Si tengo una infección como sífilis o gonorrea, se me quita sola con el tiempo." },
-                    { t: "El Futuro", x: "El VIH es una sentencia de muerte. Si me sale positivo, mi vida se acaba." }
-                ];
-                mitos.forEach((mito, i) => {
-                    const col = i % 3;
-                    const row = Math.floor(i / 3);
-                    insertarCartaMitoVIH('mito', mito.t, mito.x, 50 + col * 270, 850 + row * 360);
-                });
-
-                // Mazo de Situaciones
-                const situaciones = [
-                    { t: "Violencia", x: "Tu pareja se enoja y te grita porque le pediste usar condón. ¿Qué haces?" },
-                    { t: "La Infidelidad", x: "Descubres que tu pareja te fue infiel. Tienes miedo de hacerte el test. ¿Cómo lo enfrentas?" },
-                    { t: "La Amiga", x: "Una amiga te confiesa que tiene miedo de tener VIH, pero no va al médico por vergüenza. ¿Cómo la apoyas?" }
-                ];
-                situaciones.forEach((sit, i) => {
-                    insertarCartaMitoVIH('situacion', sit.t, sit.x, 950 + i * 270, 850);
-                });
-            }
-        }
+        console.error("Error cargando juego:", error);
         if(typeof ocultarLoading === 'function') ocultarLoading();
+        if(typeof showToast === 'function') showToast("Error al cargar: " + error.message, "error");
     }
 }
 
