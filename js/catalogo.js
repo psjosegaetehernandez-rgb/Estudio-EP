@@ -35,7 +35,12 @@ const CATALOGO_JUEGOS = [
     { id: "strixhaven", nombre: "Strixhaven (D&D)", familia: "Rol", jugadores: "2-6", icono: "fa-graduation-cap", color: "#4c1d95", reglas: { objetivo: "Aprender magia.", preparacion: "Elegir estudiante.", turno: "Asistir a clases y resolver misterios." }, adaptacion_ep: { objetivo: "Educación y poder.", preguntas: ["¿Qué se aprende en la escuela de la vida?"] } },
     { id: "carcassonne_plus", nombre: "Carcassonne Plus", familia: "Losetas", jugadores: "2-6", icono: "fa-map", color: "#15803d", reglas: { objetivo: "Construir el mapa más grande.", preparacion: "Mezclar 160 losetas.", turno: "Colocar loseta y meeple." }, adaptacion_ep: { objetivo: "Expansión territorial.", preguntas: ["¿Cómo crece la comunidad?"] } },
     { id: "catan_navegantes", nombre: "Catán Navegantes", familia: "Expansión", jugadores: "3-4", icono: "fa-ship", color: "#0284c7", reglas: { objetivo: "Explorar islas.", preparacion: "Añadir hexágonos de mar.", turno: "Construir barcos y comerciar." }, adaptacion_ep: { objetivo: "Migración y recursos.", preguntas: ["¿Qué implica llegar a un territorio nuevo?"] } },
-    { id: "zombies", nombre: "Zombies!!! (2ª Ed.)", familia: "Toma Eso / Supervivencia", jugadores: "2-6", icono: "fa-biohazard", color: "#15803d", reglas: { objetivo: "Ser el primero en matar 25 zombis o llegar al helipuerto.", preparacion: "Colocar loseta inicial, repartir 3 cartas de evento y contadores.", turno: "Colocar loseta, mover, combatir zombis, jugar eventos." }, adaptacion_ep: { objetivo: "Trabajo en equipo frente a crisis.", preguntas: ["¿Cómo se organiza la comunidad ante una amenaza?", "¿Qué recursos son vitales y cuáles se malgastan?"] } }
+    { id: "zombies", nombre: "Zombies!!! (2ª Ed.)", familia: "Toma Eso / Supervivencia", jugadores: "2-6", icono: "fa-biohazard", color: "#15803d", reglas: { objetivo: "Ser el primero en matar 25 zombis o llegar al helipuerto.", preparacion: "Colocar loseta inicial, repartir 3 cartas de evento y contadores.", turno: "Colocar loseta, mover, combatir zombis, jugar eventos." }, adaptacion_ep: { objetivo: "Trabajo en equipo frente a crisis.", preguntas: ["¿Cómo se organiza la comunidad ante una amenaza?", "¿Qué recursos son vitales y cuáles se malgastan?"] } },
+    { id: "escape_tesoro", nombre: "Búsqueda del Tesoro", familia: "Escape Room", jugadores: "2-8", icono: "fa-map", color: "#ca8a04", reglas: { objetivo: "Encontrar el tesoro final resolviendo pistas en cadena.", preparacion: "Esconder las pistas por la casa.", turno: "Seguir las pistas hasta el premio." }, adaptacion_ep: { objetivo: "Trabajo en equipo y pensamiento lateral.", preguntas: ["¿Cómo se organizaron para encontrar las pistas?", "¿Qué pista fue la más difícil?"] } },
+    { id: "escape_diy", nombre: "Escape Room DIY", familia: "Escape Room", jugadores: "2-6", icono: "fa-puzzle-piece", color: "#6d28d9", reglas: { objetivo: "Escapar de la habitación resolviendo puzzles.", preparacion: "Imprimir puzzles, preparar candados y sobres.", turno: "Resolver puzzles para obtener códigos." }, adaptacion_ep: { objetivo: "Resolución de problemas en equipo.", preguntas: ["¿Qué estrategia usaron para resolver los puzzles?", "¿Cómo se sintieron bajo presión?"] } },
+    { id: "escape_caso_cerrado", nombre: "Caso Cerrado (Expediente)", familia: "Escape Room", jugadores: "2-8", icono: "fa-folder-open", color: "#1e293b", reglas: { objetivo: "Resolver un misterio analizando testimonios y pruebas.", preparacion: "Leer el expediente y organizar las pistas.", turno: "Deducir al culpable." }, adaptacion_ep: { objetivo: "Análisis crítico de la información.", preguntas: ["¿Qué contradicciones encontraron?", "¿Cómo afectan los sesgos a la investigación?"] } },
+    { id: "escape_cluedo", nombre: "Cluedo en Vivo", familia: "Escape Room", jugadores: "4-12", icono: "fa-user-secret", color: "#b91c1c", reglas: { objetivo: "Descubrir al asesino entre los personajes.", preparacion: "Repartir roles y pruebas.", turno: "Interrogar y deducir." }, adaptacion_ep: { objetivo: "Role-play y empatía.", preguntas: ["¿Cómo se sintieron al interpretar un papel?", "¿Qué pistas fueron clave?"] } },
+    { id: "escape_kit_generico", nombre: "Kit de Escape Genérico", familia: "Escape Room", jugadores: "2-8", icono: "fa-lock", color: "#475569", reglas: { objetivo: "Abrir el candado final resolviendo 5 puzzles.", preparacion: "Imprimir 48 puzzles, preparar candados.", turno: "Resolver puzzles de dificultad creciente." }, adaptacion_ep: { objetivo: "Pensamiento lógico y colaboración.", preguntas: ["¿Qué tipo de puzzle les resultó más fácil?", "¿Cómo se dividieron el trabajo?"] } }
 ];
 
 let juegoSeleccionadoEnCatalogo = null;
@@ -292,6 +297,35 @@ async function cargarComponentesJuego(id) {
             for(let i=0; i<30; i++) { cat_insertarContadorZombies('vida', 600 + (i%10)*40, 380 + Math.floor(i/10)*40); }
             for(let i=0; i<60; i++) { cat_insertarContadorZombies('bala', 600 + (i%15)*35, 500 + Math.floor(i/15)*35); }
             for(let i=0; i<2; i++) { cat_insertarDadoZombies(600 + i*60, 650); }
+        }
+        // NUEVOS KITS DE ESCAPE (v232.0)
+        else if (id === 'escape_tesoro') {
+            for(let i=0; i<5; i++) { cat_insertarPistaEscape('acertijo', 'Pista ' + (i+1)); await new Promise(r=>setTimeout(r,10)); }
+            cat_insertarMapaEscape(50, 400);
+            cat_insertarTimerEscape(400, 400);
+        }
+        else if (id === 'escape_diy') {
+            for(let i=0; i<3; i++) { cat_insertarCandadoEscape(3 + i, 50 + i*200, 50); }
+            for(let i=0; i<3; i++) { cat_insertarSobreEscape(50 + i*250, 200); }
+            for(let i=0; i<5; i++) { cat_insertarPistaEscape(['acertijo','codigo','cifrado','logica','observacion'][i], 'Puzzle ' + (i+1)); await new Promise(r=>setTimeout(r,10)); }
+            cat_insertarTimerEscape(800, 500);
+        }
+        else if (id === 'escape_caso_cerrado') {
+            for(let i=0; i<5; i++) { cat_insertarCartaNarrativaEscape(['detective','sospechoso','victima','testigo','gm'][i], 50 + i*260, 50); }
+            for(let i=0; i<5; i++) { cat_insertarPistaEscape('logica', 'Evidencia ' + (i+1)); await new Promise(r=>setTimeout(r,10)); }
+            cat_insertarHojaPistasEscape(400, 400);
+        }
+        else if (id === 'escape_cluedo') {
+            for(let i=0; i<6; i++) { cat_insertarCartaNarrativaEscape(['detective','sospechoso','victima','testigo','gm','sospechoso'][i], 50 + (i%3)*260, 50 + Math.floor(i/3)*350); }
+            for(let i=0; i<3; i++) { cat_insertarSobreEscape(850, 100 + i*150); }
+            cat_insertarTimerEscape(400, 700);
+        }
+        else if (id === 'escape_kit_generico') {
+            for(let i=0; i<5; i++) { cat_insertarPistaEscape(['acertijo','codigo','cifrado','logica','observacion'][i], 'Puzzle ' + (i+1)); await new Promise(r=>setTimeout(r,10)); }
+            cat_insertarCandadoEscape(4, 50, 400);
+            cat_insertarSobreEscape(300, 400);
+            cat_insertarTimerEscape(550, 400);
+            cat_insertarHojaPistasEscape(750, 400);
         }
 
         if(typeof ocultarLoading === 'function') ocultarLoading();
