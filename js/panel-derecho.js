@@ -39,20 +39,87 @@ function seleccionarElemento(elmnt) {
         return;
     }
 
-    // B) ES UNA CARTA (Normal o Reflexión)
-    if (elmnt.querySelector('.carta-container')) {
+    // B) ES UNA CARTA (Detecta TODAS las variantes, incluidas las planas)
+    const isCard = elmnt.querySelector('.carta-container') || 
+                   elmnt.querySelector('.carta-pro') || 
+                   elmnt.querySelector('.carta-sushi') || 
+                   elmnt.querySelector('.carta-dixit') || 
+                   elmnt.querySelector('.carta-lobos') || 
+                   elmnt.querySelector('.carta-codename') || 
+                   elmnt.innerHTML.includes('carta-naipe') || 
+                   elmnt.innerHTML.includes('carta-evento') ||
+                   elmnt.innerHTML.includes('carta-uno');
+
+    if (isCard) {
         document.getElementById('props-carta').style.display = 'block';
-        if (elmnt.querySelector('.carta-texto')) document.getElementById('prop-text').value = elmnt.querySelector('.carta-texto').innerText;
-        if (elmnt.querySelector('.dato-instrucciones')) document.getElementById('prop-instrucciones').value = elmnt.querySelector('.dato-instrucciones').innerText;
         
-        const gIcono = document.getElementById('grupo-icono-reflexion');
-        if (gIcono && elmnt.querySelector('.titulo-reflexion')) gIcono.style.display = 'block';
+        let container = elmnt.querySelector('.carta-container');
         
+        // ¡MAGIA! Si es una carta plana, la adaptamos a 3D en el momento
+        if (!container) {
+            const temp = elmnt.cloneNode(true);
+            temp.querySelectorAll('.floating-actions').forEach(m => m.remove());
+            temp.classList.remove('selected');
+            const origHTML = temp.innerHTML;
+            
+            // Forzamos un tamaño estándar de carta (240x330) si el original no lo tiene
+            const w = elmnt.offsetWidth || 240;
+            const h = elmnt.offsetHeight || 330;
+            
+            elmnt.style.width = w + 'px';
+            elmnt.style.height = h + 'px';
+
+            elmnt.innerHTML = `
+                <div class="carta-container" style="width: 100%; height: 100%;">
+                    <div class="carta-inner">
+                        <div class="carta-front" style="display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; padding: 0; margin: 0; overflow: hidden; border-radius: 8px;">${origHTML}</div>
+                        <div class="carta-back" style="background: #1e293b; display: flex; align-items: center; justify-content: center; color: white; border-radius: 8px; border: 2px solid #0f172a; box-sizing: border-box; overflow: hidden;">
+                            <i class="fa-solid fa-clone" style="font-size: 50px; opacity: 0.3;"></i>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container = elmnt.querySelector('.carta-container');
+            if(typeof showToast === 'function') showToast("Carta adaptada a formato 3D", "info");
+        }
+
+        const front = container.querySelector('.carta-front');
+        const back = container.querySelector('.carta-back');
+
+        if (front) {
+            let textEl = front.querySelector('.carta-texto') || front.querySelector('.sushi-header') || front.querySelector('.lobos-nombre') || front.querySelector('span') || front.querySelector('h4') || front.querySelector('h3');
+            if (!textEl && front.children.length > 0) textEl = front.children[0];
+            
+            if (textEl) {
+                document.getElementById('prop-text').value = textEl.innerText || textEl.textContent || '';
+            } else {
+                document.getElementById('prop-text').value = front.innerText || '';
+            }
+        }
+
+        if (back) {
+            const controlesDorso = document.getElementById('controles-img-dorso');
+            if (back.style.backgroundImage && back.style.backgroundImage !== 'none') {
+                if(controlesDorso) controlesDorso.style.display = 'block';
+            } else {
+                if(controlesDorso) controlesDorso.style.display = 'none';
+            }
+
+            const colorRGB = back.style.backgroundColor;
+            if (colorRGB && colorRGB.startsWith('rgb')) {
+                const match = colorRGB.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                if (match) {
+                    const hex = (x) => ("0" + parseInt(x).toString(16)).slice(-2);
+                    document.getElementById('prop-dorso-color').value = "#" + hex(match[1]) + hex(match[2]) + hex(match[3]);
+                }
+            }
+        }
+
         mostrarMenuFlotante(elmnt);
         return;
     }
 
-    // C) ES UN TOKEN GENÉRICO (Con texto)
+    // C) ES UN TOKEN GENÉRICO
     if (elmnt.classList.contains('token-wrapper')) {
         document.getElementById('grupo-token').style.display = 'block';
         tokenSeleccionado = elmnt;
@@ -62,7 +129,7 @@ function seleccionarElemento(elmnt) {
         return;
     }
 
-    // D) OTROS (Notas, Meeples 3D, Cubos 3D)
+    // D) OTROS (Notas, Meeples, etc.)
     document.getElementById('props-especifico').style.display = 'block';
     document.getElementById('lbl-especifico').innerText = "Contenido / Color HEX";
     let textoActual = elmnt.innerText || '';
@@ -90,12 +157,31 @@ function actualizarPropiedad(prop, valor) {
         }
     } 
     else if (prop === 'texto') { 
-        const d = elementoSeleccionado.querySelector('.carta-texto'); if (d) d.innerText = valor; 
+        const front = elementoSeleccionado.querySelector('.carta-front') || elementoSeleccionado;
+        let d = front.querySelector('.carta-texto') || front.querySelector('.sushi-header') || front.querySelector('.lobos-nombre') || front.querySelector('span') || front.querySelector('h4') || front.querySelector('h3');
+        if (!d && front.children.length > 0) d = front.children[0];
+        
+        if (d) d.innerText = valor; 
+        else if (front) front.innerText = valor;
     }
     else if (prop === 'instrucciones') { 
-        const d = elementoSeleccionado.querySelector('.dato-instrucciones'); if (d) d.innerText = valor; 
+        const back = elementoSeleccionado.querySelector('.carta-back');
+        if (back) {
+            let d = back.querySelector('.dato-instrucciones') || back.querySelector('.carta-texto') || back.querySelector('p');
+            if (d) d.innerText = valor; 
+            else back.innerText = valor;
+        }
     }
     autosave();
+}
+
+// ================= VOLTEAR CARTA =================
+function voltearCarta() {
+    if (!elementoSeleccionado) return;
+    const container = elementoSeleccionado.querySelector('.carta-container');
+    if (container) {
+        container.classList.toggle('flipped');
+    }
 }
 
 // ================= IMAGEN PARA TABLEROS =================
@@ -124,25 +210,25 @@ function ajustarImagenTablero(tipo, valor) {
     autosave();
 }
 
-// ================= IMAGEN PARA CARTAS =================
+// ================= IMAGEN PARA CARTAS (ANVERSO) =================
 function subirImagenCarta(event) {
     const file = event.target.files[0]; if (!file || !elementoSeleccionado) return;
     const reader = new FileReader();
     reader.onload = function(e) {
-        const front = elementoSeleccionado.querySelector('.carta-front');
+        let front = elementoSeleccionado.querySelector('.carta-front') || elementoSeleccionado;
         if (front) {
             front.style.backgroundImage = `url(${e.target.result})`;
             front.style.backgroundSize = 'cover';
             front.style.backgroundPosition = 'center';
             if(document.getElementById('controles-img-carta')) document.getElementById('controles-img-carta').style.display = 'block';
-            autosave(); showToast("Imagen añadida a la carta", "success");
+            autosave(); showToast("Imagen añadida al anverso", "success");
         }
     };
     reader.readAsDataURL(file);
 }
 function ajustarImagenCarta(tipo, valor) {
     if (!elementoSeleccionado) return;
-    const front = elementoSeleccionado.querySelector('.carta-front');
+    const front = elementoSeleccionado.querySelector('.carta-front') || elementoSeleccionado;
     if (!front) return;
     if (tipo === 'zoom') front.style.backgroundSize = (valor * 100) + '%';
     else if (tipo === 'x' || tipo === 'y') {
@@ -153,6 +239,66 @@ function ajustarImagenCarta(tipo, valor) {
         front.style.backgroundPosition = `${x} ${y}`;
     }
     autosave();
+}
+
+// ================= IMAGEN PARA DORSO =================
+function subirImagenDorso(event) {
+    const file = event.target.files[0]; if (!file || !elementoSeleccionado) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const back = elementoSeleccionado.querySelector('.carta-back');
+        if (back) {
+            back.innerHTML = ''; // Elimina el ícono o texto anterior para que no haga "cuadros"
+            back.style.border = 'none'; // Quita el borde para que la imagen se vea limpia
+            back.style.backgroundImage = `url(${e.target.result})`;
+            back.style.backgroundSize = 'cover';
+            back.style.backgroundPosition = 'center';
+            
+            const controles = document.getElementById('controles-img-dorso');
+            if (controles) controles.style.display = 'block';
+            autosave(); showToast("Imagen añadida al dorso", "success");
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+function ajustarImagenDorso(tipo, valor) {
+    if (!elementoSeleccionado) return;
+    const back = elementoSeleccionado.querySelector('.carta-back');
+    if (!back) return;
+
+    if (tipo === 'zoom') {
+        back.style.backgroundSize = (valor * 100) + '%';
+    } else if (tipo === 'x' || tipo === 'y') {
+        let currentPos = back.style.backgroundPosition || '50% 50%';
+        let parts = currentPos.split(' ');
+        let x = parts[0]; let y = parts[1] || '50%';
+        if (tipo === 'x') x = valor + '%'; if (tipo === 'y') y = valor + '%';
+        back.style.backgroundPosition = `${x} ${y}`;
+    }
+    autosave();
+}
+
+function cambiarColorDorso(color) {
+    if (!elementoSeleccionado) return;
+    const back = elementoSeleccionado.querySelector('.carta-back');
+    if (back) {
+        back.style.backgroundColor = color;
+        autosave();
+    }
+}
+
+function quitarImagenDorso() {
+    if (!elementoSeleccionado) return;
+    const back = elementoSeleccionado.querySelector('.carta-back');
+    if (back) {
+        back.innerHTML = '<i class="fa-solid fa-clone" style="font-size: 50px; opacity: 0.3; color: white;"></i>';
+        back.style.backgroundImage = 'none';
+        back.style.border = '2px solid #0f172a';
+        const controles = document.getElementById('controles-img-dorso');
+        if (controles) controles.style.display = 'none';
+        autosave(); showToast("Imagen del dorso eliminada", "info");
+    }
 }
 
 // ================= TOKENS =================
