@@ -1088,3 +1088,342 @@ function switchTool(tabName, btn) {
     if(targetContent) targetContent.classList.add('active');
     if(btn) btn.classList.add('active');
 }
+
+
+// ================= MOTOR DE IMPRESIÓN DEFINITIVO (v220.0) =================
+// Sobrescribimos para ignorar el scroll, forzar tamaños y mantener colores.
+
+window.crearMiniaturaPreview = function(elementoOriginal, targetWidth, isBack = false, isBW = false) {
+    let origW = 240;
+    let origH = 330;
+    let clone;
+
+    const cartaContainer = elementoOriginal.querySelector('.carta-container');
+
+    if (cartaContainer) {
+        if (isBack) {
+            const backContent = cartaContainer.querySelector('.carta-back');
+            clone = backContent ? backContent.cloneNode(true) : cartaContainer.cloneNode(true);
+        } else {
+            const frontContent = cartaContainer.querySelector('.carta-front');
+            clone = frontContent ? frontContent.cloneNode(true) : cartaContainer.cloneNode(true);
+        }
+    } else {
+        let visual = elementoOriginal.querySelector('.carta-pro') || elementoOriginal.firstElementChild || elementoOriginal;
+        clone = visual.cloneNode(true);
+        origW = elementoOriginal.offsetWidth || 240;
+        origH = elementoOriginal.offsetHeight || 330;
+    }
+
+    const menu = clone.querySelector('.floating-actions'); if(menu) menu.remove();
+    clone.classList.remove('selected');
+    clone.classList.remove('flipped');
+
+    const scale = targetWidth / origW;
+
+    const wrapper = document.createElement('div');
+    wrapper.style.width = targetWidth + 'px';
+    wrapper.style.height = (origH * scale) + 'px';
+    wrapper.style.position = 'relative';
+    wrapper.style.overflow = 'hidden';
+    wrapper.style.borderRadius = '6px';
+    wrapper.style.display = 'flex';
+    wrapper.style.alignItems = 'center';
+    wrapper.style.justifyContent = 'center';
+
+    // FORZAR ESTILOS CON !important PARA ANULAR EL CSS Y EL SCROLL
+    clone.style.setProperty('position', 'absolute', 'important');
+    clone.style.setProperty('top', '0', 'important');
+    clone.style.setProperty('left', '0', 'important');
+    clone.style.setProperty('width', origW + 'px', 'important');
+    clone.style.setProperty('height', origH + 'px', 'important');
+    clone.style.setProperty('transform', `scale(${scale})`, 'important');
+    clone.style.setProperty('transform-origin', 'top left', 'important');
+    clone.style.setProperty('box-sizing', 'border-box', 'important');
+    clone.style.setProperty('margin', '0', 'important');
+    clone.style.setProperty('overflow', 'hidden', 'important'); // APAGA EL SCROLL
+    clone.style.setProperty('backface-visibility', 'visible', 'important');
+    clone.style.setProperty('-webkit-backface-visibility', 'visible', 'important');
+
+    if (isBW) clone.style.setProperty('filter', 'grayscale(100%)', 'important');
+
+    wrapper.appendChild(clone);
+    return wrapper;
+};
+
+window.actualizarVistaPrevia = function() {
+    const previewArea = document.getElementById('print-preview-area');
+    const stats = document.getElementById('print-stats');
+    if (!previewArea || !stats) return;
+
+    const size = document.getElementById('print-size') ? document.getElementById('print-size').value : 'medium';
+    const isBW = document.getElementById('print-bw') ? document.getElementById('print-bw').checked : false;
+    const isDuplex = document.getElementById('print-dorsos') ? document.getElementById('print-dorsos').checked : false;
+    const isMosaico = document.getElementById('print-mosaico') ? document.getElementById('print-mosaico').checked : false;
+
+    const { cards, largeBoards, smallTokens } = clasificarElementos();
+    let activeLargeBoards = isMosaico ? largeBoards : [];
+    let activeSmallTokens = isMosaico ? smallTokens : [...smallTokens, ...largeBoards];
+
+    const totalElements = cards.length + activeLargeBoards.length + activeSmallTokens.length;
+    if (totalElements === 0) { previewArea.innerHTML = '<p style="color:#666; text-align:center; width:100%; margin-top:50px;">No hay elementos.</p>'; stats.innerHTML = '0 hojas.'; return; }
+
+    let cols = 3, rows = 3; if (size === 'small') { cols = 4; rows = 3; } if (size === 'large') { cols = 2; rows = 2; }
+    const itemsPerPage = cols * rows;
+    const frontPages = Math.ceil(cards.length / itemsPerPage);
+    const backPages = isDuplex ? frontPages : 0;
+    const tokenPages = Math.ceil(activeSmallTokens.length / 20);
+    const boardPages = activeLargeBoards.length;
+
+    stats.innerHTML = `Cartas: <b>${cards.length}</b> | Tableros: <b>${activeLargeBoards.length}</b> | Fichas: <b>${activeSmallTokens.length}</b><br>Hojas totales: <b>${frontPages + backPages + tokenPages + boardPages}</b>`;
+    previewArea.innerHTML = '';
+
+    const targetW = size === 'large' ? 170 : (size === 'small' ? 90 : 130);
+
+    const crearHoja = (titulo, esGrid, customCols, customRows) => {
+        const div = document.createElement('div');
+        div.style.cssText = `width:100%; max-width:500px; aspect-ratio:1/1.414; background:white; padding:20px; margin: 0 auto 20px auto; position:relative; box-shadow:0 5px 15px rgba(0,0,0,0.2); box-sizing:border-box; display:${esGrid ? 'grid' : 'flex'}; `;
+        if (esGrid) div.style.cssText += `grid-template-columns: repeat(${customCols}, 1fr); grid-template-rows: repeat(${customRows}, 1fr); gap:10px; place-items:center;`;
+        else div.style.cssText += `align-items:center; justify-content:center;`;
+
+        const t = document.createElement('div');
+        t.style.cssText = 'position:absolute; top:5px; left:10px; font-size:10px; color:#999; font-weight:bold; z-index:10;';
+        t.innerText = titulo;
+        div.appendChild(t);
+        return div;
+    };
+
+    // 1. Frentes
+    for (let p = 0; p < frontPages; p++) {
+        const page = crearHoja(`Hoja ${p + 1} (Cartas)`, true, cols, rows);
+        for (let i = 0; i < itemsPerPage; i++) {
+            const idx = p * itemsPerPage + i; if (idx >= cards.length) break;
+            page.appendChild(window.crearMiniaturaPreview(cards[idx], targetW, false, isBW));
+        }
+        previewArea.appendChild(page);
+    }
+
+    // 2. Dorsos
+    if (isDuplex) {
+        for (let p = 0; p < backPages; p++) {
+            const page = crearHoja(`Hoja ${frontPages + p + 1} (Dorsos)`, true, cols, rows);
+            for (let i = 0; i < itemsPerPage; i++) {
+                const idx = p * itemsPerPage + i; if (idx >= cards.length) break;
+                page.appendChild(window.crearMiniaturaPreview(cards[idx], targetW, true, isBW));
+            }
+            previewArea.appendChild(page);
+        }
+    }
+
+    // 3. Fichas
+    for (let p = 0; p < tokenPages; p++) {
+        const page = crearHoja(`Hoja ${frontPages + backPages + p + 1} (Fichas)`, true, 4, 5);
+        for (let i = 0; i < 20; i++) {
+            const idx = p * 20 + i; if (idx >= activeSmallTokens.length) break;
+            page.appendChild(window.crearMiniaturaPreview(activeSmallTokens[idx], 60, false, isBW));
+        }
+        previewArea.appendChild(page);
+    }
+
+    // 4. Tableros Complejos
+    for (let p = 0; p < boardPages; p++) {
+        const page = crearHoja(`Hoja ${frontPages + backPages + tokenPages + p + 1} (Tablero)`, false);
+        
+        // Calculamos escala proporcional para que el tablero quepa en la hoja
+        const bW = activeLargeBoards[p].offsetWidth || 500;
+        const bH = activeLargeBoards[p].offsetHeight || 500;
+        const scale = Math.min(420 / bW, 550 / bH, 1);
+
+        const boardDiv = document.createElement('div');
+        boardDiv.style.width = (bW * scale) + 'px';
+        boardDiv.style.height = (bH * scale) + 'px';
+        boardDiv.style.position = 'relative';
+        boardDiv.style.overflow = 'hidden';
+
+        const clone = activeLargeBoards[p].cloneNode(true);
+        const menu = clone.querySelector('.floating-actions'); if(menu) menu.remove();
+        clone.classList.remove('selected');
+        clone.style.setProperty('position', 'absolute', 'important'); 
+        clone.style.setProperty('top', '0', 'important'); 
+        clone.style.setProperty('left', '0', 'important'); 
+        clone.style.setProperty('margin', '0', 'important');
+        clone.style.setProperty('transform', `scale(${scale})`, 'important');
+        clone.style.setProperty('transform-origin', 'top left', 'important');
+        clone.style.setProperty('overflow', 'hidden', 'important');
+        
+        if (isBW) clone.style.filter = 'grayscale(100%)';
+
+        boardDiv.appendChild(clone);
+        page.appendChild(boardDiv);
+        previewArea.appendChild(page);
+    }
+}
+
+window.generarPDFFinal = async function() {
+    try {
+        mostrarLoading("Generando PDF...", "Optimizando tamaños y colores...");
+        const printModal = document.getElementById('print-modal');
+        if (printModal) printModal.style.display = 'none';
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        const size = document.getElementById('print-size') ? document.getElementById('print-size').value : 'medium';
+        const isBW = document.getElementById('print-bw') ? document.getElementById('print-bw').checked : false;
+        const isDuplex = document.getElementById('print-dorsos') ? document.getElementById('print-dorsos').checked : false;
+        const isMosaico = document.getElementById('print-mosaico') ? document.getElementById('print-mosaico').checked : false;
+
+        const { cards, largeBoards, smallTokens } = clasificarElementos();
+        let activeLargeBoards = isMosaico ? largeBoards : [];
+        let activeSmallTokens = isMosaico ? smallTokens : [...smallTokens, ...largeBoards];
+
+        let cols = 3, rows = 3; if (size === 'small') { cols = 4; rows = 3; } if (size === 'large') { cols = 2; rows = 2; }
+        const itemsPerPage = cols * rows;
+
+        const capturarParaPDF = async (element, isBack, anchoBase, altoBase) => {
+            const stage = document.createElement('div');
+            stage.style.position = 'fixed';
+            stage.style.left = '-9999px';
+            stage.style.top = '0';
+            stage.style.width = anchoBase + 'px';
+            stage.style.height = altoBase + 'px';
+            stage.style.overflow = 'hidden';
+            stage.style.background = 'white';
+
+            let clone;
+            const cartaContainer = element.querySelector('.carta-container');
+
+            if (cartaContainer) {
+                if (isBack) {
+                    const back = cartaContainer.querySelector('.carta-back');
+                    clone = back ? back.cloneNode(true) : cartaContainer.cloneNode(true);
+                } else {
+                    const front = cartaContainer.querySelector('.carta-front');
+                    clone = front ? front.cloneNode(true) : cartaContainer.cloneNode(true);
+                }
+            } else {
+                let visual = element.querySelector('.carta-pro') || element.firstElementChild || element;
+                clone = visual.cloneNode(true);
+            }
+
+            const menu = clone.querySelector('.floating-actions'); if(menu) menu.remove();
+            clone.classList.remove('selected');
+            clone.classList.remove('flipped');
+
+            // FORZAR ESTILOS PLANOS Y SIN SCROLL
+            clone.style.setProperty('position', 'relative', 'important');
+            clone.style.setProperty('top', 'auto', 'important');
+            clone.style.setProperty('left', 'auto', 'important');
+            clone.style.setProperty('margin', '0', 'important');
+            clone.style.setProperty('width', anchoBase + 'px', 'important');
+            clone.style.setProperty('height', altoBase + 'px', 'important');
+            clone.style.setProperty('transform', 'none', 'important');
+            clone.style.setProperty('box-sizing', 'border-box', 'important');
+            clone.style.setProperty('overflow', 'hidden', 'important'); // Previene bucle infinito
+            clone.style.setProperty('background', '#ffffff', 'important'); // Fuerza fondo blanco sólido
+
+            // Forzar que los hijos con scroll se muestren completos
+            clone.querySelectorAll('*').forEach(child => {
+                if (child.style.overflow === 'auto' || child.style.overflowY === 'auto') {
+                    child.style.setProperty('overflow', 'hidden', 'important');
+                }
+            });
+
+            if (isBW) clone.style.setProperty('filter', 'grayscale(100%)', 'important');
+
+            stage.appendChild(clone);
+            document.body.appendChild(stage);
+
+            await new Promise(r => setTimeout(r, 50));
+
+            const canvas = await html2canvas(stage, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                logging: false,
+                width: anchoBase,
+                height: altoBase,
+                scrollX: 0,
+                scrollY: 0
+            });
+
+            document.body.removeChild(stage);
+            return canvas.toDataURL('image/jpeg', 0.95);
+        };
+
+        if (cards.length > 0) {
+            pdf.addPage();
+            let idx = 0;
+            for (let item of cards) {
+                const img = await capturarParaPDF(item, false, 240, 330);
+                const width = 63.5; const height = 88;
+                const col = idx % cols; const row = Math.floor(idx / cols);
+                const offsetX = (210 - (cols * (width + 5))) / 2;
+                const offsetY = (297 - (rows * (height + 5))) / 2;
+                const x = offsetX + col * (width + 5); const y = offsetY + row * (height + 5);
+                pdf.addImage(img, 'JPEG', x, y, width, height);
+                idx++;
+                if (idx % itemsPerPage === 0 && idx < cards.length) pdf.addPage();
+                await new Promise(r => setTimeout(r, 50));
+            }
+        }
+
+        if (isDuplex && cards.length > 0) {
+            pdf.addPage();
+            let idx = 0;
+            for (let item of cards) {
+                const img = await capturarParaPDF(item, true, 240, 330);
+                const width = 63.5; const height = 88;
+                const col = idx % cols; const row = Math.floor(idx / cols);
+                const offsetX = (210 - (cols * (width + 5))) / 2;
+                const offsetY = (297 - (rows * (height + 5))) / 2;
+                const x = offsetX + col * (width + 5); const y = offsetY + row * (height + 5);
+                pdf.addImage(img, 'JPEG', x, y, width, height);
+                idx++;
+                if (idx % itemsPerPage === 0 && idx < cards.length) pdf.addPage();
+                await new Promise(r => setTimeout(r, 50));
+            }
+        }
+
+        if (activeSmallTokens.length > 0) {
+            pdf.addPage();
+            let idx = 0;
+            for (let token of activeSmallTokens) {
+                const img = await capturarParaPDF(token, false, 60, 60);
+                const w = 25; const h = 25;
+                const col = idx % 4; const row = Math.floor(idx / 4) % 5;
+                const x = 20 + col * (w + 15); const y = 20 + row * (h + 15);
+                pdf.addImage(img, 'JPEG', x, y, w, h);
+                idx++;
+                if (idx % 20 === 0 && idx < activeSmallTokens.length) pdf.addPage();
+                await new Promise(r => setTimeout(r, 50));
+            }
+        }
+
+        if (activeLargeBoards.length > 0) {
+            for (let board of activeLargeBoards) {
+                pdf.addPage();
+                const bW = board.offsetWidth || 500;
+                const bH = board.offsetHeight || 500;
+                const img = await capturarParaPDF(board, false, bW, bH);
+                const p = pdf.getImageProperties(img);
+                let w = 180; let h = (p.height * w) / p.width;
+                if (h > 260) { h = 260; w = (p.width * h) / p.height; }
+                const x = (210 - w) / 2; const y = (297 - h) / 2;
+                pdf.addImage(img, 'JPEG', x, y, w, h);
+                await new Promise(r => setTimeout(r, 50));
+            }
+        }
+
+        pdf.save('Estudio_EP_Export.pdf');
+        if (printModal) printModal.style.display = 'flex';
+        ocultarLoading();
+        showToast("PDF generado correctamente", "success");
+
+    } catch (error) {
+        console.error("Error generando PDF:", error);
+        if (document.getElementById('print-modal')) document.getElementById('print-modal').style.display = 'flex';
+        ocultarLoading();
+        showToast("Error: " + error.message, "error");
+    }
+};
