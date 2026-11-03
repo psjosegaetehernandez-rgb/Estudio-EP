@@ -1,0 +1,65 @@
+/* ================= LAYOUTS Y FLIP 3D (v200.0) ================= */
+.carta-container {
+    perspective: 1000px;
+    cursor: grab;
+    position: relative;
+}
+.carta-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+.carta-container.flipped .carta-inner {
+    transform: rotateY(180deg) !important;
+}
+.carta-front, .carta-back {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    border-radius: 10px;
+    overflow: hidden;
+    box-sizing: border-box !important;
+}
+.carta-back {
+    transform: rotateY(180deg) !important;
+}
+.carta-pro {
+    width: 100% !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+}
+
+/* Estilos Base de Cartas */
+.carta-sushi { background: #fff; border: 4px solid #f59e0b; border-radius: 12px; display: flex; flex-direction: column; align-items: center; }
+.sushi-header { background: #f59e0b; color: white; text-align: center; padding: 8px; font-weight: bold; font-size: 14px; width: 100%; }
+.sushi-icon { font-size: 70px; color: #f59e0b; margin: 20px 0; }
+.sushi-points { position: absolute; bottom: 15px; right: 15px; background: #1e293b; color: #fcd34d; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+
+.carta-dixit { border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.carta-dixit i { font-size: 80px; color: rgba(255,255,255,0.8); filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+.carta-dixit .dixit-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.5); color: white; padding: 10px; text-align: center; font-family: 'Merriweather'; font-size: 12px; }
+
+.carta-lobos { background: #1e1b4b; border: 4px solid #4c1d95; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
+.carta-lobos i { font-size: 65px; color: #a78bfa; margin-bottom: 15px; }
+.carta-lobos .lobos-nombre { font-family: 'Playfair Display'; font-size: 20px; font-weight: bold; text-transform: uppercase; }
+
+.carta-codename { border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 4px solid #fff; }
+.codename-rojo { background: #dc2626; color: white; border-color: #fca5a5; }
+.codename-azul { background: #2563eb; color: white; border-color: #93c5fd; }
+.carta-codename span { font-family: 'Inter'; font-size: 24px; font-weight: 900; text-transform: uppercase; text-align: center; padding: 10px; }
+
+.carta-root { border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; background: #f8fafc; border: 2px solid #1e293b; }
+.root-header { padding: 8px 12px; color: white; font-family: 'Merriweather'; font-weight: bold; font-size: 12px; text-transform: uppercase; display: flex; justify-content: space-between; }
+.root-art { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 60px; }
+.root-text { padding: 10px; font-size: 10px; background: white; border-top: 1px solid #e2e8f0; }
+.root-marquesado .root-header { background: #b91c1c; }
+.root-nido .root-header { background: #1e40af; }
+.root-alianza .root-header { background: #15803d; }
+.root-vagabundo .root-header { background: #6d28d9; }

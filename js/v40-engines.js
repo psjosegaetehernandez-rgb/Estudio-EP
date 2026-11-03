@@ -1,0 +1,58 @@
+// ================= MOTORES V40.0 (v205.0) =================
+
+function insertarCartaRoot(faccion) {
+    const facciones = { marquesado: { nombre: 'Marquesado', icono: 'fa-crown', color: '#b91c1c', clase: 'root-marquesado' }, nido: { nombre: 'Nido', icono: 'fa-feather', color: '#1e40af', clase: 'root-nido' }, alianza: { nombre: 'Alianza', icono: 'fa-tree', color: '#15803d', clase: 'root-alianza' }, vagabundo: { nombre: 'Vagabundo', icono: 'fa-person-hiking', color: '#6d28d9', clase: 'root-vagabundo' } };
+    const f = facciones[faccion] || facciones.marquesado;
+    const front = `<div class="carta-pro carta-root ${f.clase}"><div class="root-header"><span contenteditable="true">Acción</span> <i class="fa-solid ${f.icono}"></i></div><div class="root-art"><i class="fa-solid ${f.icono}" style="color:${f.color}; opacity:0.4;"></i></div><div class="root-text" contenteditable="true">Mueve a todas tus tropas a un claro adyacente.</div></div>`;
+    const back = `<div style="width:100%; height:100%; background:#1e293b; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; border:2px solid #0f172a;"><i class="fa-solid fa-tree" style="font-size:50px; color:#15803d; margin-bottom:10px;"></i><span style="color:#64748b; font-family:'Merriweather'; font-size:12px;">Root</span></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function insertarCartaCiudadelasPersonaje() {
+    const p = [{ num: 1, nombre: 'Asesino', icono: 'fa-skull', hab: 'Elimina a un personaje.' },{ num: 2, nombre: 'Ladrón', icono: 'fa-hand-sparkles', hab: 'Roba oro.' },{ num: 3, nombre: 'Mago', icono: 'fa-hat-wizard', hab: 'Intercambia cartas.' },{ num: 4, nombre: 'Rey', icono: 'fa-crown', hab: '+1 oro por noble.' },{ num: 5, nombre: 'Obispo', icono: 'fa-church', hab: '+1 oro por religioso.' },{ num: 6, nombre: 'Mercader', icono: 'fa-coins', hab: '+1 oro por comercial.' },{ num: 7, nombre: 'Arquitecto', icono: 'fa-hammer', hab: 'Construye hasta 3 distritos.' },{ num: 8, nombre: 'Condottiero', icono: 'fa-chess-knight', hab: 'Destruye un distrito.' }][Math.floor(Math.random() * 8)];
+    const front = `<div class="carta-pro" style="background:#fef3c7; border:4px solid #78350f; border-radius:10px; display:flex; flex-direction:column; align-items:center; padding:10px;"><div style="position:absolute; top:8px; left:8px; background:#78350f; color:#fef3c7; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${p.num}</div><div style="width:80%; height:50%; background:#fde68a; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:50px; color:#78350f; margin-top:20px;"><i class="fa-solid ${p.icono}"></i></div><div style="font-family:'Merriweather'; font-weight:bold; color:#78350f; font-size:16px; margin-top:10px;" contenteditable="true">${p.nombre}</div><div style="font-size:9px; text-align:center; color:#451a03; margin-top:8px;" contenteditable="true">${p.hab}</div></div>`;
+    const back = `<div style="width:100%; height:100%; background:#78350f; border-radius:10px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-chess-rook" style="font-size:50px; color:#fef3c7;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function insertarCartaCiudadelasDistrito() {
+    const d = [{ nombre: 'Catedral', tipo: 'religioso', costo: 5, icono: 'fa-church' },{ nombre: 'Castillo', tipo: 'militar', costo: 4, icono: 'fa-chess-rook' },{ nombre: 'Mercado', tipo: 'comercial', costo: 2, icono: 'fa-store' },{ nombre: 'Palacio', tipo: 'noble', costo: 5, icono: 'fa-crown' },{ nombre: 'Biblioteca', tipo: 'maravilla', costo: 6, icono: 'fa-book' }][Math.floor(Math.random() * 5)];
+    const front = `<div class="carta-pro" style="background:#fdfbf7; border:3px solid #78350f; border-radius:8px; display:flex; flex-direction:column; padding:10px;"><div style="font-family:'Merriweather'; font-weight:bold; font-size:13px; text-transform:uppercase;" contenteditable="true"><i class="fa-solid ${d.icono}"></i> ${d.nombre}</div><div style="position:absolute; top:8px; right:8px; background:#fbbf24; color:#78350f; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; border:2px solid #78350f;">${d.costo}</div><div style="margin-top:15px; font-size:10px;" contenteditable="true">Tipo: <b>${d.tipo}</b></div></div>`;
+    const back = `<div style="width:100%; height:100%; background:#fde68a; border-radius:8px; display:flex; align-items:center; justify-content:center; border:3px solid #ca8a04;"><i class="fa-solid fa-city" style="font-size:40px; color:#78350f;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function insertarCartaVirusOrgano() {
+    const v = [{ nombre: 'Corazón', icono: 'fa-heart-pulse', clase: 'virus-rojo', bg: '#fee2e2', border: '#b91c1c', color: '#991b1b' },{ nombre: 'Cerebro', icono: 'fa-brain', clase: 'virus-azul', bg: '#dbeafe', border: '#1d4ed8', color: '#1e40af' },{ nombre: 'Estómago', icono: 'fa-burger', clase: 'virus-verde', bg: '#dcfce7', border: '#15803d', color: '#166534' },{ nombre: 'Hueso', icono: 'fa-bone', clase: 'virus-amarillo', bg: '#fef9c3', border: '#ca8a04', color: '#854d0e' }][Math.floor(Math.random() * 4)];
+    const front = `<div class="carta-pro" style="background:${v.bg}; border:3px solid ${v.border}; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:${v.color};"><i class="fa-solid ${v.icono}" style="font-size:70px; margin-bottom:15px;"></i><div style="font-family:'Playfair Display'; font-size:18px; font-weight:bold; text-transform:uppercase;" contenteditable="true">${v.nombre}</div><div style="font-size:11px; text-transform:uppercase; opacity:0.7; margin-top:5px;">Órgano Sano</div></div>`;
+    const back = `<div style="width:100%; height:100%; background:#064e3b; border-radius:12px; display:flex; align-items:center; justify-content:center; border:3px solid #10b981;"><i class="fa-solid fa-virus" style="font-size:50px; color:#34d399;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function insertarCartaVirusInfeccion() {
+    const v = [{ nombre: 'Virus Rojo', bg: '#14532d', icon: 'fa-virus' },{ nombre: 'Virus Azul', bg: '#0c4a6e', icon: 'fa-virus' }][Math.floor(Math.random() * 2)];
+    const front = `<div class="carta-pro" style="background:${v.bg}; border:3px solid #1e293b; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white;"><i class="fa-solid ${v.icon}" style="font-size:70px; margin-bottom:15px; color:#fca5a5;"></i><div style="font-family:'Playfair Display'; font-size:18px; font-weight:bold; text-transform:uppercase;" contenteditable="true">${v.nombre}</div></div>`;
+    const back = `<div style="width:100%; height:100%; background:#064e3b; border-radius:12px; display:flex; align-items:center; justify-content:center; border:3px solid #10b981;"><i class="fa-solid fa-virus" style="font-size:50px; color:#34d399;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function insertarCartaVirusMedicina() {
+    const m = [{ nombre: 'Med. Roja', icono: 'fa-syringe', color: '#dc2626' },{ nombre: 'Med. Azul', icono: 'fa-pills', color: '#2563eb' },{ nombre: 'Med. Verde', icono: 'fa-prescription-bottle-medical', color: '#16a34a' },{ nombre: 'Med. Amarilla', icono: 'fa-briefcase-medical', color: '#ca8a04' }][Math.floor(Math.random() * 4)];
+    const front = `<div class="carta-pro" style="background:white; border:3px solid ${m.color}; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center;"><i class="fa-solid ${m.icono}" style="font-size:70px; color:${m.color}; margin-bottom:15px;"></i><div style="font-family:'Playfair Display'; font-size:18px; font-weight:bold; text-transform:uppercase; color:${m.color};" contenteditable="true">${m.nombre}</div></div>`;
+    const back = `<div style="width:100%; height:100%; background:#064e3b; border-radius:12px; display:flex; align-items:center; justify-content:center; border:3px solid #10b981;"><i class="fa-solid fa-virus" style="font-size:50px; color:#34d399;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function insertarCartaBangRol() {
+    const r = [{ nombre: 'Sheriff', clase: 'bang-sheriff', icono: 'fa-star', obj: 'Elimina a forajidos.' },{ nombre: 'Forajido', clase: 'bang-forajido', icono: 'fa-user-ninja', obj: 'Elimina al Sheriff.' },{ nombre: 'Renegado', clase: 'bang-renegado', icono: 'fa-mask', obj: 'Sé el último.' },{ nombre: 'Ayudante', clase: 'bang-ayudante', icono: 'fa-shield-halved', obj: 'Protege al Sheriff.' }][Math.floor(Math.random() * 4)];
+    const front = `<div class="carta-pro" style="background:${r.clase==='bang-sheriff'?'#ca8a04':(r.clase==='bang-forajido'?'#b91c1c':(r.clase==='bang-renegado'?'#6d28d9':'#0284c7'))}; border-radius:10px; padding:15px; display:flex; flex-direction:column; color:white; align-items:center;"><div style="font-family:'Playfair Display'; font-size:22px; font-weight:bold; border-bottom:2px solid rgba(255,255,255,0.3); padding-bottom:8px; margin-bottom:12px;">${r.nombre}</div><div style="flex:1; display:flex; align-items:center; justify-content:center; font-size:70px;"><i class="fa-solid ${r.icono}"></i></div><div style="font-size:10px; text-align:center; background:rgba(0,0,0,0.3); padding:8px; border-radius:6px;" contenteditable="true">${r.obj}</div></div>`;
+    const back = `<div style="width:100%; height:100%; background:#450a0a; border-radius:10px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-star" style="font-size:50px; color:#ca8a04;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function insertarCartaBangPersonaje() {
+    const p = [{ nombre: 'Willy el Kid', vida: 4, hab: 'Dispara dos veces.' },{ nombre: 'Calamity Janet', vida: 4, hab: 'Usa Bang! como Fallo.' },{ nombre: 'Suzy Lafayette', vida: 4, hab: 'Roba si se queda sin mano.' },{ nombre: 'Jesse Jones', vida: 4, hab: 'Roba del jugador que elija.' }][Math.floor(Math.random() * 4)];
+    const front = `<div class="carta-pro" style="background:#fdf6e3; border:3px solid #78350f; border-radius:10px; display:flex; flex-direction:column;"><div style="background:#78350f; color:#fdf6e3; padding:6px 12px; font-family:'Playfair Display'; font-size:14px; font-weight:bold; display:flex; justify-content:space-between;"><span contenteditable="true">${p.nombre}</span><i class="fa-solid fa-cowboy"></i></div><div style="flex:1; display:flex; align-items:center; justify-content:center; font-size:60px; color:#78350f;"><i class="fa-solid fa-user"></i></div><div style="position:absolute; top:45px; right:8px; background:#dc2626; color:white; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; border:2px solid #78350f;">${p.vida}</div><div style="padding:10px; background:white; font-size:10px; border-top:1px solid #e2e8f0;" contenteditable="true">${p.hab}</div></div>`;
+    const back = `<div style="width:100%; height:100%; background:#78350f; border-radius:10px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-user" style="font-size:50px; color:#fdf6e3;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
