@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
+
+:root {
+    --bg-app: #f4f1ea; /* Crema papel */
+    --bg-panel: #ffffff;
+    --bg-canvas: #e5e0d8;
+    --texto: #1e293b;
+    --primary: #9a3412;
+    --border-color: #cbd5e1;
+    --shadow-card: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+body.terracota { --primary: #9a3412; }
+body.oceano { --primary: #0369a1; }
+body.bosque { --primary: #15803d; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+body { background: var(--bg-app); color: var(--texto); height: 100vh; overflow: hidden; }
+
+.view { display: none; height: 100vh; width: 100vw; }
+.view.active { display: flex; flex-direction: column; }
+
+/* ================= DASHBOARD ================= */
+#dashboard-view { align-items: center; padding: 40px; overflow-y: auto; }
+.dash-header { text-align: center; margin-bottom: 40px; }
+.dash-header h1 { font-family: 'Playfair Display', serif; font-size: 42px; color: var(--primary); margin-bottom: 10px; }
+.dash-header p { font-size: 18px; color: #64748b; margin-bottom: 20px; }
+
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; width: 100%; max-width: 1200px; }
+.project-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 2px solid transparent; }
+.project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-color: var(--primary); }
+.project-card h3 { color: var(--primary); margin-bottom: 10px; font-family: 'Playfair Display', serif; }
+.project-card p { font-size: 13px; color: #64748b; }
+
+/* ================= EDITOR ================= */
+#editor-view { display: flex; flex-direction: column; height: 100vh; }
+.editor-topbar { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; background: white; border-bottom: 1px solid var(--border-color); z-index: 10; }
+#project-title-input { font-size: 18px; font-weight: 600; color: #333; border: none; background: transparent; padding: 5px; width: 300px; font-family: 'Playfair Display', serif;}
+#project-title-input:focus { outline: none; border-bottom: 2px solid var(--primary); }
+.topbar-actions { display: flex; gap: 10px; }
+
+.editor-workspace { display: grid; grid-template-columns: 280px 1fr 300px; flex: 1; overflow: hidden; }
+
+/* Paneles Laterales */
+.tools-panel, .properties-panel { background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; }
+.properties-panel { border-right: none; border-left: 1px solid var(--border-color); padding: 20px; }
+
+.tool-tabs { display: flex; border-bottom: 1px solid var(--border-color); }
+.tool-tab { flex: 1; padding: 15px 5px; border: none; background: none; cursor: pointer; font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; }
+.tool-tab.active { border-bottom: 3px solid var(--primary); color: var(--primary); }
+.tool-content { display: none; padding: 20px; }
+.tool-content.active { display: block; }
+.tool-content h3 { font-size: 14px; margin-bottom: 15px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+
+.icon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.icon-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); cursor: pointer; transition: 0.2s; }
+.icon-item:hover { background: var(--primary); color: white; }
+
+/* EL CANVAS */
+.canvas-area { background: var(--bg-canvas); background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px; position: relative; overflow: hidden; }
+.canvas-hint { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #94a3b8; font-size: 16px; pointer-events: none; text-align: center; }
+
+/* ELEMENTOS EN EL CANVAS */
+.canvas-element { position: absolute; cursor: grab; user-select: none; transition: box-shadow 0.2s; }
+.canvas-element:active { cursor: grabbing; }
+.canvas-element.selected { box-shadow: 0 0 0 3px var(--primary); z-index: 999; }
+
+/* LA CARTA BASE */
+.carta-base { width: 250px; min-height: 350px; background: white; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; box-shadow: var(--shadow-card); position: relative; }
+.carta-texto { flex: 1; font-size: 16px; line-height: 1.5; text-align: center; display: flex; align-items: center; justify-content: center; margin-top: 10px; font-family: 'Playfair Display', serif; color: #333; }
+.carta-icono { text-align: center; font-size: 30px; color: var(--primary); margin-bottom: 10px; }
+
+/* SISTEMA DE BORDES (Semántica) */
+.border-freire { border: 2px solid #cbd5e1; border-radius: 4px; } /* Limpio, espacio para escribir */
+.border-boal { border: 4px dashed #ef4444; border-radius: 12px; background: #fff5f5; } /* Teatral, fuerte */
+.border-drp { border: 2px dotted #3b82f6; border-radius: 0px; } /* Analítico, cuadriculado */
+.border-korol { border: 3px solid #ec4899; border-radius: 50px 15px 50px 15px; background: #fdf2f8; } /* Orgánico, curvo */
+
+/* ================= MODO JUEGO ================= */
+#play-view { background: #0f172a; color: white; }
+.play-header { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+.play-area { flex: 1; display: flex; flex-wrap: wrap; gap: 30px; padding: 40px; justify-content: center; align-content: center; overflow-y: auto; }
+.play-card { width: 300px; min-height: 420px; background: white; color: #1e293b; border-radius: 12px; padding: 30px; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transition: transform 0.3s; cursor: pointer; }
+.play-card:hover { transform: scale(1.05) rotate(2deg); }
+
+/* Formularios y Botones (Reutilizados) */
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 5px; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; }
+.form-group textarea { min-height: 100px; resize: vertical; }
+.btn { padding: 10px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; font-size: 14px; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { opacity: 0.9; }
+.btn-outline { background: white; border: 1px solid var(--border-color); color: #333; margin-bottom: 8px; width: 100%; }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+.btn-secondary { background: #e2e8f0; color: #333; }
+.btn-icon { background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b; }
+
+/* IMPRESIÓN */
+@media print {
+    .editor-topbar, .tools-panel, .properties-panel, .editor-topbar { display: none !important; }
+    .editor-workspace { display: block; }
+    .canvas-area { background: white; overflow: visible; height: auto; }
+    .canvas-element { position: static; margin-bottom: 20px; page-break-inside: avoid; display: inline-block; }
+}

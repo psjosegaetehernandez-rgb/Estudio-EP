@@ -1,0 +1,307 @@
+# DIAGNÓSTICO ARQUITECTÓNICO DE LA APP
+
+Fecha de análisis: 2026-11-02 16:49
+
+## 1. Funciones JavaScript Encontradas
+
+### Archivo: app.js
+- `abrirProyecto`
+- `abrirVistaPrevia`
+- `actualizarTituloProyecto`
+- `actualizarVistaPrevia`
+- `autosave`
+- `autosaveTimer`
+- `back`
+- `backPages`
+- `bIdx`
+- `c`
+- `canvas`
+- `canvasImg`
+- `capturar`
+- `cards`
+- `cell`
+- `cells`
+- `cellW`
+- `cerrarVistaPrevia`
+- `clonarVisual`
+- `clone`
+- `closeModal`
+- `col`
+- `cols`
+- `crearHoja`
+- `crearNuevoProyecto`
+- `ctx`
+- `currentProjectId`
+- `dorso`
+- `dorsoVirtual`
+- `elements`
+- `esElementoCarta`
+- `front`
+- `frontPages`
+- `generarPDFFinal`
+- `grid`
+- `gridIdx`
+- `guardarEnLocalStorage`
+- `i`
+- `icon`
+- `idx`
+- `img`
+- `imgHtml`
+- `inner`
+- `isBW`
+- `isDuplex`
+- `itemsPerPage`
+- `limpiarLienzo`
+- `mapaImg`
+- `margin`
+- `modalCallback`
+- `nombre`
+- `now`
+- `nuevo`
+- `oIdx`
+- `oldImg`
+- `otherPages`
+- `others`
+- `p`
+- `page`
+- `pageDiv`
+- `pdf`
+- `previewArea`
+- `proyecto`
+- `proyectos`
+- `r`
+- `renderDashboard`
+- `row`
+- `showConfirm`
+- `showToast`
+- `size`
+- `status`
+- `t`
+- `target`
+- `temp`
+- `title`
+- `toggleTema`
+- `toggleVistaPrevia`
+- `totalPages`
+- `volverAlDashboard`
+- `w`
+- `whiteCanvas`
+
+### Archivo: herramientas.js
+- `activarModoMapa`
+- `c`
+- `canvas`
+- `configurarToken`
+- `hint`
+- `img`
+- `insertarArbolProblemas`
+- `insertarCarta`
+- `insertarCartaDixit`
+- `insertarCartaDuo`
+- `insertarCartaEvento`
+- `insertarCartaNaipe`
+- `insertarCartaRol`
+- `insertarCartaUno`
+- `insertarCodigoSecreto`
+- `insertarGeneradorTokens`
+- `insertarIconoMapa`
+- `insertarMatrizPriorizacion`
+- `insertarMuroPostits`
+- `insertarNotaAdhesiva`
+- `insertarSemaforo`
+- `insertarTableroIAP`
+- `insertarTableroTrivial`
+- `insertarZonaCalor`
+- `oldImg`
+- `reader`
+- `subirMapaBase`
+- `switchTool`
+- `txt`
+- `wrapper`
+
+### Archivo: panel-derecho.js
+- `a`
+- `actualizarPropiedad`
+- `ajustarImagenDorso`
+- `b`
+- `back`
+- `cambiarColorDorsoUniversal`
+- `cambiarColorJuego`
+- `card`
+- `controles`
+- `currentPos`
+- `d`
+- `dorso`
+- `elementoSeleccionado`
+- `file`
+- `gDorso`
+- `inner`
+- `insertarSimboloUno`
+- `mostrarDorsoUniversal`
+- `obtenerContenedorCarta`
+- `ovalo`
+- `parts`
+- `quitarImagenDorsoUniversal`
+- `reader`
+- `seleccionarElemento`
+- `subirImagenDorsoUniversal`
+- `switchPropTab`
+- `tokenSeleccionado`
+- `txt`
+- `uno`
+- `voltearCartaUniversal`
+- `x`
+- `y`
+
+### Archivo: drag-drop.js
+- `hacerArrastrable`
+- `isDragging`
+- `newLeft`
+- `newTop`
+
+## 2. Botones e Invocaciones (HTML onclick)
+
+- `abrirRuleta()`
+- `abrirVistaPrevia()`
+- `activarModoMapa()`
+- `activarPanico()`
+- `cerrarVistaPrevia()`
+- `closeModal()`
+- `crearNuevoProyecto()`
+- `descargarJSON()`
+- `duplicarElemento()`
+- `generarPDFFinal()`
+- `girarRuleta()`
+- `insertarArbolProblemas()`
+- `insertarCarta()`
+- `insertarCartaDixit()`
+- `insertarCartaDuo()`
+- `insertarCartaEvento()`
+- `insertarCartaNaipe()`
+- `insertarCartaRol()`
+- `insertarCartaUno()`
+- `insertarCodigoSecreto()`
+- `insertarGeneradorTokens()`
+- `insertarIconoMapa()`
+- `insertarMatrizPriorizacion()`
+- `insertarMuroPostits()`
+- `insertarNotaAdhesiva()`
+- `insertarSemaforo()`
+- `insertarSimboloUno()`
+- `insertarTableroIAP()`
+- `insertarTableroTrivial()`
+- `insertarZonaCalor()`
+- `limpiarLienzo()`
+- `pedirEliminar()`
+- `switchMode()`
+- `switchTool()`
+- `toggleMesa()`
+- `toggleSoundboard()`
+- `toggleTema()`
+- `toggleVistaPrevia()`
+- `voltearCarta()`
+- `voltearCartaUniversal()`
+- `volverAlDashboard()`
+
+## 3. Análisis de Integridad (Funciones Faltantes)
+
+⚠️ **ALERTA CRÍTICA:** Los siguientes botones en el HTML intentan llamar a funciones que **NO EXISTEN** en los archivos JS (esto causa que la app se congele):
+
+- ❌ `abrirRuleta()` -> **FALTANTE en el JS**
+- ❌ `activarPanico()` -> **FALTANTE en el JS**
+- ❌ `descargarJSON()` -> **FALTANTE en el JS**
+- ❌ `duplicarElemento()` -> **FALTANTE en el JS**
+- ❌ `girarRuleta()` -> **FALTANTE en el JS**
+- ❌ `pedirEliminar()` -> **FALTANTE en el JS**
+- ❌ `switchMode()` -> **FALTANTE en el JS**
+- ❌ `toggleMesa()` -> **FALTANTE en el JS**
+- ❌ `toggleSoundboard()` -> **FALTANTE en el JS**
+- ❌ `voltearCarta()` -> **FALTANTE en el JS**
+
+## 4. Elementos del DOM (IDs en index.html)
+
+- `#canvas`
+
+## 5. Componentes y Clases CSS en uso
+
+- `active`
+- `btn`
+- `btn-cta`
+- `btn-icon`
+- `btn-outline`
+- `btn-primary`
+- `btn-secondary`
+- `canvas-area`
+- `canvas-hint`
+- `dash-header`
+- `editor-topbar`
+- `editor-workspace`
+- `fa-arrow-left`
+- `fa-bell`
+- `fa-box-open`
+- `fa-broom`
+- `fa-chart-pie`
+- `fa-chart-simple`
+- `fa-clone`
+- `fa-coins`
+- `fa-dharmachakra`
+- `fa-diamond`
+- `fa-dice`
+- `fa-download`
+- `fa-earth-americas`
+- `fa-eye`
+- `fa-file-lines`
+- `fa-fire`
+- `fa-hands-holding-circle`
+- `fa-infinity`
+- `fa-layer-group`
+- `fa-list-check`
+- `fa-map-location-dot`
+- `fa-moon`
+- `fa-note-sticky`
+- `fa-pen-nib`
+- `fa-plus`
+- `fa-print`
+- `fa-puzzle-piece`
+- `fa-regular`
+- `fa-rotate`
+- `fa-school`
+- `fa-solid`
+- `fa-table-list`
+- `fa-traffic-light`
+- `fa-trash-can`
+- `fa-tree`
+- `fa-triangle-exclamation`
+- `fa-upload`
+- `fa-user`
+- `fa-user-secret`
+- `fa-virus`
+- `fa-volume-high`
+- `form-group`
+- `modal-actions`
+- `modal-content`
+- `modal-overlay`
+- `mode-switch`
+- `primary-tool`
+- `projects-grid`
+- `properties-panel`
+- `props-placeholder`
+- `tool-card`
+- `tool-content`
+- `tool-icon`
+- `tool-info`
+- `tools-panel`
+- `tool-tab`
+- `tool-tabs`
+- `topbar-actions`
+- `topbar-divider`
+- `topbar-group`
+- `topbar-left`
+- `view`
+
+## 6. Estado de los Archivos
+
+- **app.js:** 405 líneas, 17.97 KB
+- **herramientas.js:** 120 líneas, 9.42 KB
+- **panel-derecho.js:** 234 líneas, 11.84 KB
+- **drag-drop.js:** 28 líneas, 1.44 KB

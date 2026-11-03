@@ -1,0 +1,58 @@
+/* Estudio EP — Biblioteca lúdica */
+#ep-ludoteca-open { margin-left: 8px; white-space: nowrap; }
+.ep-ludoteca-overlay { position:fixed; inset:0; z-index:20000; background:rgba(15,23,42,.72); display:none; align-items:center; justify-content:center; padding:2vh 2vw; }
+.ep-ludoteca-overlay.open { display:flex; }
+.ep-ludoteca-window { width:min(1240px,96vw); height:min(900px,96vh); background:#f8fafc; color:#172033; border-radius:16px; box-shadow:0 24px 80px rgba(0,0,0,.35); display:flex; flex-direction:column; overflow:hidden; font-family:Inter,Arial,sans-serif; }
+.ep-ludoteca-window * { box-sizing:border-box; }
+.ep-ludoteca-head { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; padding:22px 26px 16px; background:white; border-bottom:1px solid #e2e8f0; }
+.ep-kicker { font-size:10px; letter-spacing:1.5px; font-weight:800; color:#9a3412; margin-bottom:6px; }
+.ep-ludoteca-head h2 { font-size:25px; margin:0 0 5px; }
+.ep-muted { color:#64748b; font-size:13px; line-height:1.45; }
+.ep-close { border:0; background:transparent; font-size:32px; line-height:1; cursor:pointer; color:#64748b; }
+.ep-ludo-tabs { display:flex; gap:4px; padding:0 24px; background:white; border-bottom:1px solid #e2e8f0; }
+.ep-ludo-tabs button { border:0; border-bottom:3px solid transparent; background:transparent; padding:13px 15px; cursor:pointer; color:#64748b; font-weight:700; }
+.ep-ludo-tabs button.active { color:#9a3412; border-bottom-color:#9a3412; }
+.ep-ludo-body { overflow:auto; padding:20px 24px; flex:1; }
+.ep-ludo-filters { display:flex; gap:10px; margin-bottom:10px; }
+.ep-ludo-filters input,.ep-ludo-filters select,.ep-ludo-form input,.ep-ludo-form textarea,.ep-ludo-form select { border:1px solid #cbd5e1; border-radius:8px; padding:10px 12px; width:100%; background:white; color:#172033; font:inherit; }
+.ep-ludo-filters input { flex:2; }
+.ep-ludo-filters select { flex:1; min-width:200px; }
+.ep-count { margin:8px 0 14px; }
+.ep-ludo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:13px; }
+.ep-game-card { background:white; border:1px solid #e2e8f0; border-radius:12px; padding:15px; display:flex; flex-direction:column; gap:9px; min-height:225px; }
+.ep-game-symbol { font-size:24px; }
+.ep-game-family { color:#9a3412; text-transform:uppercase; font-size:10px; letter-spacing:.7px; font-weight:800; }
+.ep-game-card h3 { font-size:16px; line-height:1.3; }
+.ep-game-card p { color:#64748b; font-size:12px; line-height:1.45; flex:1; }
+.ep-primary,.ep-secondary,.ep-danger,.ep-back { border:0; border-radius:7px; padding:10px 12px; font-size:12px; font-weight:700; cursor:pointer; }
+.ep-primary { background:#9a3412; color:white; }
+.ep-secondary { background:#e2e8f0; color:#1e293b; }
+.ep-danger { background:#fee2e2; color:#991b1b; }
+.ep-back { background:transparent; color:#9a3412; padding-left:0; margin-bottom:12px; }
+.ep-ludo-footer { display:flex; align-items:center; justify-content:space-between; gap:16px; border-top:1px solid #e2e8f0; padding:12px 24px; background:white; color:#64748b; font-size:11px; }
+.ep-ludo-form { display:grid; gap:13px; max-width:850px; }
+.ep-ludo-form label,.ep-play-setup label { display:grid; gap:6px; color:#334155; font-weight:700; font-size:12px; }
+.ep-form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.ep-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+.ep-draft-row { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:16px 0; border-bottom:1px solid #e2e8f0; }
+.ep-draft-row h3 { margin-bottom:5px; }
+.ep-play-setup { display:flex; align-items:end; gap:12px; margin:18px 0; }
+.ep-play-setup label { width:130px; }
+.ep-score-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:18px 0; }
+.ep-score { display:grid; gap:8px; border:1px solid #cbd5e1; background:white; border-radius:10px; padding:14px; }
+.ep-score.current { border:2px solid #9a3412; background:#fff7ed; }
+.ep-score span { font-size:18px; font-weight:800; }
+.ep-score small { color:#64748b; }
+.ep-play-actions { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+.ep-log { padding-left:24px; line-height:1.8; font-size:12px; color:#475569; }
+.ep-ludo-notice { position:fixed; right:20px; bottom:20px; z-index:30000; padding:12px 18px; background:#172033; color:white; border-radius:9px; box-shadow:0 8px 30px #0003; }
+[hidden] { display:none !important; }
+@media(max-width:700px) {
+ .ep-ludoteca-overlay { padding:0; }
+ .ep-ludoteca-window { width:100vw; height:100vh; border-radius:0; }
+ .ep-ludoteca-head { padding:16px; }
+ .ep-ludo-body { padding:14px; }
+ .ep-ludo-filters,.ep-draft-row,.ep-ludo-footer { flex-direction:column; align-items:stretch; }
+ .ep-form-row,.ep-score-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .ep-ludo-filters select { min-width:0; }
+}

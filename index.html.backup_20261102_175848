@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio EP - Arquitectura v26.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/canvas.css">
+    <link rel="stylesheet" href="css/cartas.css">
+    <link rel="stylesheet" href="css/epes.css">
+</head>
+<body>
+    <div id="toast-container"></div>
+
+    <!-- MODALES -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modal-title">Confirmación</h3>
+            <p id="modal-message">¿Estás seguro?</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" id="modal-confirm-btn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="print-modal" class="modal-overlay" style="z-index: 10000; background: rgba(0,0,0,0.8);">
+        <div class="modal-content" style="max-width: 900px; width: 90%; height: 90vh; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 15px;">
+                <h3 style="margin: 0;"><i class="fa-solid fa-print"></i> Vista Previa de Impresión</h3>
+                <button onclick="cerrarVistaPrevia()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #ef4444;">&times;</button>
+            </div>
+            <div style="display: flex; gap: 20px; flex: 1; overflow: hidden;">
+                <div style="width: 250px; border-right: 1px solid #eee; padding-right: 20px; display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <label style="font-weight: bold; font-size: 13px; display: block; margin-bottom: 5px;">Tamaño de los elementos</label>
+                        <select id="print-size" onchange="actualizarVistaPrevia()" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                            <option value="small">Pequeño (12 por hoja)</option>
+                            <option value="medium" selected>Mediano (9 por hoja)</option>
+                            <option value="large">Grande (4 por hoja)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                            <input type="checkbox" id="print-bw" onchange="actualizarVistaPrevia()" style="width: 18px; height: 18px;">
+                            <span><strong>Imprimir en Blanco y Negro</strong></span>
+                        </label>
+                    </div>
+                    <div>
+                        <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                            <input type="checkbox" id="print-dorsos" onchange="actualizarVistaPrevia()" style="width: 18px; height: 18px;">
+                            <span><strong>Imprimir Dorsos (Doble Faz)</strong><br><small style="color:#64748b; font-size:11px;">Espejado para borde largo</small></span>
+                        </label>
+                    </div>
+                    <div style="margin-top: auto;">
+                        <p style="font-size: 12px; color: #64748b; margin-bottom: 10px;" id="print-stats">Calculando...</p>
+                        <button class="btn btn-primary" onclick="generarPDFFinal()" style="width: 100%; padding: 15px; font-size: 16px;"><i class="fa-solid fa-download"></i> Descargar PDF</button>
+                    </div>
+                </div>
+                <div id="print-preview-area" style="flex: 1; background: #e2e8f0; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-ruleta" class="modal-overlay" style="z-index: 10000; background: rgba(0,0,0,0.8);">
+        <div class="modal-content" style="text-align: center; background: transparent; box-shadow: none;">
+            <h2 style="color: white; margin-bottom: 20px; font-family: 'Playfair Display';">Ruleta de la Participación</h2>
+            <div style="position: relative; width: 300px; height: 300px; margin: 0 auto;">
+                <div id="ruleta-wheel" style="width: 100%; height: 100%; border-radius: 50%; border: 8px solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.5); transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);"></div>
+                <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 40px; color: #dc2626; text-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 10;">▼</div>
+            </div>
+            <button class="btn btn-primary" onclick="girarRuleta()" style="margin-top: 30px; font-size: 18px; padding: 10px 30px;">¡Girar!</button>
+            <button class="btn btn-outline" onclick="document.getElementById('modal-ruleta').classList.remove('active')" style="margin-top: 10px; color: white; border-color: white;">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="pantalla-panico" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(220, 38, 38, 0.95); z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; cursor: pointer;" onclick="this.style.display='none'">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 100px; margin-bottom: 20px;"></i>
+        <h1 style="font-family: 'Playfair Display'; font-size: 80px; margin: 0;">¡TIEMPO DE CIERRE!</h1>
+        <p style="font-family: 'Patrick Hand'; font-size: 40px; margin-top: 20px;">Haz clic o presiona ESC para volver.</p>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard-view" class="view active">
+        <header class="dash-header">
+            <h1><i class="fa-solid fa-hands-holding-circle"></i> Estudio EP</h1>
+            <p>Taller Digital de Educación Popular</p>
+            <button class="btn btn-primary" onclick="crearNuevoProyecto()"><i class="fa-solid fa-plus"></i> Nuevo Proyecto</button>
+        </header>
+        <div class="projects-grid" id="projects-list"></div>
+    </div>
+
+    <!-- EDITOR -->
+    <div id="editor-view" class="view">
+        <header class="editor-topbar">
+            <div class="topbar-left">
+                <button class="btn-icon" onclick="volverAlDashboard()"><i class="fa-solid fa-arrow-left"></i></button>
+                <input type="text" id="project-title-input" oninput="actualizarTituloProyecto(this.value)" placeholder="Nombre del Proyecto...">
+            </div>
+            
+            <div class="topbar-actions">
+                <div class="topbar-group">
+                    <span id="autosave-status" style="font-size: 11px; color: #64748b; font-weight: bold; margin-right: 5px;">Guardado ✔</span>
+                    <button class="btn btn-outline" onclick="toggleTema()" title="Modo Oscuro"><i class="fa-solid fa-moon"></i></button>
+                    <button class="btn btn-outline" onclick="toggleVistaPrevia()" title="Vista Previa"><i class="fa-solid fa-eye"></i></button>
+                    <button class="btn btn-outline" onclick="toggleMesa()" title="Fondo de Mesa"><i class="fa-solid fa-tree"></i></button>
+                    <button class="btn btn-outline" onclick="toggleSoundboard()" title="Sonidos"><i class="fa-solid fa-volume-high"></i></button>
+                    <button class="btn btn-outline" onclick="abrirRuleta()" title="Ruleta"><i class="fa-solid fa-dharmachakra"></i></button>
+                    <button class="btn btn-outline" onclick="activarPanico()" title="Botón de Pánico" style="color:#dc2626; border-color:#dc2626;"><i class="fa-solid fa-bell"></i></button>
+                    <button class="btn btn-outline" onclick="limpiarLienzo()" title="Limpiar Lienzo" style="color: #ef4444; border-color: #ef4444;"><i class="fa-solid fa-broom"></i></button>
+                </div>
+                <div class="topbar-divider"></div>
+                <div class="topbar-group">
+                    <button class="btn btn-outline" onclick="descargarJSON()" title="Guardar JSON"><i class="fa-solid fa-download"></i></button>
+                </div>
+                <div class="topbar-divider"></div>
+                <button class="btn btn-primary btn-cta" onclick="abrirVistaPrevia()"><i class="fa-solid fa-box-open"></i> Exportar</button>
+            </div>
+        </header>
+
+        <div class="editor-workspace">
+            <!-- PANEL IZQUIERDO -->
+            <aside class="tools-panel">
+                <div class="tool-tabs" style="flex-wrap: wrap;">
+                    <button class="tool-tab active" onclick="switchTool('mazos', this)"><i class="fa-solid fa-layer-group"></i> Cartas</button>
+                    <button class="tool-tab" onclick="switchTool('gestion', this)"><i class="fa-solid fa-chart-simple"></i> Gestión</button>
+                    <button class="tool-tab" onclick="switchTool('juegos', this)"><i class="fa-solid fa-dice"></i> Juegos</button>
+                    <button class="tool-tab" onclick="switchTool('mapeo', this)"><i class="fa-solid fa-map-location-dot"></i> Mapeo</button>
+                </div>
+                
+                <!-- CARTAS -->
+                <div class="tool-content active" id="tool-mazos">
+                    <div class="tool-card" onclick="insertarNotaAdhesiva()" style="background:#fef08a; border-color:#ca8a04;">
+                        <div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-note-sticky"></i></div>
+                        <div class="tool-info"><h4>Nota Adhesiva</h4><p>Ideas / Votos</p></div>
+                    </div>
+                    <div class="tool-card primary-tool" onclick="insertarCarta()">
+                        <div class="tool-icon"><i class="fa-solid fa-plus"></i></div>
+                        <div class="tool-info"><h4>Nueva Carta</h4><p>Flip 3D</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaNaipe()">
+                        <div class="tool-icon"><i class="fa-solid fa-diamond"></i></div>
+                        <div class="tool-info"><h4>Carta Naipe</h4><p>Barajas</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaDuo()">
+                        <div class="tool-icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+                        <div class="tool-info"><h4>Carta Duo</h4><p>Refranes</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaEvento()">
+                        <div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-virus"></i></div>
+                        <div class="tool-info"><h4>Carta Evento</h4><p>Crisis</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaRol()">
+                        <div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-user-secret"></i></div>
+                        <div class="tool-info"><h4>Carta Rol</h4><p>Hombres Lobos</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCuboNet()">
+                        <div class="tool-icon"><i class="fa-solid fa-cube"></i></div>
+                        <div class="tool-info"><h4>Cubo Recortable</h4><p>Desarrollo 3D</p></div>
+                    </div>
+                </div>
+
+                <!-- GESTIÓN -->
+                <div class="tool-content" id="tool-gestion">
+                    <div class="tool-card" onclick="insertarMuroPostits()">
+                        <div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-note-sticky"></i></div>
+                        <div class="tool-info"><h4>Muro Post-its</h4><p>Evaluación</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarTableroIAP()">
+                        <div class="tool-icon" style="color:#9a3412;"><i class="fa-solid fa-list-check"></i></div>
+                        <div class="tool-info"><h4>Tablero IAP</h4><p>Fases</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarSemaforo()">
+                        <div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-traffic-light"></i></div>
+                        <div class="tool-info"><h4>Semáforo</h4><p>Cierre</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarMatrizPriorizacion()">
+                        <div class="tool-icon"><i class="fa-solid fa-table-list"></i></div>
+                        <div class="tool-info"><h4>Matriz Priorización</h4><p>Cálculo</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarPlanificador()">
+                        <div class="tool-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                        <div class="tool-info"><h4>Planificador</h4><p>Guion</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarArbolProblemas()">
+                        <div class="tool-icon"><i class="fa-solid fa-tree"></i></div>
+                        <div class="tool-info"><h4>Árbol Problemas</h4><p>DRP</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarFlorEvaluacion()">
+                        <div class="tool-icon"><i class="fa-solid fa-fan"></i></div>
+                        <div class="tool-info"><h4>Flor Evaluación</h4><p>Pétalos</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarNodoRed()">
+                        <div class="tool-icon"><i class="fa-solid fa-circle-nodes"></i></div>
+                        <div class="tool-info"><h4>Nodo de Red</h4><p>Sociograma</p></div>
+                    </div>
+                </div>
+
+                <!-- JUEGOS -->
+                <div class="tool-content" id="tool-juegos">
+                    <h4 style="font-size:11px; color:#64748b; margin-bottom:10px;">Motores</h4>
+                    <div class="tool-card" onclick="insertarGeneradorTokens()">
+                        <div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-coins"></i></div>
+                        <div class="tool-info"><h4>Tokens</h4><p>Fichas</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaUno()" style="border-left: 4px solid #dc2626;">
+                        <div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-clone"></i></div>
+                        <div class="tool-info"><h4>Carta UNO</h4><p>+2</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaUnoReversa()" style="border-left: 4px solid #2563eb;">
+                        <div class="tool-icon" style="color:#2563eb;"><i class="fa-solid fa-rotate-left"></i></div>
+                        <div class="tool-info"><h4>Reversa</h4><p>Invierte</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaUnoBloqueo()" style="border-left: 4px solid #16a34a;">
+                        <div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-ban"></i></div>
+                        <div class="tool-info"><h4>Bloqueo</h4><p>Pierdes</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarTableroTrivial()">
+                        <div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-chart-pie"></i></div>
+                        <div class="tool-info"><h4>Trivial</h4><p>Quiz</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarTableroBingo()">
+                        <div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-table-cells"></i></div>
+                        <div class="tool-info"><h4>Bingo</h4><p>5x5</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCodigoSecreto()">
+                        <div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-user-secret"></i></div>
+                        <div class="tool-info"><h4>Codenames</h4><p>Código</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarLosetaCarcassonne()">
+                        <div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-map"></i></div>
+                        <div class="tool-info"><h4>Carcassonne</h4><p>Loseta</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarTableroDobble()">
+                        <div class="tool-icon" style="color:#0284c7;"><i class="fa-brands fa-fly"></i></div>
+                        <div class="tool-info"><h4>Dobble</h4><p>Reflejos</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarTableroGrid()">
+                        <div class="tool-icon"><i class="fa-solid fa-border-all"></i></div>
+                        <div class="tool-info"><h4>Grid</h4><p>Serpientes</p></div>
+                    </div>
+
+                    <h4 style="font-size:11px; color:#64748b; margin-top:15px; margin-bottom:10px;">Cartas Especiales</h4>
+                    <div class="tool-card" onclick="insertarCartaDixit()">
+                        <div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-moon"></i></div>
+                        <div class="tool-info"><h4>Dixit</h4><p>Asociación</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaDrafting()">
+                        <div class="tool-icon" style="color:#f59e0b;"><i class="fa-solid fa-layer-group"></i></div>
+                        <div class="tool-info"><h4>Drafting</h4><p>Sushi Go</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaCharada()">
+                        <div class="tool-icon" style="color:#ef4444;"><i class="fa-solid fa-person-running"></i></div>
+                        <div class="tool-info"><h4>Charada</h4><p>Mímica</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaConversacional()">
+                        <div class="tool-icon" style="color:#0369a1;"><i class="fa-regular fa-comment-dots"></i></div>
+                        <div class="tool-info"><h4>Conversacional</h4><p>Diálogo</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaMemoria()">
+                        <div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                        <div class="tool-info"><h4>Memoria</h4><p>Historia</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaDilema()">
+                        <div class="tool-icon" style="color:#be123c;"><i class="fa-solid fa-code-branch"></i></div>
+                        <div class="tool-info"><h4>Dilema</h4><p>Ética</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaTetralema()">
+                        <div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-border-all"></i></div>
+                        <div class="tool-info"><h4>Tetralema</h4><p>Villasante</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaTinderblox()">
+                        <div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-tree"></i></div>
+                        <div class="tool-info"><h4>Tinderblox</h4><p>Destreza</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarPanelSkyTeam()">
+                        <div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-plane"></i></div>
+                        <div class="tool-info"><h4>Sky Team</h4><p>Co-op</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarLineaTiempoHitster()">
+                        <div class="tool-icon" style="color:#be123c;"><i class="fa-solid fa-timeline"></i></div>
+                        <div class="tool-info"><h4>Hitster</h4><p>Línea T.</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarHojaRollWrite()">
+                        <div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-route"></i></div>
+                        <div class="tool-info"><h4>Roll & Write</h4><p>Rutas</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarCartaAtaque()">
+                        <div class="tool-icon" style="color:#b91c1c;"><i class="fa-solid fa-burst"></i></div>
+                        <div class="tool-info"><h4>Ataque</h4><p>Take That</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarRastreadorCoop()">
+                        <div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-heart-pulse"></i></div>
+                        <div class="tool-info"><h4>Co-op Tracker</h4><p>Crisis</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarMercadoDeckBuilding()">
+                        <div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-store"></i></div>
+                        <div class="tool-info"><h4>Mercado</h4><p>Deck-Building</p></div>
+                    </div>
+                    <div class="tool-card" onclick="insertarDiarioCampana()">
+                        <div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-book-journal-whills"></i></div>
+                        <div class="tool-info"><h4>Diario Campaña</h4><p>Legacy</p></div>
+                    </div>
+                </div>
+
+                <!-- MAPEO -->
+                <div class="tool-content" id="tool-mapeo">
+                    <button class="btn btn-primary" onclick="activarModoMapa()" style="width:100%; margin-bottom:10px; background:#0284c7; border-color:#0284c7;"><i class="fa-solid fa-earth-americas"></i> Modo Mapa</button>
+                    <button class="btn btn-outline" onclick="document.getElementById('file-mapa').click()" style="width:100%; margin-bottom:10px; border-color:#0284c7; color:#0284c7;"><i class="fa-solid fa-upload"></i> Subir Mapa</button>
+                    <input type="file" id="file-mapa" accept="image/*" onchange="subirMapaBase(event)" style="display:none;">
+                    
+                    <h4 style="font-size:12px; color:#64748b; margin-bottom:10px;">Elementos</h4>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px;">
+                        <button class="btn btn-outline" style="font-size:11px; padding:8px;" onclick="insertarIconoMapa('school', '#0284c7')"><i class="fa-solid fa-school"></i> Escuela</button>
+                        <button class="btn btn-outline" style="font-size:11px; padding:8px;" onclick="insertarIconoMapa('tree', '#166534')"><i class="fa-solid fa-tree"></i> Plaza</button>
+                        <button class="btn btn-outline" style="font-size:11px; padding:8px;" onclick="insertarIconoMapa('user', '#475569')"><i class="fa-solid fa-user"></i> Actor</button>
+                        <button class="btn btn-outline" style="font-size:11px; padding:8px; border-color:#dc2626; color:#dc2626;" onclick="insertarZonaCalor('rojo')"><i class="fa-solid fa-fire"></i> Peligro</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CANVAS -->
+            <main class="canvas-area" id="canvas" ondragover="event.preventDefault()" ondrop="soltarImagen(event)">
+                <svg id="canvas-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
+                <div class="canvas-hint" id="canvas-hint">Usa el menú izquierdo para añadir elementos.</div>
+            </main>
+
+            <!-- PANEL DERECHO -->
+            <aside class="properties-panel" style="display:flex; flex-direction:column; height:100%; overflow:hidden;">
+                <h3 style="flex-shrink:0;"><i class="fa-solid fa-pen-nib"></i> Propiedades</h3>
+                
+                <div style="flex:1; overflow-y:auto; padding-right:5px;">
+                    <div id="props-empty" class="props-placeholder">Selecciona un elemento para editarlo.</div>
+                    
+                    <div id="props-content" style="display:none;">
+                        
+                        <!-- TOKENS -->
+                        <div class="form-group" id="grupo-token" style="display:none; border-top: 2px solid #4c1d95; padding-top: 10px; margin-top: 10px; background: #f8fafc; padding: 10px; border-radius: 6px;">
+                            <h4 style="color: #4c1d95; margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-coins"></i> Editor de Ficha</h4>
+                            <div class="form-group">
+                                <label>Forma</label>
+                                <select id="prop-token-forma" onchange="cambiarFormaToken(this.value)">
+                                    <option value="token-circulo">Círculo</option>
+                                    <option value="token-cuadrado">Cuadrado</option>
+                                    <option value="token-hexagono">Hexágono</option>
+                                    <option value="token-estrella">Estrella</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Color</label>
+                                <input type="color" id="prop-token-color" oninput="cambiarColorToken(this.value)" style="width: 100%; height: 30px;">
+                            </div>
+                            <div class="form-group">
+                                <label>Subir Imagen (Ficha)</label>
+                                <input type="file" id="input-token-img" accept="image/*" onchange="subirImagenToken(event)" style="width:100%; font-size:11px; margin-bottom:5px;">
+                                <button class="btn btn-outline" style="width:100%; font-size:11px; color:#ef4444; border-color:#ef4444;" onclick="quitarImagenToken()">Quitar Imagen</button>
+                            </div>
+                        </div>
+
+                        <!-- CARTAS UNO -->
+                        <div class="form-group" id="grupo-uno" style="display:none; border-top: 2px solid #dc2626; padding-top: 10px; margin-top: 10px; background: #fef2f2; padding: 10px; border-radius: 6px;">
+                            <label style="color: #dc2626; font-weight:bold;">Controles UNO</label>
+                            <input type="color" id="prop-uno-color" oninput="cambiarColorJuego(this.value)" style="width: 100%; height: 35px; margin-bottom:5px;">
+                            <div style="display:flex; gap:5px;">
+                                <button class="btn btn-outline" style="flex:1; padding:4px;" onclick="insertarSimboloUno('+2')">+2</button>
+                                <button class="btn btn-outline" style="flex:1; padding:4px;" onclick="insertarSimboloUno('⤾')">⤾</button>
+                                <button class="btn btn-outline" style="flex:1; padding:4px;" onclick="insertarSimboloUno('⊘')">⊘</button>
+                            </div>
+                        </div>
+
+                        <!-- CARTAS COMUNES -->
+                        <div id="props-carta" style="display:none;">
+                            <div class="form-group"><label>Anverso</label><textarea id="prop-text" oninput="actualizarPropiedad('texto', this.value)"></textarea></div>
+                            <div class="form-group"><label>Dorso (Guía)</label><textarea id="prop-instrucciones" oninput="actualizarPropiedad('instrucciones', this.value)"></textarea></div>
+                            <button class="btn btn-secondary" style="width:100%; margin-bottom:10px;" onclick="voltearCarta()"><i class="fa-solid fa-rotate"></i> Voltear</button>
+                        </div>
+
+                        <!-- TEXTOS GENÉRICOS -->
+                        <div id="props-especifico" style="display:none;">
+                            <div class="form-group"><label id="lbl-especifico">Contenido</label><textarea id="prop-especifico-text" oninput="actualizarPropiedad('especifico', this.value)"></textarea></div>
+                        </div>
+
+                        <!-- DISEÑO DE DORSO UNIVERSAL -->
+                        <div class="form-group" id="grupo-dorso-universal" style="display:none; border-top: 2px solid #4c1d95; padding-top: 10px; margin-top: 10px; background: #f8fafc; padding: 10px; border-radius: 6px;">
+                            <h4 style="color: #4c1d95; margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-clone"></i> Diseño del Dorso</h4>
+                            
+                            <div class="form-group">
+                                <label>Color de Fondo</label>
+                                <input type="color" id="prop-dorso-color" oninput="cambiarColorDorsoUniversal(this.value)" style="width: 100%; height: 35px;">
+                            </div>
+
+                            <div class="form-group" style="border-top:1px dashed #ccc; padding-top:10px;">
+                                <label>Subir Imagen</label>
+                                <input type="file" id="input-img-dorso" accept="image/*" onchange="subirImagenDorsoUniversal(event)" style="width:100%; font-size:11px; margin-bottom:5px;">
+                            </div>
+
+                            <!-- Sliders de Ajuste -->
+                            <div id="controles-img-dorso" style="display:none; background: #e0f2fe; padding: 10px; border-radius: 6px;">
+                                <label style="font-size:10px; color:#0284c7;">Zoom</label>
+                                <input type="range" id="dorso-zoom" min="1" max="3" step="0.1" value="1" oninput="ajustarImagenDorso('zoom', this.value)" style="width:100%;">
+                                <label style="font-size:10px; color:#0284c7;">Pos X</label>
+                                <input type="range" id="dorso-posx" min="0" max="100" value="50" oninput="ajustarImagenDorso('x', this.value)" style="width:100%;">
+                                <label style="font-size:10px; color:#0284c7;">Pos Y</label>
+                                <input type="range" id="dorso-posy" min="0" max="100" value="50" oninput="ajustarImagenDorso('y', this.value)" style="width:100%;">
+                            </div>
+                            
+                            <button class="btn btn-secondary" style="width:100%; margin-top:10px;" onclick="voltearCartaUniversal()"><i class="fa-solid fa-rotate"></i> Previsualizar Dorso</button>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div id="props-actions" style="display:none; flex-shrink:0; padding-top:15px; margin-top:10px; border-top:1px solid #eee; background:white;">
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-secondary" style="flex:1;" onclick="duplicarElemento()"><i class="fa-regular fa-clone"></i> Duplicar</button>
+                        <button class="btn btn-outline" style="flex:1; border-color:#ef4444; color:#ef4444;" onclick="pedirEliminar()"><i class="fa-regular fa-trash-can"></i> Eliminar</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/drag-drop.js"></script>
+    <script src="js/herramientas.js"></script>
+    <script src="js/panel-derecho.js"></script>
+</body>
+</html>

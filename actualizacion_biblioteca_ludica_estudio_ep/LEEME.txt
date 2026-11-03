@@ -1,0 +1,27 @@
+# Actualización incremental — Biblioteca lúdica para Estudio EP
+
+## Qué agrega esta primera extensión
+- Catálogo de 40 referencias del artículo de Xataka, con búsqueda y filtro por familia.
+- Formulario para guardar prototipos originales en el navegador.
+- Exportación del prototipo a JSON.
+- Hoja de prototipado imprimible desde el navegador.
+- Demo digital básica de turnos, dados, recursos y puntuación.
+
+## Qué NO hace todavía
+- No reproduce las reglas completas de los juegos comerciales de referencia.
+- El modo digital es una demo genérica para validar el flujo de turnos, no un motor de reglas terminado.
+- Los prototipos se guardan en localStorage de ese navegador y equipo; no se sincronizan entre dispositivos.
+- La primera versión mantiene los prototipos en un espacio separado para no modificar el formato de los proyectos existentes. La integración directa al lienzo y al guardado de proyectos es la siguiente fase.
+
+## Instalación
+1. Haz una copia de toda la carpeta `Creador_Talleres_EP`.
+2. Descomprime los tres archivos en una misma carpeta.
+3. Abre PowerShell y ejecuta:
+   `Set-ExecutionPolicy -Scope Process Bypass`
+   `.\INSTALAR_MESA_LUDICA.ps1`
+4. Si la carpeta no es la predeterminada, usa:
+   `.\INSTALAR_MESA_LUDICA.ps1 -Root "C:\ruta\a\Creador_Talleres_EP"`
+5. Abre el creador y pulsa Ctrl+F5.
+6. Debe aparecer el botón **Biblioteca lúdica** en la barra superior.
+
+El instalador crea una copia de `index.html` y no reemplaza los archivos JS/CSS principales de la aplicación. Aun así, pruébalo primero sobre una copia de la carpeta.

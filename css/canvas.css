@@ -1,0 +1,12 @@
+.canvas-area { background-color: var(--bg-canvas); background-image: radial-gradient(#d1ccc5 1px, transparent 1px); background-size: 20px 20px; position: relative; overflow: auto; padding: 20px; }
+.canvas-area.modo-mapa { background-color: #e2e8f0 !important; background-image: linear-gradient(rgba(255,255,255,0.5) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,0.5) 2px, transparent 2px) !important; background-size: 50px 50px !important; }
+.canvas-area.mapa-personalizado { background-color: #1e293b !important; background-image: none !important; }
+.canvas-hint { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #a8a29e; font-size: 16px; pointer-events: none; font-family: 'Playfair Display', serif; font-style: italic; }
+.canvas-element, .doc-element { position: absolute; cursor: grab; user-select: none; z-index: 2; }
+.canvas-element:active, .doc-element:active { cursor: grabbing; }
+.canvas-element.selected, .doc-element.selected { outline: 3px dashed var(--primary); outline-offset: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 999; }
+.canvas-element.dragging, .doc-element.dragging { opacity: 0.9; cursor: grabbing; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+body.preview-mode .tools-panel, body.preview-mode .properties-panel, body.preview-mode .canvas-hint, body.preview-mode #widget-timer, body.preview-mode .topbar-actions, body.preview-mode #project-title-input, body.preview-mode .mode-switch { display: none !important; }
+body.preview-mode .editor-workspace { grid-template-columns: 1fr; }
+body.preview-mode .canvas-area { background-image: none !important; background-color: white !important; }
+body.preview-mode .canvas-element, body.preview-mode .doc-element { border: none !important; box-shadow: none !important; outline: none !important; }

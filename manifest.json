@@ -1,0 +1,15 @@
+{
+  "name": "Estudio EP",
+  "short_name": "EP",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f4f1ea",
+  "theme_color": "#9a3412",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2662/2662503.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
