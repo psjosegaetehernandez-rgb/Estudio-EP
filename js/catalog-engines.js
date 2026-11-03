@@ -1075,3 +1075,100 @@ function cat_insertarHojaPistasEscape(posX, posY) {
     `;
     EP.insertarCartaEnCanvas(html, 300, 400, posX, posY);
 }
+
+
+// ================= TABLEROS DE ESCAPE ROOM (v233.0) =================
+
+function cat_insertarTableroEscenario(posX, posY) {
+    const html = `
+        <div style="width: 400px; height: 400px; background: #cbd5e1; border: 8px solid #475569; border-radius: 4px; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
+            <!-- Habitación 1 -->
+            <div style="position: absolute; top: 20px; left: 20px; width: 150px; height: 150px; background: #e2e8f0; border: 2px solid #94a3b8; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #475569; font-weight: bold;">HABITACIÓN 1</div>
+            <!-- Mesa -->
+            <div style="position: absolute; top: 60px; left: 60px; width: 60px; height: 30px; background: #78350f; border-radius: 4px;"></div>
+            <!-- Puerta -->
+            <div style="position: absolute; top: 170px; left: 80px; width: 30px; height: 10px; background: #1e293b;"></div>
+            <!-- Habitación 2 -->
+            <div style="position: absolute; top: 20px; right: 20px; width: 180px; height: 150px; background: #e2e8f0; border: 2px solid #94a3b8; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #475569; font-weight: bold;">HABITACIÓN 2</div>
+            <!-- Caja Fuerte -->
+            <div style="position: absolute; top: 60px; right: 60px; width: 50px; height: 50px; background: #64748b; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-lock" style="color: white;"></i></div>
+            <!-- Pasillo -->
+            <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; height: 180px; background: #f8fafc; border: 2px dashed #94a3b8; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #64748b; font-weight: bold;">PASILLO PRINCIPAL</div>
+            <!-- Salida -->
+            <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 15px; background: #dc2626; border-radius: 4px 4px 0 0; text-align: center; font-size: 8px; color: white; line-height: 15px;">SALIDA</div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 400, 400, posX, posY);
+}
+
+function cat_insertarPlanoEscape(posX, posY) {
+    const html = `
+        <div style="width: 450px; height: 300px; background: #1e40af; border: 4px solid #1e3a8a; border-radius: 8px; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
+            <!-- Grid de plano -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <!-- Nodos y líneas -->
+            <svg viewBox="0 0 450 300" style="width: 100%; height: 100%; position: relative; z-index: 1;">
+                <line x1="50" y1="50" x2="200" y2="150" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                <line x1="200" y1="150" x2="400" y2="100" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                <line x1="200" y1="150" x2="250" y2="250" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                <circle cx="50" cy="50" r="15" fill="white" />
+                <text x="50" y="55" fill="#1e40af" font-size="10" text-anchor="middle" font-weight="bold">A1</text>
+                <circle cx="200" cy="150" r="15" fill="white" />
+                <text x="200" y="155" fill="#1e40af" font-size="10" text-anchor="middle" font-weight="bold">B2</text>
+                <circle cx="400" cy="100" r="15" fill="white" />
+                <text x="400" y="105" fill="#1e40af" font-size="10" text-anchor="middle" font-weight="bold">C3</text>
+                <circle cx="250" cy="250" r="15" fill="white" />
+                <text x="250" y="255" fill="#1e40af" font-size="10" text-anchor="middle" font-weight="bold">D4</text>
+            </svg>
+            <div style="position: absolute; bottom: 10px; right: 10px; color: rgba(255,255,255,0.5); font-family: monospace; font-size: 10px;">CONFIDENCIAL</div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 450, 300, posX, posY);
+}
+
+function cat_insertarMapaEvidencias(posX, posY) {
+    const html = `
+        <div style="width: 500px; height: 350px; background: #d4a373; border: 10px solid #8B4513; border-radius: 4px; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.4);">
+            <!-- Fotos -->
+            <div style="position: absolute; top: 40px; left: 40px; width: 80px; height: 100px; background: white; padding: 5px; transform: rotate(-5deg); box-shadow: 2px 2px 5px rgba(0,0,0,0.3);"><div style="width:100%; height:80%; background:#94a3b8;"></div><div style="font-size:8px; text-align:center;">SOSPECHOSO 1</div></div>
+            <div style="position: absolute; top: 60px; right: 100px; width: 80px; height: 100px; background: white; padding: 5px; transform: rotate(8deg); box-shadow: 2px 2px 5px rgba(0,0,0,0.3);"><div style="width:100%; height:80%; background:#64748b;"></div><div style="font-size:8px; text-align:center;">EVIDENCIA A</div></div>
+            <div style="position: absolute; bottom: 50px; left: 150px; width: 100px; height: 70px; background: white; padding: 5px; transform: rotate(-2deg); box-shadow: 2px 2px 5px rgba(0,0,0,0.3);"><div style="font-size:10px; padding:5px;">COD: 4-9-2</div></div>
+            <!-- Hilos rojos -->
+            <svg viewBox="0 0 500 350" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                <line x1="80" y1="90" x2="400" y2="110" stroke="#dc2626" stroke-width="3" />
+                <line x1="400" y1="110" x2="200" y2="250" stroke="#dc2626" stroke-width="3" />
+                <line x1="200" y1="250" x2="80" y2="90" stroke="#dc2626" stroke-width="3" />
+            </svg>
+            <!-- Chinchetas -->
+            <div style="position: absolute; top: 85px; left: 75px; width: 10px; height: 10px; background: #dc2626; border-radius: 50%; z-index: 2;"></div>
+            <div style="position: absolute; top: 105px; right: 95px; width: 10px; height: 10px; background: #dc2626; border-radius: 50%; z-index: 2;"></div>
+            <div style="position: absolute; bottom: 95px; left: 195px; width: 10px; height: 10px; background: #dc2626; border-radius: 50%; z-index: 2;"></div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 500, 350, posX, posY);
+}
+
+function cat_insertarPanelContrasena(posX, posY) {
+    const html = `
+        <div style="width: 250px; height: 350px; background: #334155; border: 6px solid #0f172a; border-radius: 12px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+            <div style="background: #000; width: 100%; height: 60px; border-radius: 6px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #1e293b;">
+                <span style="color: #dc2626; font-family: monospace; font-size: 28px; letter-spacing: 10px;">_ _ _ _</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; flex: 1;">
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">1</button>
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">2</button>
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">3</button>
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">4</button>
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">5</button>
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">6</button>
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">7</button>
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">8</button>
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">9</button>
+                <button style="background:#dc2626; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold; grid-column: span 1;">BORRAR</button>
+                <button style="background:#475569; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold;">0</button>
+                <button style="background:#15803d; color:white; border:none; border-radius:6px; font-size:14px; font-weight:bold;">ENTRAR</button>
+            </div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 250, 350, posX, posY);
+}

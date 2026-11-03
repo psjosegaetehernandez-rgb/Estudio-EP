@@ -298,34 +298,42 @@ async function cargarComponentesJuego(id) {
             for(let i=0; i<60; i++) { cat_insertarContadorZombies('bala', 600 + (i%15)*35, 500 + Math.floor(i/15)*35); }
             for(let i=0; i<2; i++) { cat_insertarDadoZombies(600 + i*60, 650); }
         }
-        // NUEVOS KITS DE ESCAPE (v232.0)
+        // NUEVOS KITS DE ESCAPE CON TABLEROS (v234.0)
         else if (id === 'escape_tesoro') {
-            for(let i=0; i<5; i++) { cat_insertarPistaEscape('acertijo', 'Pista ' + (i+1)); await new Promise(r=>setTimeout(r,10)); }
-            cat_insertarMapaEscape(50, 400);
-            cat_insertarTimerEscape(400, 400);
+            cat_insertarMapaEscape(50, 50);
+            for(let i=0; i<5; i++) { cat_insertarPistaEscape('acertijo', 'Pista ' + (i+1), 50 + i*260, 300); await new Promise(r=>setTimeout(r,10)); }
+            cat_insertarTableroEscenario(50, 650);
+            cat_insertarTimerEscape(500, 650);
         }
         else if (id === 'escape_diy') {
-            for(let i=0; i<3; i++) { cat_insertarCandadoEscape(3 + i, 50 + i*200, 50); }
-            for(let i=0; i<3; i++) { cat_insertarSobreEscape(50 + i*250, 200); }
-            for(let i=0; i<5; i++) { cat_insertarPistaEscape(['acertijo','codigo','cifrado','logica','observacion'][i], 'Puzzle ' + (i+1)); await new Promise(r=>setTimeout(r,10)); }
-            cat_insertarTimerEscape(800, 500);
+            cat_insertarTableroEscenario(50, 50);
+            for(let i=0; i<3; i++) { cat_insertarCandadoEscape(3 + i, 500 + i*200, 50); }
+            for(let i=0; i<3; i++) { cat_insertarSobreEscape(500 + i*250, 200); }
+            for(let i=0; i<5; i++) { cat_insertarPistaEscape(['acertijo','codigo','cifrado','logica','observacion'][i], 'Puzzle ' + (i+1), 50 + i*260, 500); await new Promise(r=>setTimeout(r,10)); }
+            cat_insertarPanelContrasena(1200, 50);
+            cat_insertarTimerEscape(50, 900);
         }
         else if (id === 'escape_caso_cerrado') {
-            for(let i=0; i<5; i++) { cat_insertarCartaNarrativaEscape(['detective','sospechoso','victima','testigo','gm'][i], 50 + i*260, 50); }
-            for(let i=0; i<5; i++) { cat_insertarPistaEscape('logica', 'Evidencia ' + (i+1)); await new Promise(r=>setTimeout(r,10)); }
-            cat_insertarHojaPistasEscape(400, 400);
+            cat_insertarMapaEvidencias(50, 50);
+            for(let i=0; i<5; i++) { cat_insertarCartaNarrativaEscape(['detective','sospechoso','victima','testigo','gm'][i], 50 + i*260, 450); }
+            for(let i=0; i<5; i++) { cat_insertarPistaEscape('logica', 'Evidencia ' + (i+1), 50 + i*260, 800); await new Promise(r=>setTimeout(r,10)); }
+            cat_insertarHojaPistasEscape(600, 450);
         }
         else if (id === 'escape_cluedo') {
-            for(let i=0; i<6; i++) { cat_insertarCartaNarrativaEscape(['detective','sospechoso','victima','testigo','gm','sospechoso'][i], 50 + (i%3)*260, 50 + Math.floor(i/3)*350); }
-            for(let i=0; i<3; i++) { cat_insertarSobreEscape(850, 100 + i*150); }
-            cat_insertarTimerEscape(400, 700);
+            cat_insertarTableroEscenario(50, 50);
+            for(let i=0; i<6; i++) { cat_insertarCartaNarrativaEscape(['detective','sospechoso','victima','testigo','gm','sospechoso'][i], 500 + (i%3)*260, 50 + Math.floor(i/3)*350); }
+            for(let i=0; i<3; i++) { cat_insertarSobreEscape(500, 800 + i*150); }
+            cat_insertarMapaEvidencias(50, 500);
+            cat_insertarTimerEscape(1000, 800);
         }
         else if (id === 'escape_kit_generico') {
-            for(let i=0; i<5; i++) { cat_insertarPistaEscape(['acertijo','codigo','cifrado','logica','observacion'][i], 'Puzzle ' + (i+1)); await new Promise(r=>setTimeout(r,10)); }
-            cat_insertarCandadoEscape(4, 50, 400);
-            cat_insertarSobreEscape(300, 400);
-            cat_insertarTimerEscape(550, 400);
-            cat_insertarHojaPistasEscape(750, 400);
+            cat_insertarPlanoEscape(50, 50);
+            for(let i=0; i<5; i++) { cat_insertarPistaEscape(['acertijo','codigo','cifrado','logica','observacion'][i], 'Puzzle ' + (i+1), 50 + i*260, 400); await new Promise(r=>setTimeout(r,10)); }
+            cat_insertarPanelContrasena(500, 400);
+            cat_insertarCandadoEscape(4, 800, 400);
+            cat_insertarSobreEscape(500, 800);
+            cat_insertarTimerEscape(800, 800);
+            cat_insertarHojaPistasEscape(1050, 50);
         }
 
         if(typeof ocultarLoading === 'function') ocultarLoading();
