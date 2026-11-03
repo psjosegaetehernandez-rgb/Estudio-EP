@@ -125,4 +125,77 @@
         insertarCubo: function(color) { crearCubo3D(color || '#dc2626'); },
         insertarMeepleCSS: function(color) { crearMeepleCSS(color || '#8B3A3A'); }
     };
+
+    // --- TABLEROS FALTANTES (v101.0) ---
+    
+    function crearTableroPerimetro() {
+        const board = document.createElement('div');
+        board.className = 'canvas-element board-perimetro';
+        board.style.left = '100px'; board.style.top = '100px';
+        
+        // Crear las 24 casillas del perímetro para un grid 7x7
+        for(let i=0; i<49; i++) {
+            const row = Math.floor(i / 7);
+            const col = i % 7;
+            if (row > 0 && row < 6 && col > 0 && col < 6) continue; // Hueco central
+            
+            const casilla = document.createElement('div');
+            casilla.className = 'casilla-perimetro';
+            casilla.innerText = i;
+            casilla.contentEditable = "true";
+            board.appendChild(casilla);
+        }
+        
+        const centro = document.createElement('div');
+        centro.className = 'perimetro-centro';
+        centro.contentEditable = "true";
+        centro.innerText = "OBJETIVO COMÚN";
+        board.appendChild(centro);
+        
+        document.getElementById('canvas').appendChild(board);
+        makeDraggable(board);
+        if(typeof showToast === 'function') showToast("Tablero de Perímetro insertado", "success");
+    }
+
+    function crearTableroCarcassonne() {
+        const board = document.createElement('div');
+        board.className = 'canvas-element';
+        board.style.cssText = 'left: 100px; top: 100px; display: grid; grid-template-columns: repeat(4, 50px); gap: 2px; background: #333; padding: 2px; border-radius: 4px;';
+        
+        for(let i=0; i<16; i++) {
+            const loseta = document.createElement('div');
+            loseta.style.cssText = 'width: 50px; height: 50px; background: #95d5b2; position: relative; cursor: pointer;';
+            // Simular caminos
+            loseta.innerHTML = `<div style="position:absolute; top:50%; left:0; width:100%; height:10px; background:#d4a373; transform:translateY(-50%);"></div><div style="position:absolute; top:0; left:50%; width:10px; height:100%; background:#d4a373; transform:translateX(-50%);"></div>`;
+            board.appendChild(loseta);
+        }
+        
+        document.getElementById('canvas').appendChild(board);
+        makeDraggable(board);
+        if(typeof showToast === 'function') showToast("Losetas de Carcassonne insertadas", "success");
+    }
+
+    window.EPComponentsEngine.insertarPerimetro = crearTableroPerimetro;
+    window.EPComponentsEngine.insertarCarcassonne = crearTableroCarcassonne;
+
+
+// ================= EVENT BUS (Arquitectura v35.0) =================
+// Escucha eventos para generar juegos sin acoplar el menú al motor
+document.addEventListener('EP:generateGame', function(e) {
+    const gameId = e.detail.gameId;
+    
+    if (gameId === 'catan' && typeof crearTableroHexagono === 'function') crearTableroHexagono();
+    else if (gameId === 'pandemic' && typeof crearTableroMapa === 'function') crearTableroMapa();
+    else if (gameId === 'perimetro' && typeof crearTableroPerimetro === 'function') crearTableroPerimetro();
+    else if (gameId === 'carcassonne' && typeof crearTableroCarcassonne === 'function') crearTableroCarcassonne();
+    else if (gameId === 'player-board' && typeof crearTableroJugador === 'function') crearTableroJugador();
+    else if (gameId === 'mercado' && typeof crearMercado === 'function') crearMercado();
+    else if (gameId === 'dial' && typeof crearDialWavelength === 'function') crearDialWavelength();
+    else if (gameId === 'trivial' && typeof crearTrivial === 'function') crearTrivial();
+    else if (gameId === 'grid' && typeof crearGrid === 'function') crearGrid();
+    else if (gameId === 'dobble' && typeof crearDobble === 'function') crearDobble();
+    
+    if(typeof showToast === 'function') showToast("Juego generado vía Event Bus", "success");
+});
+
 })();

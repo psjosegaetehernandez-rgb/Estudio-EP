@@ -363,9 +363,9 @@ function inyectarBotonesV33() {
     const htmlBotones = `
         <h4 style="font-size:11px; color:#64748b; margin-top:15px; margin-bottom:10px;">Motores v33.0 (Tableros)</h4>
         <div id="grupo-v33" style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-bottom:15px;">
-            <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#2e7d32;" onclick="EPComponentsEngine.insertarHex()"><i class="fa-solid fa-hexagon"></i> Tablero Catán</button>
-            <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#0284c7;" onclick="EPComponentsEngine.insertarMapa()"><i class="fa-solid fa-map"></i> Mapa Pandemic</button>
-            <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#9a3412; grid-column: span 2;" onclick="EPComponentsEngine.insertarPerimetro()"><i class="fa-solid fa-border-all"></i> Tablero Perímetro</button>
+            <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#2e7d32;" onclick="document.dispatchEvent(new CustomEvent('EP:generateGame', {detail:{gameId:'catan'}}))"><i class="fa-solid fa-hexagon"></i> Tablero Catán</button>
+            <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#0284c7;" onclick="document.dispatchEvent(new CustomEvent('EP:generateGame', {detail:{gameId:'pandemic'}}))"><i class="fa-solid fa-map"></i> Mapa Pandemic</button>
+            <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#9a3412; grid-column: span 2;" onclick="document.dispatchEvent(new CustomEvent('EP:generateGame', {detail:{gameId:'perimetro'}}))"><i class="fa-solid fa-border-all"></i> Tablero Perímetro</button>
             <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#dc2626;" onclick="EPComponentsEngine.insertarCubo('#dc2626')"><i class="fa-solid fa-cube"></i> Cubo 3D</button>
             <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#8B3A3A;" onclick="EPComponentsEngine.insertarMeepleCSS()"><i class="fa-solid fa-person"></i> Meeple CSS</button>
         </div>
@@ -373,3 +373,21 @@ function inyectarBotonesV33() {
     toolJuegos.insertAdjacentHTML('beforeend', htmlBotones);
 }
 inyectarBotonesV33();
+
+
+// ================= BOTONES MAESTROS (v101.0) =================
+function inyectarBotonesV101() {
+    const toolJuegos = document.getElementById('tool-juegos');
+    if (!toolJuegos) { setTimeout(inyectarBotonesV101, 100); return; }
+    if (document.getElementById('grupo-v101')) return;
+
+    const htmlBotones = `
+        <h4 style="font-size:11px; color:#64748b; margin-top:15px; margin-bottom:10px;">Tableros Maestros</h4>
+        <div id="grupo-v101" style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-bottom:15px;">
+            <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#9a3412; grid-column: span 2;" onclick="document.dispatchEvent(new CustomEvent('EP:generateGame', {detail:{gameId:'perimetro'}}))"><i class="fa-solid fa-ring"></i> Tablero Perímetro</button>
+            <button class="btn btn-outline" style="font-size:11px; padding:6px; color:#15803d; grid-column: span 2;" onclick="document.dispatchEvent(new CustomEvent('EP:generateGame', {detail:{gameId:'carcassonne'}}))"><i class="fa-solid fa-th"></i> Losetas (Carcassonne)</button>
+        </div>
+    `;
+    toolJuegos.insertAdjacentHTML('beforeend', htmlBotones);
+}
+inyectarBotonesV101();

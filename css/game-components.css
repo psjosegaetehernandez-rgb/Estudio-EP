@@ -141,3 +141,36 @@
     transform: translateY(2px) scale(0.95);
     filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.4));
 }
+/* 11. NUEVAS FORMAS PARA EL TOKEN BUILDER (v34.0) */
+.shape-circle { border-radius: 50%; }
+.shape-square { border-radius: 4px; }
+.shape-hex { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+.shape-star { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+.shape-meeple { 
+    clip-path: polygon(50% 0%, 65% 15%, 80% 15%, 85% 35%, 75% 55%, 90% 100%, 60% 100%, 50% 85%, 40% 100%, 10% 100%, 25% 55%, 15% 35%, 20% 15%, 35% 15%);
+}
+
+/* Base para el Token Builder */
+.builder-token {
+    width: 60px; height: 60px;
+    background-color: #3b82f6;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-family: 'Inter'; font-weight: bold; font-size: 24px;
+    cursor: grab;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+.builder-token .token-img-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+}
+.builder-token .token-txt-overlay {
+    position: relative; z-index: 2; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* 12. ECO-MODE (Ahorro de Tinta) */
+.eco-mode-filter {
+    filter: grayscale(100%) contrast(1.2) !important;
+}

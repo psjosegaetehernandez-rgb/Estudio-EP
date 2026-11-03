@@ -237,18 +237,34 @@ function asegurarModalCompleto() {
     }
 }
 
-function renderCatalogo() {
+function renderCatalogo(filtro = '') {
     asegurarModalCompleto();
     const contenedor = document.getElementById('catalogo-grid');
     if(!contenedor) return;
     contenedor.innerHTML = '';
-    CATALOGO_JUEGOS.forEach(juego => {
+    
+    const filtroLower = filtro.toLowerCase();
+    const juegosFiltrados = CATALOGO_JUEGOS.filter(j => 
+        j.nombre.toLowerCase().includes(filtroLower) || 
+        j.familia.toLowerCase().includes(filtroLower)
+    );
+
+    if (juegosFiltrados.length === 0) {
+        contenedor.innerHTML = '<p style="font-size:12px; color:#64748b; text-align:center;">No se encontraron juegos.</p>';
+        return;
+    }
+
+    juegosFiltrados.forEach(juego => {
         const card = document.createElement('div');
         card.className = 'catalogo-card';
         card.onclick = () => abrirDetalleJuego(juego.id);
         card.innerHTML = `<div class="catalogo-icon" style="background:${juego.color}20; color:${juego.color};"><i class="${juego.icono}"></i></div><div class="catalogo-info"><h4>${juego.nombre}</h4><p>${juego.familia}</p><span class="catalogo-badge" style="background:${juego.color}; color:white;">${juego.jugadores}</span></div>`;
         contenedor.appendChild(card);
     });
+}
+
+function filtrarCatalogo(valor) {
+    renderCatalogo(valor);
 }
 
 function abrirDetalleJuego(id) {
@@ -292,7 +308,12 @@ async function cargarComponentesJuego(id) {
     if(!juego) return;
     cerrarDetalleJuego();
     mostrarAnexoFacilitacion(juego);
-    showToast(`Preparando ${juego.nombre}...`, "info");
+    
+    // MOSTRAR SKELETON LOADER (v35.0)
+    if(typeof mostrarLoading === 'function') mostrarLoading(`Generando ${juego.nombre}`, "Por favor, espera...");
+    
+    // Pequeña pausa para que el DOM dibuje el loader antes de colapsar el hilo principal
+    await new Promise(r => setTimeout(r, 100)); 
     
     const delay = ms => new Promise(r => setTimeout(r, 50));
 
@@ -344,6 +365,8 @@ async function cargarComponentesJuego(id) {
             } 
         } 
     }
+    // OCULTAR SKELETON LOADER
+    if(typeof ocultarLoading === 'function') ocultarLoading();
     showToast(`¡Materiales de ${juego.nombre} cargados!`, "success");
 }
 

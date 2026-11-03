@@ -1,15 +1,17 @@
 let currentProjectId = null;
-let proyectos = JSON.parse(localStorage.getItem('ep_proyectos_v64')) || [];
+let proyectos = JSON.parse(localStorage.getItem('ep_proyectos_v102')) || [];
 let autosaveTimer = null;
 let modalCallback = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     renderDashboard();
-    document.getElementById('modal-confirm-btn').onclick = () => { if (modalCallback) modalCallback(); closeModal(); };
+    const confirmBtn = document.getElementById('modal-confirm-btn');
+    if(confirmBtn) confirmBtn.onclick = () => { if (modalCallback) modalCallback(); closeModal(); };
 });
 
 function showToast(msg, type='info') {
     const c = document.getElementById('toast-container');
+    if(!c) return;
     const t = document.createElement('div');
     t.className = `toast ${type}`;
     let icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
@@ -27,6 +29,7 @@ function closeModal() { document.getElementById('modal-overlay').classList.remov
 
 function renderDashboard() {
     const grid = document.getElementById('projects-list');
+    if(!grid) return;
     grid.innerHTML = '';
     if (proyectos.length === 0) { grid.innerHTML = '<p style="text-align:center; width:100%; color:#64748b;">No hay proyectos.</p>'; return; }
     proyectos.forEach(p => {
@@ -48,6 +51,8 @@ function crearNuevoProyecto() {
 function abrirProyecto(id) {
     currentProjectId = id;
     const proyecto = proyectos.find(p => p.id === id);
+    if(!proyecto) return;
+
     document.getElementById('project-title-input').value = proyecto.nombre;
     document.getElementById('dashboard-view').classList.remove('active');
     document.getElementById('editor-view').classList.add('active');
@@ -66,7 +71,7 @@ function abrirProyecto(id) {
         canvas.className = proyecto.canvasClass || 'canvas-area';
 
         document.querySelectorAll('.canvas-element, .doc-element').forEach(el => {
-            hacerArrastrable(el);
+            if(typeof hacerArrastrable === 'function') hacerArrastrable(el);
             if (el.querySelector('.carta-container')) {
                 el.addEventListener('dblclick', (e) => { 
                     if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && !e.target.isContentEditable) {
@@ -83,7 +88,7 @@ function abrirProyecto(id) {
 }
 
 function volverAlDashboard() {
-    if(document.body.classList.contains('preview-mode')) toggleVistaPrevia();
+    if(document.body.classList.contains('preview-mode') && typeof toggleVistaPrevia === 'function') toggleVistaPrevia();
     try { guardarEnLocalStorage(); } catch (e) {}
     document.getElementById('editor-view').classList.remove('active');
     document.getElementById('dashboard-view').classList.add('active');
@@ -99,19 +104,19 @@ function guardarEnLocalStorage() {
         const mapaImg = document.getElementById('mapa-fondo-img');
         proyecto.canvasBg = mapaImg ? mapaImg.src : null;
         proyecto.canvasClass = canvas.className;
-        localStorage.setItem('ep_proyectos_v64', JSON.stringify(proyectos));
+        localStorage.setItem('ep_proyectos_v102', JSON.stringify(proyectos));
         
         if(canvas.querySelector('.canvas-element, .doc-element') && typeof html2canvas !== 'undefined') {
             setTimeout(() => {
                 try {
                     html2canvas(canvas, { scale: 0.1, backgroundColor: '#ffffff', logging: false }).then(smallCanvas => {
                         proyecto.thumbnail = smallCanvas.toDataURL('image/jpeg', 0.5);
-                        localStorage.setItem('ep_proyectos_v64', JSON.stringify(proyectos));
+                        localStorage.setItem('ep_proyectos_v102', JSON.stringify(proyectos));
                     });
                 } catch(e) {}
             }, 500);
         }
-    } else { localStorage.setItem('ep_proyectos_v64', JSON.stringify(proyectos)); }
+    } else { localStorage.setItem('ep_proyectos_v102', JSON.stringify(proyectos)); }
 }
 
 function autosave() {
@@ -150,7 +155,6 @@ function limpiarLienzo() {
     });
 }
 
-// ================= FUNCIONES RESTAURADAS (Ruleta, Panic, JSON, Modos) =================
 function descargarJSON() {
     if(!currentProjectId) return;
     const proyecto = proyectos.find(p => p.id === currentProjectId);
@@ -170,18 +174,15 @@ function toggleMesa() {
     }
 }
 
-function toggleSoundboard() { showToast("Sonidos (Simulado)", "info"); }
-
+function toggleSoundboard() { if(typeof playSound === 'function') playSound('pop'); showToast("Sonido de prueba", "info"); }
 function abrirRuleta() { document.getElementById('modal-ruleta').classList.add('active'); girarRuleta(); }
 function girarRuleta() {
     const wheel = document.getElementById('ruleta-wheel'); if(!wheel) return;
     wheel.style.background = 'conic-gradient(#ef4444 0 60deg, #3b82f6 60deg 120deg, #eab308 120deg 180deg, #22c55e 180deg 240deg, #a855f7 240deg 300deg, #f97316 300deg 360deg)';
     const randomDeg = Math.floor(Math.random() * 360) + 1440; wheel.style.transform = `rotate(${randomDeg}deg)`;
 }
-
 function activarPanico() { document.getElementById('pantalla-panico').style.display = 'flex'; }
 
-// ================= EXPORTACIÓN Y VISTA PREVIA =================
 function abrirVistaPrevia() { document.getElementById('print-modal').style.display = 'flex'; actualizarVistaPrevia(); }
 function cerrarVistaPrevia() { document.getElementById('print-modal').style.display = 'none'; }
 
@@ -196,6 +197,7 @@ function esElementoCarta(el) {
 function actualizarVistaPrevia() {
     const size = document.getElementById('print-size').value;
     const isBW = document.getElementById('print-bw').checked;
+    const isEco = document.getElementById('print-eco') ? document.getElementById('print-eco').checked : false;
     const isDuplex = document.getElementById('print-dorsos').checked;
     const previewArea = document.getElementById('print-preview-area'); previewArea.innerHTML = '';
 
@@ -222,12 +224,13 @@ function actualizarVistaPrevia() {
         return pageDiv;
     }
 
-    function clonarVisual(el, isBW, isBack = false) {
+    function clonarVisual(el, isBW, isEco, isBack = false) {
         const clone = el.cloneNode(true);
         clone.style.position = 'relative'; clone.style.left = '0'; clone.style.top = '0';
         clone.style.margin = '0'; clone.style.transform = 'scale(0.25)'; clone.style.transformOrigin = 'center center';
         clone.style.boxShadow = 'none'; clone.style.cursor = 'default';
         if (isBW) clone.style.filter = 'grayscale(100%)';
+        if (isEco) clone.classList.add('eco-mode-filter');
 
         if (isBack) {
             const inner = clone.querySelector('.carta-inner');
@@ -242,7 +245,7 @@ function actualizarVistaPrevia() {
 
     for(let p=0; p<frontPages; p++) {
         const page = crearHoja(`Hoja ${p+1} - Frentes`, cols, rows); const cells = page.querySelectorAll('div:not(:first-child)');
-        for(let i=0; i<itemsPerPage; i++) { const idx = p * itemsPerPage + i; if(idx >= cards.length) break; cells[i].appendChild(clonarVisual(cards[idx], isBW, false)); }
+        for(let i=0; i<itemsPerPage; i++) { const idx = p * itemsPerPage + i; if(idx >= cards.length) break; cells[i].appendChild(clonarVisual(cards[idx], isBW, isEco, false)); }
         previewArea.appendChild(page);
     }
 
@@ -252,7 +255,7 @@ function actualizarVistaPrevia() {
             for(let i=0; i<itemsPerPage; i++) {
                 const idx = p * itemsPerPage + i; if(idx >= cards.length) break;
                 const col = (cols - 1) - (i % cols); const row = Math.floor(i / cols); const gridIdx = row * cols + col;
-                cells[gridIdx].appendChild(clonarVisual(cards[idx], isBW, true));
+                cells[gridIdx].appendChild(clonarVisual(cards[idx], isBW, isEco, true));
             }
             previewArea.appendChild(page);
         }
@@ -260,7 +263,7 @@ function actualizarVistaPrevia() {
 
     for(let p=0; p<otherPages; p++) {
         const page = crearHoja(`Hoja ${frontPages+backPages+p+1} - Otros`, cols, rows); const cells = page.querySelectorAll('div:not(:first-child)');
-        for(let i=0; i<itemsPerPage; i++) { const idx = p * itemsPerPage + i; if(idx >= others.length) break; const clone = clonarVisual(others[idx], isBW, false); clone.style.transform = 'scale(0.15)'; cells[i].appendChild(clone); }
+        for(let i=0; i<itemsPerPage; i++) { const idx = p * itemsPerPage + i; if(idx >= others.length) break; const clone = clonarVisual(others[idx], isBW, isEco, false); clone.style.transform = 'scale(0.15)'; cells[i].appendChild(clone); }
         previewArea.appendChild(page);
     }
 }
@@ -268,7 +271,10 @@ function actualizarVistaPrevia() {
 async function generarPDFFinal() {
     const elements = Array.from(document.querySelectorAll('#canvas > .canvas-element, #canvas > .doc-element')).filter(el => el.offsetWidth > 0);
     if(elements.length === 0) return;
-    const size = document.getElementById('print-size').value; const isBW = document.getElementById('print-bw').checked; const isDuplex = document.getElementById('print-dorsos').checked;
+    const size = document.getElementById('print-size').value; 
+    const isBW = document.getElementById('print-bw').checked; 
+    const isEco = document.getElementById('print-eco') ? document.getElementById('print-eco').checked : false;
+    const isDuplex = document.getElementById('print-dorsos').checked;
     cerrarVistaPrevia(); showToast("Generando PDF... (Esto puede tardar)", "info");
     const { jsPDF } = window.jspdf; const pdf = new jsPDF('p', 'mm', 'a4');
     let cols = 3, rows = 3; if(size === 'small') { cols = 4; rows = 3; } if(size === 'large') { cols = 2; rows = 2; }
@@ -290,6 +296,7 @@ async function generarPDFFinal() {
         const temp = document.createElement('div'); temp.style.cssText = 'position:absolute; left:-9999px; top:-9999px; background:white;';
         if(target.classList.contains('carta-container')) temp.style.cssText += 'width:260px; height:380px;';
         if(isBW) temp.style.filter = 'grayscale(100%)';
+        if(isEco) temp.classList.add('eco-mode-filter');
         temp.appendChild(clone); document.body.appendChild(temp);
         const canvasImg = await html2canvas(clone, { scale: 2, backgroundColor:'#fff', useCORS:true });
         document.body.removeChild(temp); return canvasImg.toDataURL('image/jpeg', 0.95);
@@ -300,22 +307,77 @@ async function generarPDFFinal() {
         const p = pdf.getImageProperties(imgData); let w = cellW - 4, h = (p.height * w) / p.width;
         if (h > cellH - 4) { h = cellH - 4; w = (p.width * h) / p.height; }
         const c = mirror ? (cols - 1) - (index % cols) : (index % cols); const r = Math.floor((index % itemsPerPage) / cols);
-        pdf.addImage(imgData, 'JPEG', margin + c * cellW + (cellW - w) / 2, margin + r * cellH + (cellH - h) / 2, w, h);
+        
+        const x = margin + c * cellW + (cellW - w) / 2;
+        const y = margin + r * cellH + (cellH - h) / 2;
+        
+        pdf.addImage(imgData, 'JPEG', x, y, w, h);
+
+        // --- MARCAS DE CORTE (CROP MARKS) - v35.0 ---
+        pdf.setDrawColor(150, 150, 150);
+        pdf.setLineWidth(0.2);
+        const markSize = 3; // mm
+        const offset = 1; // mm
+        
+        // Esquina Superior Izquierda
+        pdf.line(x - offset - markSize, y - offset, x - offset, y - offset);
+        pdf.line(x - offset, y - offset - markSize, x - offset, y - offset);
+        
+        // Esquina Superior Derecha
+        pdf.line(x + w + offset, y - offset, x + w + offset + markSize, y - offset);
+        pdf.line(x + w + offset, y - offset - markSize, x + w + offset, y - offset);
+        
+        // Esquina Inferior Izquierda
+        pdf.line(x - offset - markSize, y + h + offset, x - offset, y + h + offset);
+        pdf.line(x - offset, y + h + offset, x - offset, y + h + offset + markSize);
+        
+        // Esquina Inferior Derecha
+        pdf.line(x + w + offset, y + h + offset, x + w + offset + markSize, y + h + offset);
+        pdf.line(x + w + offset, y + h + offset, x + w + offset, y + h + offset + markSize);
     }
 
     const cards = elements.filter(el => esElementoCarta(el)); const others = elements.filter(el => !esElementoCarta(el));
-    if (cards.length > 0) {
-        pdf.addPage(); let idx = 0; for (let card of cards) { const img = await capturar(card, false); await añadir(img, idx, false); idx++; }
-        if (isDuplex) { pdf.addPage(); let bIdx = 0; for (let card of cards) { const img = await capturar(card, true); await añadir(img, bIdx, true); bIdx++; } }
-    }
-    if (others.length > 0) { pdf.addPage(); let oIdx = 0; for (let el of others) { const img = await capturar(el, false); await añadir(img, oIdx, false); oIdx++; } }
+    
+    const processBatch = async (items, isBackMode, mirror) => {
+        pdf.addPage();
+        let idx = 0;
+        for (let item of items) {
+            const img = await capturar(item, isBackMode);
+            await añadir(img, idx, mirror);
+            idx++;
+            if (idx % 10 === 0) await new Promise(r => requestAnimationFrame(r));
+        }
+    };
+
+    if (cards.length > 0) await processBatch(cards, false, false);
+    if (isDuplex && cards.length > 0) await processBatch(cards, true, true);
+    if (others.length > 0) await processBatch(others, false, false);
+    
     pdf.save("Estudio_EP_Export.pdf"); showToast("PDF generado", "success");
 }
 
 // ================= TIMER =================
 let timerInterval, timeLeft = 900, isTimerRunning = false;
-function actualizarTimerDisplay() { const m = Math.floor(timeLeft/60), s = timeLeft%60; document.getElementById('timer-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
+function actualizarTimerDisplay() { const m = Math.floor(timeLeft/60), s = timeLeft%60; const d = document.getElementById('timer-display'); if(d) d.innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
 function iniciarTimer() { if(isTimerRunning) return; isTimerRunning = true; timerInterval = setInterval(() => { if(timeLeft > 0) { timeLeft--; actualizarTimerDisplay(); } else { pausarTimer(); showToast('¡Tiempo!', 'error'); } }, 1000); }
 function pausarTimer() { isTimerRunning = false; clearInterval(timerInterval); }
 function resetTimer() { pausarTimer(); timeLeft = 900; actualizarTimerDisplay(); }
 function toggleFullscreenTimer() { document.getElementById('widget-timer').classList.toggle('fullscreen-timer'); }
+// ================= MODO ENFOQUE (v34.0) =================
+function toggleFocusMode() {
+    document.body.classList.toggle('focus-mode');
+    const icon = document.querySelector('button[onclick="toggleFocusMode()"] i');
+    if(icon) {
+        icon.className = document.body.classList.contains('focus-mode') ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
+    }
+    if(typeof showToast === 'function') {
+        if(document.body.classList.contains('focus-mode')) showToast("Modo Enfoque activado. Presiona Esc o el botón para salir.", "info");
+    }
+}
+
+// Salir del modo enfoque con la tecla Escape
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && document.body.classList.contains('focus-mode')) {
+        toggleFocusMode();
+    }
+});

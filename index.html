@@ -6,13 +6,19 @@
     <title>Estudio EP - v67.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>`n    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/canvas.css">
     <link rel="stylesheet" href="css/cartas.css">
     <link rel="stylesheet" href="css/epes.css">`n    <link rel="stylesheet" href="css/game-components.css">
 </head>
 <body>
+        <!-- SKELETON LOADER -->
+    <div id="loading-overlay">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Preparando materiales...</div>
+        <div class="loader-subtext">Esto puede tardar unos segundos.</div>
+    </div>
     <div id="toast-container"></div>
 
     <!-- MODALES -->
@@ -46,6 +52,11 @@
                     <div>
                         <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
                             <input type="checkbox" id="print-bw" onchange="actualizarVistaPrevia()"> B/N
+                        </label>
+                    </div>
+                    <div>
+                        <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer; color: #15803d; font-weight: bold;">
+                            <input type="checkbox" id="print-eco" onchange="actualizarVistaPrevia()"> Modo Eco (Ahorro Tinta)
                         </label>
                     </div>
                     <div>
@@ -102,6 +113,8 @@
                 <div class="topbar-group">
                     <span id="autosave-status" style="font-size: 11px; color: #64748b; font-weight: bold; margin-right: 5px;">Guardado ✔</span>
                     <button class="btn btn-outline" onclick="toggleTema()" title="Modo Oscuro"><i class="fa-solid fa-moon"></i></button>
+                    <button class="btn btn-outline" onclick="toggleFocusMode()" title="Modo Enfoque (Ocultar Paneles)"><i class="fa-solid fa-expand"></i></button>
+                    <button class="btn btn-outline" onclick="abrirWizard()" title="Asistente de Taller" style="color:#8B3A3A; border-color:#8B3A3A; font-weight:bold;"><i class="fa-solid fa-wand-magic-sparkles"></i> Asistente</button>
                     <button class="btn btn-outline" onclick="toggleVistaPrevia()" title="Vista Previa"><i class="fa-solid fa-eye"></i></button>
                     <button class="btn btn-outline" onclick="toggleMesa()" title="Mesa"><i class="fa-solid fa-tree"></i></button>
                     <button class="btn btn-outline" onclick="toggleSoundboard()" title="Sonidos"><i class="fa-solid fa-volume-high"></i></button>
@@ -112,6 +125,8 @@
                 </div>
                 <div class="topbar-divider"></div>
                 <div class="topbar-group">
+                    <button class="btn btn-outline" onclick="exportarImagenPNG()" title="Exportar Lienzo como Imagen" style="color:#0284c7; border-color:#0284c7;"><i class="fa-solid fa-image"></i></button>
+                    <button class="btn btn-outline" onclick="exportarTTS()" title="Exportar para Tabletop Simulator" style="color:#a855f7; border-color:#a855f7;"><i class="fa-solid fa-dice-d20"></i></button>
                     <button class="btn btn-outline" onclick="descargarJSON()" title="Guardar JSON"><i class="fa-solid fa-download"></i></button>
                 </div>
                 <div class="topbar-divider"></div>
@@ -131,6 +146,10 @@
                 </div>
                 
                 <div class="tool-content active" id="tool-mazos">
+                    <div class="tool-card" onclick="insertarCartaMitoRealidad()" style="border-left: 4px solid #dc2626;"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-scale-balanced"></i></div><div class="tool-info"><h4>Mito vs Realidad</h4><p>Debate</p></div></div>
+                    <div class="tool-card" onclick="insertarCartaCompromiso()" style="border-left: 4px solid #8B3A3A;"><div class="tool-icon" style="color:#8B3A3A;"><i class="fa-solid fa-file-signature"></i></div><div class="tool-info"><h4>Carta Compromiso</h4><p>Acuerdos</p></div></div>
+                    <div class="tool-card" onclick="insertarTarjetaReflexion('inicio')" style="border-left: 4px solid #D4A373;"><div class="tool-icon" style="color:#D4A373;"><i class="fa-solid fa-sun"></i></div><div class="tool-info"><h4>Reflexión: Inicio</h4><p>Expectativas</p></div></div>
+                    <div class="tool-card" onclick="insertarTarjetaReflexion('cierre')" style="border-left: 4px solid #D4A373;"><div class="tool-icon" style="color:#D4A373;"><i class="fa-solid fa-moon"></i></div><div class="tool-info"><h4>Reflexión: Cierre</h4><p>Aprendizajes</p></div></div>
                     <div class="tool-card" onclick="insertarNotaAdhesiva()" style="background:#fef08a; border-color:#ca8a04;"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-note-sticky"></i></div><div class="tool-info"><h4>Nota Adhesiva</h4><p>Ideas</p></div></div>
                     <div class="tool-card primary-tool" onclick="insertarCarta()"><div class="tool-icon"><i class="fa-solid fa-plus"></i></div><div class="tool-info"><h4>Nueva Carta</h4><p>Flip 3D</p></div></div>
                     <div class="tool-card" onclick="insertarCartaNaipe()"><div class="tool-icon"><i class="fa-solid fa-diamond"></i></div><div class="tool-info"><h4>Carta Naipe</h4><p>Barajas</p></div></div>
@@ -138,9 +157,15 @@
                     <div class="tool-card" onclick="insertarCartaEvento()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-virus"></i></div><div class="tool-info"><h4>Carta Evento</h4><p>Crisis</p></div></div>
                     <div class="tool-card" onclick="insertarCartaRol()"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-user-secret"></i></div><div class="tool-info"><h4>Carta Rol</h4><p>Oculto</p></div></div>
                     <div class="tool-card" onclick="insertarCuboNet()"><div class="tool-icon"><i class="fa-solid fa-cube"></i></div><div class="tool-info"><h4>Cubo 3D</h4><p>Recortable</p></div></div>
+                    <div class="tool-card" onclick="insertarDado3D()" style="border-left: 4px solid #1e293b;"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-dice"></i></div><div class="tool-info"><h4>Dado 3D</h4><p>Aleatorio</p></div></div>
+                    <div class="tool-card" onclick="abrirGeneradorGrupos()" style="border-left: 4px solid #0284c7;"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-users-rectangle"></i></div><div class="tool-info"><h4>Crear Grupos</h4><p>Al azar</p></div></div>
+                    <div class="tool-card" onclick="document.getElementById('input-csv').click()" style="border-left: 4px solid #16a34a;"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-file-csv"></i></div><div class="tool-info"><h4>Importar CSV</h4><p>Mazos Masivos</p></div></div>
+                    <input type="file" id="input-csv" accept=".csv" onchange="procesarArchivoCSV(event)" style="display:none;">
+                    <div class="tool-card" onclick="insertarCodigoQR()" style="border-left: 4px solid #1e293b;"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-qrcode"></i></div><div class="tool-info"><h4>Código QR</h4><p>Enlaces Web</p></div></div>
                 </div>
 
                 <div class="tool-content" id="tool-gestion">
+                    <div class="tool-card" onclick="insertarPizarraFacilitador()" style="border-left: 4px solid #d97706; background: #fffbeb;"><div class="tool-icon" style="color:#d97706;"><i class="fa-solid fa-clipboard-list"></i></div><div class="tool-info"><h4>Pizarra Facilitador</h4><p>Guion de Taller</p></div></div>
                     <div class="tool-card" onclick="insertarMuroPostits()"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-note-sticky"></i></div><div class="tool-info"><h4>Muro Post-its</h4><p>Evaluación</p></div></div>
                     <div class="tool-card" onclick="insertarTableroIAP()"><div class="tool-icon" style="color:#9a3412;"><i class="fa-solid fa-list-check"></i></div><div class="tool-info"><h4>Tablero IAP</h4><p>Fases</p></div></div>
                     <div class="tool-card" onclick="insertarSemaforo()"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-traffic-light"></i></div><div class="tool-info"><h4>Semáforo</h4><p>Cierre</p></div></div>
@@ -285,8 +310,21 @@
 
                         <!-- CARTAS COMUNES -->
                         <div id="props-carta" style="display:none;">
-                            <div class="form-group"><label>Anverso</label><textarea id="prop-text" oninput="actualizarPropiedad('texto', this.value)"></textarea></div>
-                            <div class="form-group"><label>Dorso (Guía)</label><textarea id="prop-instrucciones" oninput="actualizarPropiedad('instrucciones', this.value)"></textarea></div>
+                            <div class="form-group"><label id="lbl-carta-text">Anverso</label><textarea id="prop-text" oninput="actualizarPropiedad('texto', this.value)"></textarea></div>
+                            <div class="form-group"><label id="lbl-carta-instrucciones">Dorso (Guía)</label><textarea id="prop-instrucciones" oninput="actualizarPropiedad('instrucciones', this.value)"></textarea></div>
+                            
+                            <div class="form-group" id="grupo-icono-reflexion" style="display:none; border-top: 1px dashed #ccc; padding-top: 10px;">
+                                <label>Ícono Superior</label>
+                                <select id="prop-icono-reflexion" onchange="cambiarIconoReflexion(this.value)" style="width:100%; padding:5px;">
+                                    <option value="fa-sun">Sol (Inicio)</option>
+                                    <option value="fa-moon">Luna (Cierre)</option>
+                                    <option value="fa-heart">Corazón</option>
+                                    <option value="fa-lightbulb">Bombilla (Idea)</option>
+                                    <option value="fa-comments">Comentarios</option>
+                                    <option value="fa-star">Estrella</option>
+                                    <option value="fa-hands-holding-circle">Manos (Comunidad)</option>
+                                </select>
+                            </div>
                             <div class="form-group" style="border-top: 1px dashed #ccc; padding-top: 10px; margin-top: 10px;">
                                 <label>Subir Imagen a la Carta</label>
                                 <input type="file" id="input-img-carta" accept="image/*" onchange="subirImagenCarta(event)" style="width:100%; font-size:11px; margin-bottom:5px;">
@@ -411,7 +449,68 @@
     
     
     <script src="js/catalogo.js"></script>
-    <script src="js/componentes-extra.js"></script>`n    <script src="js/components-engine.js"></script>`n    <script src="js/app.js"></script>
+    <script src="js/componentes-extra.js"></script>`n    <script src="js/components-engine.js"></script>`n    <script src="js/csv-qr-module.js"></script>`n        <!-- MODAL ASISTENTE DE TALLER (v104.0) -->
+    <div id="modal-wizard" class="modal-overlay" style="z-index: 10000; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);">
+        <div class="modal-content" style="max-width: 500px; width: 90%; padding: 30px; background: #FDFBF7; border-radius: 12px; border: 2px solid #D4A373; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+            <h2 style="font-family:'Playfair Display'; color:#8B3A3A; margin-bottom: 10px;">Asistente de Taller</h2>
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Diseñemos juntos la experiencia pedagógica. Sigue estos pasos:</p>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="font-weight: bold; color: #1e293b; margin-bottom: 8px; display: block;">1. ¿Cuál es el objetivo principal?</label>
+                <select id="wizard-objetivo" class="form-control" style="width: 100%; padding: 10px; border: 2px solid #cbd5e1; border-radius: 6px; font-size: 14px;" onchange="actualizarWizard()">
+                    <option value="diagnostico">Diagnóstico / Problematización</option>
+                    <option value="evaluacion">Evaluación / Cierre</option>
+                    <option value="accion">Acción / Planificación</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="font-weight: bold; color: #1e293b; margin-bottom: 8px; display: block;">2. Dinámica sugerida</label>
+                <select id="wizard-dinamica" class="form-control" style="width: 100%; padding: 10px; border: 2px solid #cbd5e1; border-radius: 6px; font-size: 14px;">
+                    <!-- Se llena vía JS -->
+                </select>
+            </div>
+
+            <div style="background: #fff7ed; border-left: 4px solid #9a3412; padding: 15px; border-radius: 0 6px 6px 0; margin-bottom: 25px;">
+                <h4 style="font-size: 13px; color: #9a3412; margin-bottom: 5px;" id="wizard-desc-titulo">Dinámica</h4>
+                <p style="font-size: 12px; color: #475569; margin: 0;" id="wizard-desc-texto">Selecciona una dinámica para ver su descripción.</p>
+            </div>
+
+            <div style="text-align: right; display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="btn btn-outline" onclick="document.getElementById('modal-wizard').classList.remove('active')">Cancelar</button>
+                <button class="btn btn-primary" onclick="generarMaterialWizard()" style="background: #8B3A3A; border: none;"><i class="fa-solid fa-magic"></i> Generar Materiales</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/wizard.js"></script>
+        <!-- MODAL GENERADOR DE GRUPOS -->
+    <div id="modal-grupos" class="modal-overlay">
+        <div class="modal-content" style="max-width: 600px; width: 90%;">
+            <h3 style="font-family:'Playfair Display'; margin-bottom: 15px;">Generador de Grupos</h3>
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 15px;">Pega los nombres de los participantes (uno por línea).</p>
+            <textarea id="input-nombres-grupos" style="width: 100%; height: 120px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 15px; font-family: 'Inter';" placeholder="Ana&#10;Carlos&#10;Maria&#10;Pedro&#10;Luis&#10;Sofia..."></textarea>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <div style="flex: 1;">
+                    <label style="font-size: 12px; font-weight: bold; color: #333;">Cantidad de Grupos</label>
+                    <input type="number" id="input-cant-grupos" value="2" min="2" max="10" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
+                </div>
+                <div style="flex: 1; display: flex; align-items: flex-end;">
+                    <button class="btn btn-primary" onclick="procesarGrupos()" style="width: 100%; background: #0284c7; border: none;"><i class="fa-solid fa-shuffle"></i> Generar Grupos</button>
+                </div>
+            </div>
+
+            <div id="resultado-grupos" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                <!-- Aquí se muestran los grupos -->
+            </div>
+
+            <div style="text-align: right; margin-top: 20px;">
+                <button class="btn btn-outline" onclick="document.getElementById('modal-grupos').classList.remove('active')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/utilities.js"></script>
+    <script src="js/app.js"></script>
     <script src="js/drag-drop.js"></script>
     <script src="js/herramientas.js"></script>
     <script src="js/panel-derecho.js"></script>

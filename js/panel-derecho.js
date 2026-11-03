@@ -33,6 +33,12 @@ function seleccionarElemento(elmnt) {
         return; // Salir para no cargar las propiedades de carta/token
     }
 
+    if (elmnt.classList.contains('qr-wrapper')) {
+        document.getElementById('props-especifico').style.display = 'block';
+        document.getElementById('lbl-especifico').innerText = "Enlace del Código QR";
+        document.getElementById('prop-especifico-text').value = elmnt.dataset.qrText || 'https://ejemplo.com';
+        return;
+    }
     if (elmnt.classList.contains('token-wrapper') || elmnt.classList.contains('token-meeple-css') || elmnt.classList.contains('token-cube-3d')) {
         document.getElementById('grupo-token').style.display = 'block';
         seleccionarToken(elmnt);
@@ -47,8 +53,27 @@ function seleccionarElemento(elmnt) {
     }
     else if (elmnt.querySelector('.carta-container')) {
         document.getElementById('props-carta').style.display = 'block';
-        if(elmnt.querySelector('.carta-texto')) document.getElementById('prop-text').value = elmnt.querySelector('.carta-texto').innerText;
-        if(elmnt.querySelector('.dato-instrucciones')) document.getElementById('prop-instrucciones').value = elmnt.querySelector('.dato-instrucciones').innerText;
+        
+        if(elmnt.querySelector('.carta-reflexion-front')) {
+            // ES UNA TARJETA DE REFLEXIÓN
+            document.getElementById('prop-text').value = elmnt.querySelector('.titulo-reflexion').innerText;
+            const lista = Array.from(elmnt.querySelectorAll('.lista-reflexion li')).map(li => li.innerText).join('\n');
+            document.getElementById('prop-instrucciones').value = lista;
+            
+            // Mostrar selector de ícono
+            const gIcono = document.getElementById('grupo-icono-reflexion');
+            if(gIcono) {
+                gIcono.style.display = 'block';
+                const iconoActual = elmnt.querySelector('.icon-svg').className.split(' ').pop();
+                document.getElementById('prop-icono-reflexion').value = iconoActual;
+            }
+        } else {
+            // CARTA COMÚN
+            if(elmnt.querySelector('.carta-texto')) document.getElementById('prop-text').value = elmnt.querySelector('.carta-texto').innerText;
+            if(elmnt.querySelector('.dato-instrucciones')) document.getElementById('prop-instrucciones').value = elmnt.querySelector('.dato-instrucciones').innerText;
+            const gIcono = document.getElementById('grupo-icono-reflexion');
+            if(gIcono) gIcono.style.display = 'none';
+        }
         mostrarDorsoUniversal(elmnt);
     }
     else {
@@ -86,8 +111,18 @@ function mostrarDorsoUniversal(elmnt) {
 
 function actualizarPropiedad(prop, valor) {
     if(!elementoSeleccionado) return;
-    if(prop === 'texto') { const d = elementoSeleccionado.querySelector('.carta-texto'); if(d) d.innerText = valor; }
-    else if(prop === 'instrucciones') { const d = elementoSeleccionado.querySelector('.dato-instrucciones'); if(d) d.innerText = valor; }
+    if(prop === 'texto') { 
+        const d = elementoSeleccionado.querySelector('.carta-texto'); if(d) d.innerText = valor; 
+        const dr = elementoSeleccionado.querySelector('.titulo-reflexion'); if(dr) dr.innerText = valor;
+    }
+    else if(prop === 'instrucciones') { 
+        const d = elementoSeleccionado.querySelector('.dato-instrucciones'); if(d) d.innerText = valor; 
+        const dr = elementoSeleccionado.querySelector('.lista-reflexion');
+        if(dr) {
+            const lineas = valor.split('\n').filter(l => l.trim() !== '');
+            dr.innerHTML = lineas.map(l => `<li style="margin-bottom: 8px; font-size: 12px; text-align: left; color: #475569;">${l}</li>`).join('');
+        }
+    }
     else if(prop === 'especifico') {
         if(elementoSeleccionado.querySelector('.carta-naipe')) elementoSeleccionado.querySelector('.naipe-centro h3').innerText = valor;
         else if(elementoSeleccionado.querySelector('.carta-uno-texto')) elementoSeleccionado.querySelector('.carta-uno-texto').innerText = valor;
@@ -97,6 +132,17 @@ function actualizarPropiedad(prop, valor) {
         else if(elementoSeleccionado.classList.contains('nota-adhesiva')) elementoSeleccionado.innerText = valor;
         else if(elementoSeleccionado.classList.contains('token-wrapper')) { const txt = elementoSeleccionado.querySelector('.token-text'); if(txt) txt.innerText = valor; }
         else if(elementoSeleccionado.classList.contains('token-meeple-css')) { elementoSeleccionado.style.setProperty('--meeple-color', valor); }
+        else if(elementoSeleccionado.classList.contains('qr-wrapper')) {
+            elementoSeleccionado.dataset.qrText = valor;
+            const divId = elementoSeleccionado.dataset.qrDivId;
+            if(divId && typeof QRCode !== 'undefined') {
+                const div = document.getElementById(divId);
+                if(div) {
+                    div.innerHTML = ''; // Limpiar QR viejo
+                    new QRCode(div, { text: valor, width: 100, height: 100, colorDark: "#1e293b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
+                }
+            }
+        }
         else if(elementoSeleccionado.classList.contains('token-cube-3d')) { elementoSeleccionado.style.setProperty('--cube-color', valor); }
     }
     autosave();
@@ -220,27 +266,66 @@ function voltearCartaUniversal() {
     autosave();
 }
 
-// ================= TOKENS =================
+// ================= TOKEN BUILDER (v34.0) =================
 function seleccionarToken(tokenWrapper) {
     tokenSeleccionado = tokenWrapper;
-    const front = tokenWrapper.querySelector('.token-front');
-    if(front) { document.getElementById('prop-token-color').value = rgbToHex(front.style.backgroundColor || '#ffffff'); }
+    const color = tokenWrapper.style.backgroundColor || '#3b82f6';
+    document.getElementById('prop-token-color').value = rgbToHex(color);
+    
+    const txt = tokenWrapper.querySelector('.token-txt-overlay');
+    if(txt) document.getElementById('prop-token-texto').value = txt.innerText;
+    
+    // Detectar forma actual
+    const formas = ['shape-circle', 'shape-square', 'shape-hex', 'shape-star', 'shape-meeple'];
+    let formaActual = 'shape-circle';
+    formas.forEach(f => { if(tokenWrapper.classList.contains(f)) formaActual = f; });
+    document.getElementById('prop-token-forma').value = formaActual;
 }
-function cambiarFormaToken(forma) { if(!tokenSeleccionado) return; [tokenSeleccionado.querySelector('.token-front'), tokenSeleccionado.querySelector('.token-back')].forEach(el => { if(el) { el.classList.remove('token-circulo', 'token-cuadrado', 'token-hexagono', 'token-estrella'); el.classList.add(forma); } }); autosave(); }
-function cambiarColorToken(color) { if(!tokenSeleccionado) return; const front = tokenSeleccionado.querySelector('.token-front'); if(front) front.style.backgroundColor = color; autosave(); }
+
+function cambiarFormaToken(forma) {
+    if(!tokenSeleccionado) return;
+    const formas = ['shape-circle', 'shape-square', 'shape-hex', 'shape-star', 'shape-meeple'];
+    formas.forEach(f => tokenSeleccionado.classList.remove(f));
+    tokenSeleccionado.classList.add(forma);
+    autosave();
+}
+
+function cambiarColorToken(color) {
+    if(!tokenSeleccionado) return;
+    tokenSeleccionado.style.backgroundColor = color;
+    autosave();
+}
+
+function cambiarTextoToken(texto) {
+    if(!tokenSeleccionado) return;
+    let txt = tokenSeleccionado.querySelector('.token-txt-overlay');
+    if(!txt) {
+        txt = document.createElement('span');
+        txt.className = 'token-txt-overlay';
+        tokenSeleccionado.appendChild(txt);
+    }
+    txt.innerText = texto;
+    autosave();
+}
+
 function subirImagenToken(event) {
     const file = event.target.files[0]; if(!file || !tokenSeleccionado) return;
     const reader = new FileReader();
     reader.onload = function(e) {
-        const front = tokenSeleccionado.querySelector('.token-front');
-        if(front) {
-            const txt = front.querySelector('.token-text'); if(txt) txt.style.display = 'none';
-            let img = front.querySelector('.token-img'); if(!img) { img = document.createElement('img'); img.className = 'token-img'; front.insertBefore(img, front.firstChild); }
-            img.src = e.target.result; autosave();
-        }
+        tokenSeleccionado.style.backgroundImage = `url(${e.target.result})`;
+        const txt = tokenSeleccionado.querySelector('.token-txt-overlay');
+        if(txt) txt.style.display = 'none'; // Ocultar texto si hay imagen
+        autosave(); showToast("Imagen aplicada", "success");
     }; reader.readAsDataURL(file);
 }
-function quitarImagenToken() { if(!tokenSeleccionado) return; const front = tokenSeleccionado.querySelector('.token-front'); if(front) { const img = front.querySelector('.token-img'); if(img) img.remove(); const txt = front.querySelector('.token-text'); if(txt) txt.style.display = 'block'; autosave(); } }
+
+function quitarImagenToken() {
+    if(!tokenSeleccionado) return;
+    tokenSeleccionado.style.backgroundImage = 'none';
+    const txt = tokenSeleccionado.querySelector('.token-txt-overlay');
+    if(txt) txt.style.display = 'block';
+    autosave();
+}
 
 // ================= ACCIONES GENERALES =================
 function pedirEliminar() {
@@ -354,4 +439,14 @@ function quitarImagenTablero() {
     const controles = document.getElementById('controles-img-tablero');
     if(controles) controles.style.display = 'none';
     autosave(); showToast("Imagen del tablero eliminada", "info");
+}
+// ================= CAMBIAR ICONO DE REFLEXIÓN =================
+function cambiarIconoReflexion(nuevoIcono) {
+    if(!elementoSeleccionado) return;
+    const icono = elementoSeleccionado.querySelector('.icon-svg');
+    if(icono) {
+        // Limpiar clases de fontawesome viejas
+        icono.className = `fa-solid ${nuevoIcono} icon-svg`;
+        autosave();
+    }
 }
