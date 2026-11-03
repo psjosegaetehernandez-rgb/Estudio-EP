@@ -342,6 +342,8 @@ async function cargarComponentesJuego(id) {
         else if (id === 'escape_laboratorio') {
             cat_insertarConsolaGM_Escape(50, 50);
             cat_insertarCartaIntroEscape('PROTOCOLO DE CUARENTENA', 'El virus "T-Virus" se ha liberado. Tienen 60 minutos para encontrar el antídoto. Usen la linterna UV para revelar los códigos ocultos en las paredes y encontrar la salida.', 500, 50);
+            cat_insertarTableroLab(50, 400);
+            cat_insertarCartaEscenario('SALA DE CUARENTENA', 'Esta es la primera habitación. Huele a químicos y hay un zumbido constante de las máquinas. La puerta de salida está sellada.', 500, 400);
             cat_insertarLinternaUV(50, 400);
             cat_insertarObjetoClave('pocion', 500, 400);
             
@@ -366,6 +368,8 @@ async function cargarComponentesJuego(id) {
         else if (id === 'escape_mansion') {
             cat_insertarConsolaGM_Escape(50, 50);
             cat_insertarCartaIntroEscape('EL CASO DEL MAYORDOMO', 'El Sr. Blackwood ha sido asesinado. El asesino sigue en la mansión. Interroguen a los sospechosos, encuentren la salida secreta y escapen antes de que sea tarde.', 500, 50);
+            cat_insertarTableroMansion(50, 400);
+            cat_insertarCartaEscenario('EL SALÓN PRINCIPAL', 'El cuerpo del Sr. Blackwood yace en el centro. Hay una chimenea encendida y un reloj de pie que marca las 10:15 PM.', 500, 400);
             cat_insertarMapaEvidencias(50, 400);
             cat_insertarObjetoClave('foto', 600, 400);
             cat_insertarObjetoClave('llave', 880, 400);
@@ -388,6 +392,8 @@ async function cargarComponentesJuego(id) {
         else if (id === 'escape_tiempo') {
             cat_insertarConsolaGM_Escape(50, 50);
             cat_insertarCartaIntroEscape('PARADOJA TEMPORAL', 'La máquina ha fallado y están atrapados en 1885. Deben alinear los engranajes y descifrar el código del mecanismo para volver a casa.', 500, 50);
+            cat_insertarTableroTiempo(50, 400);
+            cat_insertarCartaEscenario('SALA DE MÁQUINAS', 'El núcleo de la máquina del tiempo brilla con una luz violeta. Los engranajes giran sin parar y hay un panel de control con códigos extraños.', 500, 400);
             cat_insertarRuedaCifrado(50, 400);
             cat_insertarObjetoClave('engranaje', 300, 400);
             cat_insertarObjetoClave('libro', 580, 400);

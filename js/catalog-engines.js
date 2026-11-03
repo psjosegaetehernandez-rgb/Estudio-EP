@@ -1297,3 +1297,71 @@ function cat_insertarHojaPistasEscape(titulo, soluciones, posX, posY) {
     `;
     EP.insertarCartaEnCanvas(html, 300, 400, posX, posY);
 }
+
+
+// ================= TABLEROS Y ESCENARIOS VISUALES (v240.0) =================
+
+function cat_insertarTableroLab(posX, posY) {
+    const html = `
+        <div style="width: 450px; height: 350px; background: #1e293b; border: 6px solid #334155; border-radius: 8px; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+            <!-- Grid de laboratorio -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 30px 30px;"></div>
+            <!-- Zona de cuarentena -->
+            <div style="position: absolute; top: 20px; right: 20px; width: 150px; height: 120px; border: 2px dashed #dc2626; background: rgba(220,38,38,0.1); display: flex; align-items: center; justify-content: center; color: #dc2626; font-size: 10px; font-weight: bold; font-family: monospace;">ZONA CONTAMINADA</div>
+            <!-- Mesas de trabajo -->
+            <div style="position: absolute; top: 50px; left: 50px; width: 120px; height: 60px; background: #475569; border-radius: 4px; border: 1px solid #94a3b8; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 10px;">MESA 1</div>
+            <div style="position: absolute; bottom: 50px; left: 50px; width: 120px; height: 60px; background: #475569; border-radius: 4px; border: 1px solid #94a3b8; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 10px;">MESA 2</div>
+            <!-- Computadora central -->
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #0f172a; border: 2px solid #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(56,189,248,0.5);"><i class="fa-solid fa-desktop" style="color: #38bdf8; font-size: 30px;"></i></div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 450, 350, posX, posY);
+}
+
+function cat_insertarTableroMansion(posX, posY) {
+    const html = `
+        <div style="width: 450px; height: 350px; background: #3e2723; border: 8px solid #1b110e; border-radius: 8px; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.6);">
+            <!-- Habitaciones -->
+            <div style="position: absolute; top: 20px; left: 20px; width: 180px; height: 150px; background: #5d4037; border: 2px solid #8d6e63; display: flex; align-items: center; justify-content: center; color: #d7ccc8; font-size: 12px;">SALÓN PRINCIPAL</div>
+            <div style="position: absolute; bottom: 20px; left: 20px; width: 180px; height: 120px; background: #5d4037; border: 2px solid #8d6e63; display: flex; align-items: center; justify-content: center; color: #d7ccc8; font-size: 12px;">BIBLIOTECA</div>
+            <div style="position: absolute; top: 20px; right: 20px; width: 200px; height: 250px; background: #4e342e; border: 2px solid #8d6e63; display: flex; align-items: center; justify-content: center; color: #d7ccc8; font-size: 12px;">DORMITORIO</div>
+            <!-- Pasillo -->
+            <div style="position: absolute; top: 180px; left: 200px; width: 50px; height: 50px; background: #3e2723; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-door-open" style="color: #d7ccc8;"></i></div>
+            <!-- Caja fuerte -->
+            <div style="position: absolute; bottom: 20px; right: 30px; width: 40px; height: 40px; background: #1b110e; border: 2px solid #ca8a04; display: flex; align-items: center; justify-content: center; border-radius: 4px;"><i class="fa-solid fa-lock" style="color: #ca8a04; font-size: 20px;"></i></div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 450, 350, posX, posY);
+}
+
+function cat_insertarTableroTiempo(posX, posY) {
+    const html = `
+        <div style="width: 400px; height: 400px; background: #1e1b4b; border-radius: 50%; border: 8px solid #312e81; position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
+            <!-- Engranajes simulados -->
+            <div style="position: absolute; width: 300px; height: 300px; border: 4px dashed #6d28d9; border-radius: 50%; animation: spin 10s linear infinite;"></div>
+            <div style="position: absolute; width: 200px; height: 200px; border: 6px dotted #4c1d95; border-radius: 50%; animation: spin-reverse 8s linear infinite;"></div>
+            <!-- Consola central -->
+            <div style="width: 100px; height: 100px; background: #0f172a; border: 4px solid #38bdf8; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(56,189,248,0.6); z-index: 2;">
+                <i class="fa-solid fa-clock" style="color: #38bdf8; font-size: 30px; margin-bottom: 5px;"></i>
+                <span style="color: #38bdf8; font-size: 10px; font-family: monospace;">1885</span>
+            </div>
+        </div>
+        <style>
+            @keyframes spin { 100% { transform: rotate(360deg); } }
+            @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+        </style>
+    `;
+    EP.insertarCartaEnCanvas(html, 400, 400, posX, posY);
+}
+
+function cat_insertarCartaEscenario(titulo, descripcion, posX, posY) {
+    const front = `
+        <div class="carta-pro" style="background: #fdfbf7; border: 3px solid #1e293b; border-radius: 8px; display: flex; flex-direction: column; padding: 20px; box-sizing: border-box;">
+            <h4 style="font-family: 'Merriweather'; font-size: 14px; color: #1e293b; text-align: center; border-bottom: 2px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px; text-transform: uppercase;">${titulo}</h4>
+            <p style="font-family: 'Inter'; font-size: 10px; color: #475569; line-height: 1.5; text-align: justify; flex: 1;">${descripcion}</p>
+            <div style="text-align: center; color: #1e293b; margin-top: 10px;"><i class="fa-solid fa-door-closed" style="font-size: 24px;"></i></div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#475569; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-map" style="font-size:50px; color:#cbd5e1;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330, posX, posY);
+}
