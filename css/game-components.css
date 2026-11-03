@@ -2,39 +2,18 @@
 
 /* 1. TABLERO HEXAGONAL (CATÁN) */
 .board-hexagono {
-    position: relative;
-    width: 450px;
-    height: 400px;
-    background: #1e293b; /* Color de fondo del mar */
-    border-radius: 12px;
-    border: 4px solid #cbd5e1;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    position: relative; width: 450px; height: 400px;
+    background: #1e293b; border-radius: 12px; border: 4px solid #cbd5e1;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 20px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
-.hex-row {
-    display: flex;
-    justify-content: center;
-    margin-bottom: -22px; /* Superposición para el efecto panal */
-}
+.hex-row { display: flex; justify-content: center; margin-bottom: -22px; }
 .hex-tile {
-    width: 80px;
-    height: 90px;
-    background: #95d5b2;
+    width: 80px; height: 90px; background: #95d5b2;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    margin: 0 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Patrick Hand', cursive;
-    font-size: 14px;
-    color: #1e293b;
-    font-weight: bold;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
-    cursor: grab;
+    margin: 0 2px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Patrick Hand', cursive; font-size: 14px; color: #1e293b;
+    font-weight: bold; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); cursor: grab;
 }
 .hex-bosque { background: #2e7d32; color: white; }
 .hex-montana { background: #78909c; color: white; }
@@ -45,132 +24,44 @@
 
 /* 2. TABLERO DE MAPA (PANDEMIC) */
 .board-mapa {
-    width: 600px;
-    height: 350px;
-    background: #f0f9ff;
-    border: 4px solid #0284c7;
-    border-radius: 12px;
+    width: 600px; height: 350px; background: #f0f9ff;
+    border: 4px solid #0284c7; border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
 }
-.board-mapa svg {
-    width: 100%;
-    height: 100%;
-}
-.mapa-nodo {
-    fill: #dc2626;
-    stroke: #fff;
-    stroke-width: 2px;
-    cursor: pointer;
-}
-.mapa-conexion {
-    stroke: #94a3b8;
-    stroke-width: 2px;
-    stroke-dasharray: 4;
-}
+.board-mapa svg { width: 100%; height: 100%; }
+.mapa-nodo { fill: #dc2626; stroke: #fff; stroke-width: 2px; cursor: pointer; }
+.mapa-conexion { stroke: #94a3b8; stroke-width: 2px; stroke-dasharray: 4; }
 
 /* 3. TABLERO DE PERÍMETRO (MONOPOLY) */
 .board-perimetro {
-    width: 500px;
-    height: 500px;
-    background: #f8fafc;
-    border: 2px solid #cbd5e1;
-    border-radius: 8px;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(7, 1fr);
-    gap: 2px;
-    padding: 5px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 500px; height: 500px; background: #f8fafc;
+    border: 2px solid #cbd5e1; border-radius: 8px;
+    display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(7, 1fr);
+    gap: 2px; padding: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 .casilla-perimetro {
-    background: #e2e8f0;
-    border: 1px solid #cbd5e1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    text-align: center;
-    font-weight: bold;
-    color: #475569;
+    background: #e2e8f0; border: 1px solid #cbd5e1;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; text-align: center; font-weight: bold; color: #475569;
 }
 .perimetro-centro {
-    grid-column: 2 / 7;
-    grid-row: 2 / 7;
-    background: #ffffff;
-    border: 2px dashed #94a3b8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    color: #1e293b;
-    border-radius: 8px;
+    grid-column: 2 / 7; grid-row: 2 / 7; background: #ffffff;
+    border: 2px dashed #94a3b8; display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 24px; color: #1e293b; border-radius: 8px;
 }
 
-/* 4. TOKENS 3D Y FICHAS (v33.0) */
-.token-cube-3d {
-    width: 30px; height: 30px;
-    background-color: var(--cube-color, #dc2626);
-    border-radius: 4px;
-    /* Sombra dura para efecto 3D isométrico + sombra suave para el suelo */
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.3), 8px 8px 10px rgba(0,0,0,0.2);
-    border: 1px solid rgba(0,0,0,0.2);
-    cursor: grab;
-    transition: transform 0.1s;
-}
-.token-cube-3d:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.3);
-}
+
+/* 4. TOKENS 3D Y FICHAS (v125.0) */
+
+/* Meeple Vectorial Perfecto */
 .token-meeple-css {
-    width: 45px; height: 55px;
-    background-color: var(--meeple-color, #8B3A3A);
-    /* Silueta clásica de Meeple mejorada */
-    clip-path: polygon(
-        50% 0%, 65% 15%, 80% 15%, 85% 35%, 75% 55%, 90% 100%, 
-        60% 100%, 50% 85%, 40% 100%, 10% 100%, 25% 55%, 
-        15% 35%, 20% 15%, 35% 15%
-    );
+    width: 50px; height: 60px;
+    cursor: grab; 
+    transition: transform 0.1s, filter 0.1s;
     filter: drop-shadow(3px 5px 4px rgba(0,0,0,0.4));
-    cursor: grab;
-    transition: transform 0.1s;
 }
-.token-meeple-css:active {
-    transform: translateY(2px) scale(0.95);
-    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.4));
-}
-/* 11. NUEVAS FORMAS PARA EL TOKEN BUILDER (v34.0) */
-.shape-circle { border-radius: 50%; }
-.shape-square { border-radius: 4px; }
-.shape-hex { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
-.shape-star { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
-.shape-meeple { 
-    clip-path: polygon(50% 0%, 65% 15%, 80% 15%, 85% 35%, 75% 55%, 90% 100%, 60% 100%, 50% 85%, 40% 100%, 10% 100%, 25% 55%, 15% 35%, 20% 15%, 35% 15%);
-}
-
-/* Base para el Token Builder */
-.builder-token {
-    width: 60px; height: 60px;
-    background-color: #3b82f6;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-family: 'Inter'; font-weight: bold; font-size: 24px;
-    cursor: grab;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    overflow: hidden;
-}
-.builder-token .token-img-overlay {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
-}
-.builder-token .token-txt-overlay {
-    position: relative; z-index: 2; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-}
-
-/* 12. ECO-MODE (Ahorro de Tinta) */
-.eco-mode-filter {
-    filter: grayscale(100%) contrast(1.2) !important;
+.token-meeple-css:active { 
+    transform: translateY(2px) scale(0.95); 
+    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.4)); 
 }

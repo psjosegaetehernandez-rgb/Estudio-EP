@@ -209,7 +209,41 @@ const CATALOGO_JUEGOS = [
             preguntas: ["¿Qué rutas son más importantes para nuestra comunidad?", "¿Qué pasa con las zonas desconectadas?"] 
         }
     }
-];
+    ,{
+        id: "wingspan", nombre: "Wingspan", familia: "Eurogame / Motor de Cartas", 
+        jugadores: "1-5", duracion: "40-70 min", icono: "fa-solid fa-feather", color: "#0284c7",
+        componentes: { tableros: [{ tipo: "perimetro", cantidad: 1 }], cartas: [{ tipo: "wingspan", cantidad: 15 }], tokens: [{ tipo: "circulo", cantidad: 10 }] },
+        reglas: { objetivo: "Atraer pájaros a tu reserva natural para obtener la mayor puntuación.", preparacion: "Colocar los tableros de acción y repartir cartas de pájaro y huevos.", turno: "Jugar un pájaro, recolectar comida o poner huevos en tu reserva." },
+        adaptacion_ep: { objetivo: "Reflexionar sobre la biodiversidad y la preservación del medio ambiente.", preguntas: ["¿Qué especies de nuestro territorio estamos perdiendo?", "¿Cómo podemos proteger la fauna local?"] }
+    },
+    {
+        id: "kingdomino", nombre: "Kingdomino", familia: "Colocación de Losetas", 
+        jugadores: "2-4", duracion: "15 min", icono: "fa-solid fa-chess-board", color: "#15803d",
+        componentes: { tableros: [{ tipo: "kingdomino", cantidad: 20 }], cartas: [], tokens: [{ tipo: "meeple", cantidad: 4 }] },
+        reglas: { objetivo: "Construir el reino más armonioso y grande conectando losetas.", preparacion: "Repartir un castillo y un meeple a cada jugador. Barajar las losetas de dominó.", turno: "Elegir una loseta, colocarla conectando territorios iguales y colocar el meeple." },
+        adaptacion_ep: { objetivo: "Simular la construcción del territorio y la conexión de redes comunitarias.", preguntas: ["¿Cómo decidimos qué tierras unir?", "¿Qué pasa cuando los territorios no conectan con la comunidad?"] }
+    },
+    {
+        id: "munchkin", nombre: "Munchkin", familia: "Cartas / Toma Eso", 
+        jugadores: "3-6", duracion: "60-120 min", icono: "fa-solid fa-hat-wizard", color: "#b91c1c",
+        componentes: { tableros: [], cartas: [{ tipo: "munchkin", cantidad: 15 }], tokens: [{ tipo: "circulo", cantidad: 10 }] },
+        reglas: { objetivo: "Ser el primero en llegar al nivel 10 eliminando monstruos o traicionando a tus amigos.", preparacion: "Repartir 4 cartas a cada jugador. Colocar el mazo de puertas y tesoros.", turno: "Abrir una puerta (robar carta), combatir al monstruo o saquear la sala." },
+        adaptacion_ep: { objetivo: "Analizar el individualismo y las alianzas temporales.", preguntas: ["¿Ayudaste a otros o preferiste ganar solo?", "¿Cómo se siente ser traicionado por un 'compañero'?"] }
+    },
+    {
+        id: "jungle_speed", nombre: "Jungle Speed", familia: "Reflejos / Velocidad", 
+        jugadores: "2-8", duracion: "10 min", icono: "fa-solid fa-hand-fist", color: "#eab308",
+        componentes: { tableros: [], cartas: [{ tipo: "jungle_speed", cantidad: 15 }], tokens: [{ tipo: "circulo", cantidad: 1 }] },
+        reglas: { objetivo: "Deshacerte de todas tus cartas atrapando el tótem cuando los símbolos coincidan.", preparacion: "Repartir las cartas boca abajo. Colocar el tótem en el centro.", turno: "Voltear una carta. Si coincide con la de otro, ¡atrapa el tótem!" },
+        adaptacion_ep: { objetivo: "Trabajar la atención plena, los reflejos y el manejo de impulsos.", preguntas: ["¿Cómo se sintieron al apurarse?", "¿Qué pasa en nuestra vida diaria cuando actuamos sin pensar?"] }
+    },
+    {
+        id: "coup", nombre: "Coup", familia: "Roles Ocultos / Deducción", 
+        jugadores: "2-6", duracion: "15 min", icono: "fa-solid fa-mask", color: "#9a3412",
+        componentes: { tableros: [], cartas: [{ tipo: "coup", cantidad: 15 }], tokens: [{ tipo: "circulo", cantidad: 10 }] },
+        reglas: { objetivo: "Ser el último jugador en pie eliminando a los demás mediante el engaño y el poder.", preparacion: "Repartir 2 cartas (roles) y 2 monedas a cada jugador.", turno: "Declarar una acción (ej. asesinar o impuestos), los demás pueden desafiarte o bloquear." },
+        adaptacion_ep: { objetivo: "Visibilizar la corrupción, el abuso de poder y las fake news.", preguntas: ["¿Fue fácil mentir para ganar?", "¿Cómo detectamos a los 'líderes' que solo buscan su beneficio?"] }
+    }];
 
 // ================= LÓGICA DE RENDERIZADO Y MODAL =================
 function asegurarModalCompleto() {
@@ -258,7 +292,14 @@ function renderCatalogo(filtro = '') {
         const card = document.createElement('div');
         card.className = 'catalogo-card';
         card.onclick = () => abrirDetalleJuego(juego.id);
-        card.innerHTML = `<div class="catalogo-icon" style="background:${juego.color}20; color:${juego.color};"><i class="${juego.icono}"></i></div><div class="catalogo-info"><h4>${juego.nombre}</h4><p>${juego.familia}</p><span class="catalogo-badge" style="background:${juego.color}; color:white;">${juego.jugadores}</span></div>`;
+        card.innerHTML = `
+            <div class="catalogo-icon" style="background:${juego.color}20; color:${juego.color};"><i class="${juego.icono}"></i></div>
+            <div class="catalogo-info">
+                <h4>${juego.nombre}</h4><p>${juego.familia}</p>
+                <span class="catalogo-badge" style="background:${juego.color}; color:white;">${juego.jugadores}</span>
+            </div>
+            <div class="cargar-hover-btn"><i class="fa-solid fa-plus"></i> Cargar</div>
+        `;
         contenedor.appendChild(card);
     });
 }
@@ -320,7 +361,8 @@ async function cargarComponentesJuego(id) {
     if(juego.componentes.tableros) { 
         for(let t of juego.componentes.tableros) { 
             for(let i=0; i<t.cantidad; i++) { 
-                if(t.tipo === 'hex' && typeof insertarLosetaHex === 'function') insertarLosetaHex(); 
+                if(t.tipo === 'kingdomino' && typeof insertarLosetaKingdomino === 'function') insertarLosetaKingdomino();
+                else if(t.tipo === 'hex' && typeof insertarLosetaHex === 'function') insertarLosetaHex(); 
                 else if (t.tipo === 'loseta' && typeof insertarLosetaCarcassonne === 'function') insertarLosetaCarcassonne(); 
                 else if (t.tipo === 'perimetro' && typeof insertarTableroJugador === 'function') insertarTableroJugador(); 
                 await delay(50); 
@@ -330,7 +372,11 @@ async function cargarComponentesJuego(id) {
     if(juego.componentes.cartas) { 
         for(let c of juego.componentes.cartas) { 
             for(let i=0; i<c.cantidad; i++) { 
-                if(c.tipo === 'recurso_catan' && typeof insertarCartaRecursoCatan === 'function') {
+                if(c.tipo === 'wingspan' && typeof insertarCartaWingspan === 'function') insertarCartaWingspan();
+                else if(c.tipo === 'munchkin' && typeof insertarCartaMunchkin === 'function') insertarCartaMunchkin();
+                else if(c.tipo === 'jungle_speed' && typeof insertarCartaJungleSpeed === 'function') insertarCartaJungleSpeed();
+                else if(c.tipo === 'coup' && typeof insertarCartaCoup === 'function') insertarCartaCoup();
+                else if(c.tipo === 'recurso_catan' && typeof insertarCartaRecursoCatan === 'function') {
                     const recs = ['Madera', 'Ladrillo', 'Oveja', 'Trigo', 'Mineral'];
                     const rec = recs[i % recs.length];
                     insertarCartaRecursoCatan(rec, '#8B5A2B');

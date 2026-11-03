@@ -258,6 +258,17 @@
                             <div class="tool-card" onclick="insertarCartaUNOHF('#dc2626', '5')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-clone"></i></div><div class="tool-info"><h4>UNO Rojo</h4><p>Alta Fidelidad</p></div></div>
                         </div>
                     </details>
+                    <!-- NUEVOS TABLEROS v33.0 -->
+                    <details class="ux-details">
+                        <summary>Tableros Complejos (v33.0)</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="EPComponentsEngine.insertarHex()"><div class="tool-icon" style="color:#2e7d32;"><i class="fa-solid fa-hexagon"></i></div><div class="tool-info"><h4>Tablero Catán</h4><p>Panal Hex</p></div></div>
+                            <div class="tool-card" onclick="EPComponentsEngine.insertarMapa()"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-map"></i></div><div class="tool-info"><h4>Mapa Pandemic</h4><p>Nodos</p></div></div>
+                            <div class="tool-card" onclick="EPComponentsEngine.insertarPerimetro()"><div class="tool-icon" style="color:#9a3412;"><i class="fa-solid fa-border-all"></i></div><div class="tool-info"><h4>Tablero Perímetro</h4><p>Monopoly</p></div></div>
+                            <div class="tool-card" onclick="EPComponentsEngine.insertarCubo('#dc2626')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-cube"></i></div><div class="tool-info"><h4>Cubo 3D</h4><p>Pandemic</p></div></div>
+                            <div class="tool-card" onclick="EPComponentsEngine.insertarMeepleCSS()"><div class="tool-icon" style="color:#8B3A3A;"><i class="fa-solid fa-person"></i></div><div class="tool-info"><h4>Meeple CSS</h4><p>Madera</p></div></div>
+                        </div>
+                    </details>
                 </div>
 
                 <div class="tool-content" id="tool-mapeo">
@@ -302,24 +313,54 @@
             <aside class="properties-panel">
                 <h3><i class="fa-solid fa-pen-nib"></i> Propiedades</h3>
                 <div style="flex:1; overflow-y:auto; padding-right:5px;">
-                    <div id="props-empty" class="props-placeholder">Selecciona un elemento.</div>
+                    <div id="props-empty" class="props-placeholder">
+    <i class="fa-solid fa-pen-nib" style="font-size: 32px; color: #cbd5e1; margin-bottom: 15px; display: block;"></i>
+    <strong>¡Bienvenido a tu taller!</strong><br><br>
+    💡 <b>Consejo:</b> Haz clic en cualquier carta, tablero o ficha de tu lienzo para editar su texto, cambiar su color, o subirle una imagen.
+</div>
                     <div id="props-content" style="display:none;">
-                        <!-- Contenido del panel derecho -->
+                        
+                        <!-- TABLEROS Y MAPAS -->
+                        <div class="form-group" id="grupo-tablero" style="display:none; border-top: 2px solid #0284c7; padding-top: 10px; margin-top: 10px; background: #f0f9ff; padding: 10px; border-radius: 6px;">
+                            <h4 style="color: #0284c7; margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-map"></i> Personalizar Tablero</h4>
+                            <div class="form-group" style="border-top:1px dashed #ccc; padding-top:10px;">
+                                <label>Subir Imagen al Tablero</label>
+                                <input type="file" id="input-img-tablero" accept="image/*" onchange="subirImagenTablero(event)" style="width:100%; font-size:11px; margin-bottom:5px;">
+                            </div>
+                            <div id="controles-img-tablero" style="display:none; background: #e0f2fe; padding: 10px; border-radius: 6px;">
+                                <label style="font-size:10px; color:#0284c7;">Zoom</label>
+                                <input type="range" id="tablero-zoom" min="1" max="3" step="0.1" value="1" oninput="ajustarImagenTablero('zoom', this.value)" style="width:100%;">
+                                <label style="font-size:10px; color:#0284c7;">Pos X</label>
+                                <input type="range" id="tablero-posx" min="0" max="100" value="50" oninput="ajustarImagenTablero('x', this.value)" style="width:100%;">
+                                <label style="font-size:10px; color:#0284c7;">Pos Y</label>
+                                <input type="range" id="tablero-posy" min="0" max="100" value="50" oninput="ajustarImagenTablero('y', this.value)" style="width:100%;">
+                            </div>
+                            <button class="btn btn-outline" style="width:100%; margin-top:10px; color:#ef4444; border-color:#ef4444;" onclick="quitarImagenTablero()"><i class="fa-solid fa-trash"></i> Quitar Imagen</button>
+                        </div>
+
+                        <!-- TOKENS -->
                         <div class="form-group" id="grupo-token" style="display:none; border-top: 2px solid #4c1d95; padding-top: 10px; margin-top: 10px; background: #f8fafc; padding: 10px; border-radius: 6px;">
                             <h4 style="color: #4c1d95; margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-coins"></i> Editor de Ficha</h4>
                             <div class="form-group">
-                                <label>Forma</label>
-                                <select id="prop-token-forma" onchange="cambiarFormaToken(this.value)">
-                                    <option value="shape-circle">Círculo</option>
-                                    <option value="shape-square">Cuadrado</option>
-                                    <option value="shape-hex">Hexágono</option>
-                                    <option value="shape-star">Estrella</option>
-                                    <option value="shape-meeple">Meeple</option>
-                                </select>
+                                <label>Forma Visual</label>
+                                <div style="display:flex; gap:5px; margin-top:5px;">
+                                    <button class="btn btn-outline" style="flex:1; padding:5px;" onclick="cambiarFormaToken('shape-circle')" title="Círculo"><i class="fa-solid fa-circle"></i></button>
+                                    <button class="btn btn-outline" style="flex:1; padding:5px;" onclick="cambiarFormaToken('shape-square')" title="Cuadrado"><i class="fa-solid fa-square"></i></button>
+                                    <button class="btn btn-outline" style="flex:1; padding:5px;" onclick="cambiarFormaToken('shape-hex')" title="Hexágono"><i class="fa-solid fa-hexagon"></i></button>
+                                    <button class="btn btn-outline" style="flex:1; padding:5px;" onclick="cambiarFormaToken('shape-meeple')" title="Meeple"><i class="fa-solid fa-person"></i></button>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label>Color de Fondo</label>
-                                <input type="color" id="prop-token-color" oninput="cambiarColorToken(this.value)" style="width: 100%; height: 30px;">
+                                <label>Paleta de Colores</label>
+                                <div style="display:flex; gap:5px; margin-top:5px; flex-wrap:wrap;">
+                                    <div onclick="cambiarColorToken('#8B3A3A')" style="width:30px; height:30px; background:#8B3A3A; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                                    <div onclick="cambiarColorToken('#556B2F')" style="width:30px; height:30px; background:#556B2F; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                                    <div onclick="cambiarColorToken('#0284c7')" style="width:30px; height:30px; background:#0284c7; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                                    <div onclick="cambiarColorToken('#ca8a04')" style="width:30px; height:30px; background:#ca8a04; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                                    <div onclick="cambiarColorToken('#475569')" style="width:30px; height:30px; background:#475569; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                                    <div onclick="cambiarColorToken('#ffffff')" style="width:30px; height:30px; background:#ffffff; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                                </div>
+                                <input type="color" id="prop-token-color" oninput="cambiarColorToken(this.value)" style="width: 100%; height: 30px; margin-top:10px;">
                             </div>
                             <div class="form-group">
                                 <label>Texto Central</label>

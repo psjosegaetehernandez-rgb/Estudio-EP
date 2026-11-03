@@ -74,3 +74,124 @@ body.dark-mode .btn-outline { border-color: #475569; color: #f8fafc; background:
 body.dark-mode .btn-outline:hover { background: #334155; }
 body.dark-mode #project-title-input { color: #f8fafc; }
 body.dark-mode #props-actions { background: #1e293b !important; border-color: #334155 !important; }
+/* --- PULIDO VISUAL FINAL (v121.0) --- */
+
+/* Barra superior compacta */
+.editor-topbar {
+    flex-wrap: nowrap !important; /* Forzar una sola línea */
+    padding: 6px 15px !important;
+    gap: 10px !important;
+}
+.topbar-actions {
+    flex-wrap: nowrap !important;
+    gap: 5px !important;
+}
+.topbar-group {
+    padding: 2px !important;
+}
+.topbar-group .btn-outline {
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+}
+.btn-cta {
+    padding: 8px 15px !important;
+    font-size: 13px !important;
+}
+
+/* Pestañas del panel izquierdo compactas */
+.tool-tabs {
+    flex-wrap: nowrap !important;
+}
+.tool-tab {
+    padding: 12px 2px !important;
+    font-size: 10px !important;
+    letter-spacing: 0.5px;
+}
+
+/* Ajustar un poco el ancho de los paneles para dar más espacio al lienzo */
+.editor-workspace {
+    grid-template-columns: 260px 1fr 300px !important;
+}
+/* ================= PULIDO PREMIUM (v126.0) ================= */
+
+/* 1. UNIFICAR BARRA SUPERIOR */
+.topbar-group .btn-outline { 
+    color: #1a2530 !important; 
+    border-color: transparent !important; 
+}
+.topbar-group .btn-outline:hover { 
+    color: var(--primary) !important; 
+    background: #e2e8f0 !important; 
+}
+/* Neutralizar los colores forzados en línea de los botones IA y Asistente */
+button[onclick*="abrirPuenteIA"], button[onclick*="abrirWizard"] {
+    color: #1a2530 !important;
+    border-color: transparent !important;
+}
+button[onclick*="abrirPuenteIA"]:hover, button[onclick*="abrirWizard"]:hover {
+    color: var(--primary) !important;
+}
+
+/* 2. TEMPORIZADOR SUAVE */
+#widget-timer button { 
+    background: transparent !important; 
+    color: white !important; 
+    border: 1px solid transparent !important; 
+    transition: 0.2s; 
+}
+#widget-timer button:hover { 
+    background: rgba(255,255,255,0.15) !important; 
+    transform: scale(1.1);
+}
+#widget-timer button:first-child:hover { color: #4ade80 !important; }
+#widget-timer button:nth-child(2):hover { color: #fbbf24 !important; }
+#widget-timer button:last-child:hover { color: #f87171 !important; }
+
+/* 3. TEXTURA DEL LIENZO */
+.canvas-area { 
+    background-image: radial-gradient(#D1C7B8 1.5px, transparent 1.5px) !important; 
+    background-size: 20px 20px !important; 
+}
+
+/* 4. CATÁLOGO CON CTA Y TIPOGRAFÍA SERIF */
+.catalogo-card { 
+    position: relative; 
+    overflow: hidden; 
+}
+.catalogo-info h4 { 
+    font-family: 'Merriweather', serif !important; 
+    font-weight: 700 !important; 
+}
+.cargar-hover-btn {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    background: var(--primary);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    pointer-events: none;
+}
+.catalogo-card:hover .cargar-hover-btn { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
+
+/* 5. EMPTY STATE DEL PANEL DERECHO */
+.props-placeholder {
+    color: #64748b; 
+    font-size: 13px; 
+    text-align: center; 
+    margin-top: 50px;
+    padding: 20px;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    line-height: 1.6;
+}
