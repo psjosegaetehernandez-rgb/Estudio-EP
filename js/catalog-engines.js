@@ -86,3 +86,612 @@ function insertarMeeplePandemic(posX, posY) {
     const color = ['#0284c7', '#dc2626', '#15803d'][Math.floor(Math.random()*3)];
     EP.insertarCartaEnCanvas(`<div style="width:45px; height:55px; filter:drop-shadow(3px 5px 4px rgba(0,0,0,0.5));"><svg viewBox="0 0 100 100"><path d="M50 5 C62 5 70 15 70 25 C70 35 60 42 58 45 L85 65 L95 65 L95 95 L5 95 L5 65 L15 65 L42 45 C40 42 30 35 30 25 C30 15 38 5 50 5 Z" fill="${color}"/></svg></div>`, 45, 55, posX, posY);
 }
+
+
+// ================= COMPONENTES EXACTOS CATÁLOGO (v222.0) =================
+
+function insertarCentroInvestigacion(posX, posY) {
+    const html = `
+        <div style="width: 60px; height: 60px; background: #f0f9ff; border: 3px solid #0284c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+            <i class="fa-solid fa-microscope" style="font-size: 30px; color: #0284c7;"></i>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 60, 60, posX, posY);
+}
+
+function insertarCuraPandemic(posX, posY) {
+    const html = `
+        <div style="width: 40px; height: 40px; background: #dc2626; border: 3px solid #7f1d1d; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+            <i class="fa-solid fa-syringe" style="font-size: 20px; color: white;"></i>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 40, 40, posX, posY);
+}
+
+function insertarCartaClaveCodenames(posX, posY) {
+    const html = `
+        <div style="background: #fdfbf7; border: 2px solid #1e293b; border-radius: 8px; padding: 15px; width: 350px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center;">
+            <h4 style="font-family: 'Merriweather'; font-size: 16px; color: #1e293b; margin-bottom: 10px;">Carta Clave (Key Card)</h4>
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; width: 100%;">
+                <!-- Generamos 25 cuadros de colores aleatorios para simular la clave -->
+                ${Array.from({length: 25}).map(() => {
+                    const rand = Math.random();
+                    let color = '#cbd5e1'; // neutral
+                    if (rand < 0.35) color = '#dc2626'; // rojo
+                    else if (rand < 0.70) color = '#2563eb'; // azul
+                    else if (rand < 0.75) color = '#1e293b'; // asesino
+                    return `<div style="background: ${color}; aspect-ratio: 1/1; border-radius: 4px;"></div>`;
+                }).join('')}
+            </div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 350, 350, posX, posY);
+}
+
+
+// ================= MOTORES ABSORBIDOS AL CATÁLOGO (v223.0) =================
+
+function cat_insertarCartaUno() {
+    const colores = ['#dc2626', '#2563eb', '#16a34a', '#eab308'];
+    const valores = ['0','1','2','3','4','5','6','7','8','9','Reversa','Bloqueo','+2'];
+    const color = colores[Math.floor(Math.random() * colores.length)];
+    const valor = valores[Math.floor(Math.random() * valores.length)];
+    
+    const front = `
+        <div class="carta-pro" style="background: ${color}; border: 4px solid white; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 4px ${color};">
+            <div style="background: white; width: 80%; height: 85%; border-radius: 50% 50% 10px 10px; display: flex; align-items: center; justify-content: center; transform: rotate(-15deg); box-shadow: 2px 2px 10px rgba(0,0,0,0.2);">
+                <span style="font-family: 'Arial Black'; font-size: ${valor.length > 1 ? '30px' : '70px'}; color: ${color}; text-shadow: 2px 2px 0 #000; font-weight: 900;">${valor}</span>
+            </div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#1e293b; border-radius:12px; display:flex; align-items:center; justify-content:center;"><span style="font-family:'Arial Black'; font-size:40px; color:#dc2626; font-style:italic; text-shadow: 2px 2px 0 #fff;">UNO</span></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarTableroTrivial(posX, posY) {
+    const html = `
+        <div style="width: 400px; height: 400px; background: #fdfbf7; border-radius: 50%; border: 8px solid #1e293b; position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
+            <!-- Divisiones -->
+            <svg viewBox="0 0 100 100" style="position:absolute; width:100%; height:100%;">
+                <path d="M50,50 L50,0 A50,50 0 0,1 100,50 Z" fill="#eab308" opacity="0.2"/>
+                <path d="M50,50 L100,50 A50,50 0 0,1 50,100 Z" fill="#dc2626" opacity="0.2"/>
+                <path d="M50,50 L50,100 A50,50 0 0,1 0,50 Z" fill="#2563eb" opacity="0.2"/>
+                <path d="M50,50 L0,50 A50,50 0 0,1 50,0 Z" fill="#16a34a" opacity="0.2"/>
+            </svg>
+            <div style="width: 150px; height: 150px; background: #1e293b; border-radius: 50%; z-index: 2; display: flex; align-items: center; justify-content: center;">
+                <span style="color: white; font-family: 'Merriweather'; font-size: 20px; text-align: center;">TRIVIAL</span>
+            </div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 400, 400, posX, posY);
+}
+
+function cat_insertarLosetaCarcassonne(posX, posY) {
+    const tipos = [
+        { bg: '#86efac', path: 'M0,0 L100,0 L100,50 L50,50 L50,100 L0,100 Z', color: '#166534' }, // Camino
+        { bg: '#fef08a', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ca8a04' }, // Trigo
+        { bg: '#cbd5e1', path: 'M30,0 L70,0 L70,30 L100,30 L100,70 L70,70 L70,100 L30,100 L30,70 L0,70 L0,30 L30,30 Z', color: '#475569' } // Ciudad
+    ];
+    const t = tipos[Math.floor(Math.random() * tipos.length)];
+    
+    const html = `
+        <div style="width: 100px; height: 100px; background: ${t.bg}; border: 2px solid #1e293b; position: relative; overflow: hidden; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                <path d="${t.path}" fill="${t.color}" />
+            </svg>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 100, 100, posX, posY);
+}
+
+function cat_insertarTableroDobble(posX, posY) {
+    const simbolos = ['fa-heart', 'fa-star', 'fa-bolt', 'fa-moon', 'fa-sun', 'fa-cloud'];
+    let html = `<div style="width: 200px; height: 200px; background: white; border: 4px solid #dc2626; border-radius: 50%; position: relative; box-shadow: 0 5px 10px rgba(0,0,0,0.2);">`;
+    // Dibujamos 6 símbolos en círculo
+    for(let i=0; i<6; i++) {
+        const angle = (i * 60) * (Math.PI / 180);
+        const x = 100 + 65 * Math.cos(angle) - 15;
+        const y = 100 + 65 * Math.sin(angle) - 15;
+        const s = simbolos[Math.floor(Math.random() * simbolos.length)];
+        html += `<i class="fa-solid ${s}" style="position: absolute; left: ${x}px; top: ${y}px; font-size: 30px; color: #1e293b;"></i>`;
+    }
+    html += `</div>`;
+    EP.insertarCartaEnCanvas(html, 200, 200, posX, posY);
+}
+
+function cat_insertarDialWavelength(posX, posY) {
+    const html = `
+        <div style="background: #fdfbf7; border: 4px solid #1e293b; border-radius: 50% 50% 0 0; width: 300px; height: 150px; position: relative; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+            <div style="position: absolute; bottom: 0; width: 200px; height: 200px; background: conic-gradient(from 180deg at 50% 100%, #dc2626 0deg, #eab308 90deg, #16a34a 180deg); border-radius: 50%;"></div>
+            <div style="position: absolute; bottom: -10px; width: 10px; height: 120px; background: #1e293b; transform: rotate(45deg); transform-origin: bottom center;"></div>
+            <div style="position: absolute; bottom: -20px; width: 40px; height: 40px; background: #1e293b; border-radius: 50%; z-index: 2;"></div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 300, 150, posX, posY);
+}
+
+function cat_insertarSkyTeam(posX, posY) {
+    const html = `
+        <div style="background: #e0f2fe; border: 3px solid #0284c7; border-radius: 12px; padding: 15px; width: 350px; box-sizing: border-box; display: flex; flex-direction: column;">
+            <h4 style="color: #0284c7; font-family: 'Merriweather'; text-align: center; margin-bottom: 10px;">Panel de Vuelo</h4>
+            <div style="display: flex; justify-content: space-between; background: white; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                <div style="text-align: center;"><i class="fa-solid fa-gauge-high" style="font-size: 30px; color: #1e293b;"></i><br>Velocidad</div>
+                <div style="text-align: center;"><i class="fa-solid fa-arrows-up-down" style="font-size: 30px; color: #1e293b;"></i><br>Altitud</div>
+                <div style="text-align: center;"><i class="fa-solid fa-plane" style="font-size: 30px; color: #1e293b;"></i><br>Eje</div>
+            </div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 350, 150, posX, posY);
+}
+
+function cat_insertarLineaTiempoHitster(posX, posY) {
+    const html = `
+        <div style="background: #1e293b; color: white; border-radius: 8px; width: 250px; height: 80px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 10px rgba(0,0,0,0.3);">
+            <span style="font-family: 'Merriweather'; font-size: 20px; font-weight: bold;">Línea de Tiempo</span>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 250, 80, posX, posY);
+}
+
+
+// ================= MOTORES FALTANTES (v224.0) =================
+
+function insertarFichaAgenteCodenames(posX, posY) {
+    const colores = ['#dc2626', '#2563eb', '#cbd5e1', '#1e293b']; // Rojo, Azul, Neutral, Asesino
+    const color = colores[Math.floor(Math.random() * colores.length)];
+    const html = `<div style="width: 45px; height: 45px; background: ${color}; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); border: 1px solid rgba(0,0,0,0.2);"></div>`;
+    EP.insertarCartaEnCanvas(html, 45, 45, posX, posY);
+}
+
+function insertarMonedaCoup(posX, posY) {
+    const html = `
+        <div style="width: 30px; height: 30px; background: radial-gradient(circle at 30% 30%, #fef08a 0%, #f59e0b 40%, #b45309 100%); border: 2px solid #78350f; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+            <span style="color: #78350f; font-weight: bold; font-size: 14px;">$</span>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 30, 30, posX, posY);
+}
+
+function insertarDadoBang(posX, posY) {
+    const valores = ['1', '2', '3', '4', '5', '6'];
+    const val = valores[Math.floor(Math.random() * valores.length)];
+    const html = `
+        <div style="width: 45px; height: 45px; background: #fcd34d; border: 3px solid #78350f; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+            <span style="font-family: 'Playfair Display'; font-size: 24px; font-weight: bold; color: #78350f;">${val}</span>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 45, 45, posX, posY);
+}
+
+function insertarCartaRolPandemic(posX, posY) {
+    const roles = [
+        { n: 'Médico', i: 'fa-user-md', c: '#f59e0b' },
+        { n: 'Científico', i: 'fa-flask', c: '#ffffff' },
+        { n: 'Investigadora', i: 'fa-microscope', c: '#dc2626' },
+        { n: 'Coordinador', i: 'fa-clipboard-list', c: '#10b981' },
+        { n: 'Especialista', i: 'fa-plane', c: '#3b82f6' },
+        { n: 'Cuarentena', i: 'fa-shield-virus', c: '#84cc16' },
+        { n: 'Operaciones', i: 'fa-cogs', c: '#8b5cf6' }
+    ];
+    const r = roles[Math.floor(Math.random() * roles.length)];
+    const front = `
+        <div class="carta-pro" style="background: #1e293b; border: 3px solid ${r.c}; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white;">
+            <i class="fa-solid ${r.i}" style="font-size: 60px; color: ${r.c}; margin-bottom: 15px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 18px; font-weight: bold; text-transform: uppercase;">${r.n}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#0f172a; border-radius:8px; display:flex; align-items:center; justify-content:center; border:2px solid #334155;"><i class="fa-solid fa-biohazard" style="font-size:50px; color:#dc2626;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330, posX, posY);
+}
+
+
+// ================= MOTORES DE ALTA FIDELIDAD (v225.0) =================
+
+// --- JUNGLE SPEED ---
+function cat_insertarCartaJungleSpeed() {
+    const colores = ['#eab308', '#16a34a', '#ea580c', '#9333ea']; // Amarillo, Verde, Naranja, Violeta
+    const formas = [
+        'M50,0 A50,50 0 1,1 50,100 A50,50 0 1,1 50,0 Z', // Círculo
+        'M20,20 L80,20 L80,80 L20,80 Z', // Cuadrado
+        'M50,0 L100,100 L0,100 Z', // Triángulo
+        'M50,0 L61,35 L98,35 L68,57 L79,91 L50,70 L21,91 L32,57 L2,35 L39,35 Z', // Estrella
+        'M50,0 L100,50 L50,100 L0,50 Z', // Rombo
+        'M50,0 L90,30 L90,90 L50,100 L10,90 L10,30 Z' // Pentágono
+    ];
+    const color = colores[Math.floor(Math.random() * colores.length)];
+    const forma = formas[Math.floor(Math.random() * formas.length)];
+    
+    // 10% de probabilidad de carta especial (flechas)
+    const esEspecial = Math.random() < 0.1;
+    
+    let contenido = '';
+    if (esEspecial) {
+        contenido = `
+            <svg viewBox="0 0 100 100" style="width: 100px; height: 100px;">
+                <polygon points="50,10 20,50 40,50 40,90 60,90 60,50 80,50" fill="${color}" />
+                <polygon points="50,90 20,50 40,50 40,10 60,10 60,50 80,50" fill="${color}" transform="rotate(180 50 50)" opacity="0.5" />
+            </svg>
+        `;
+    } else {
+        contenido = `
+            <svg viewBox="0 0 100 100" style="width: 100px; height: 100px;">
+                <path d="${forma}" fill="${color}" stroke="#1e293b" stroke-width="3" />
+            </svg>
+        `;
+    }
+
+    const front = `
+        <div class="carta-pro" style="background: #ffffff; border: 2px solid #1e293b; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+            ${contenido}
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#1e293b; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-paw" style="font-size:50px; color:#eab308;"></i></div>`;
+    
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+// --- SUSHI GO! ---
+function cat_insertarCartaSushi(tipo) {
+    const cartas = {
+        'nigiri': { n: 'Nigiri', puntos: '+1', color: '#f59e0b', icon: 'fa-fish' },
+        'maki': { n: 'Maki', puntos: '+2', color: '#15803d', icon: 'fa-bowl-rice' },
+        'temaki': { n: 'Temaki', puntos: '+3', color: '#dc2626', icon: 'fa-ice-cream' },
+        'sashimi': { n: 'Sashimi', puntos: '+5', color: '#0284c7', icon: 'fa-drumstick-bite' },
+        'wasabi': { n: 'Wasabi', puntos: 'x3', color: '#65a30d', icon: 'fa-leaf' },
+        'dumpling': { n: 'Dumpling', puntos: '+X', color: '#ca8a04', icon: 'fa-cookie' },
+        'pudding': { n: 'Pudding', puntos: '+/-', color: '#d946ef', icon: 'fa-ice-cream' }
+    };
+    const c = cartas[tipo] || cartas['nigiri'];
+    
+    const front = `
+        <div class="carta-pro" style="background: #fff; border: 3px solid ${c.color}; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 15px;">
+            <div style="font-family: 'Merriweather'; font-size: 16px; font-weight: bold; color: ${c.color}; text-transform: uppercase;">${c.n}</div>
+            <i class="fa-solid ${c.icon}" style="font-size: 60px; color: ${c.color};"></i>
+            <div style="background: ${c.color}; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">${c.puntos}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#fef3c7; border-radius:12px; display:flex; align-items:center; justify-content:center; border:3px solid #d97706;"><i class="fa-solid fa-utensils" style="font-size:50px; color:#d97706;"></i></div>`;
+    
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+// --- HOMBRES LOBO ---
+function cat_insertarCartaHombreLobo(rol) {
+    const roles = {
+        'lobo': { n: 'Hombre Lobo', icon: 'fa-paw', color: '#1e293b', hab: 'Elimina a un aldeano.' },
+        'aldeano': { n: 'Aldeano', icon: 'fa-user', color: '#f8fafc', hab: 'Vota durante el día.' },
+        'vidente': { n: 'Vidente', icon: 'fa-eye', color: '#6d28d9', hab: 'Mira el rol de un jugador.' },
+        'bruja': { n: 'Bruja', icon: 'fa-hat-wizard', color: '#be123c', hab: 'Salva o envenena.' },
+        'cazador': { n: 'Cazador', icon: 'fa-crosshairs', color: '#b45309', hab: 'Al morir, dispara.' },
+        'cupido': { n: 'Cupido', icon: 'fa-heart', color: '#db2777', hab: 'Enamora a dos jugadores.' }
+    };
+    const r = roles[rol] || roles['aldeano'];
+    const isDark = rol === 'lobo';
+    const textColor = isDark ? '#ffffff' : '#1e293b';
+    
+    const front = `
+        <div class="carta-pro" style="background: ${r.color}; border: 3px solid #475569; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: ${textColor}; padding: 20px;">
+            <i class="fa-solid ${r.icon}" style="font-size: 70px; margin-bottom: 20px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 20px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">${r.n}</div>
+            <div style="font-size: 12px; text-align: center; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px;">${r.hab}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#0f172a; border-radius:12px; display:flex; align-items:center; justify-content:center; border:3px solid #334155;"><i class="fa-solid fa-moon" style="font-size:50px; color:#f1f5f9;"></i></div>`;
+    
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+// --- DOBBLE (Algoritmo de Geometría Proyectiva) ---
+function cat_insertarCartaDobble() {
+    // Generamos un pool de 57 íconos disponibles
+    const iconos = [
+        'fa-heart', 'fa-star', 'fa-bolt', 'fa-moon', 'fa-sun', 'fa-cloud', 'fa-tree', 'fa-car', 
+        'fa-apple-whole', 'fa-bell', 'fa-bomb', 'fa-book', 'fa-bug', 'fa-cake-candles', 'fa-camera', 
+        'fa-chess-knight', 'fa-crown', 'fa-dice', 'fa-dragon', 'fa-eye', 'fa-feather', 'fa-fire', 
+        'fa-fish', 'fa-flag', 'fa-flask', 'fa-frog', 'fa-ghost', 'fa-gift', 'fa-glasses', 'fa-globe',
+        'fa-hammer', 'fa-hand', 'fa-hat-wizard', 'fa-ice-cream', 'fa-key', 'fa-leaf', 'fa-lemon',
+        'fa-lightbulb', 'fa-magnet', 'fa-mask', 'fa-microphone', 'fa-mug-hot', 'fa-paw', 'fa-pencil',
+        'fa-plane', 'fa-rocket', 'fa-scissors', 'fa-shield', 'fa-skull', 'fa-snowflake', 'fa-spider',
+        'fa-spoon', 'fa-sun', 'fa-tag', 'fa-trash-can', 'fa-trophy', 'fa-umbrella'
+    ];
+
+    // Generamos 8 símbolos únicos al azar para esta carta
+    // (Nota: Para un Dobble 100% real, el algoritmo de planos proyectivos de orden 7 
+    // genera combinaciones exactas donde cualquier par de cartas comparte 1 y solo 1 símbolo.
+    // Aquí usamos una aproximación visual distribuyendo 8 símbolos distintos).
+    let simbolosCarta = [];
+    let poolCopia = [...iconos];
+    for(let i=0; i<8; i++) {
+        const idx = Math.floor(Math.random() * poolCopia.length);
+        simbolosCarta.push(poolCopia.splice(idx, 1)[0]);
+    }
+
+    let html = `<div style="width: 200px; height: 200px; background: white; border: 4px solid #dc2626; border-radius: 50%; position: relative; box-shadow: 0 5px 10px rgba(0,0,0,0.2); overflow: hidden;">`;
+    
+    // Posiciones predefinidas para 8 símbolos en un círculo
+    const posiciones = [
+        { x: 85, y: 20 }, { x: 140, y: 50 }, { x: 155, y: 110 }, { x: 120, y: 155 },
+        { x: 60, y: 155 }, { x: 25, y: 110 }, { x: 40, y: 50 }, { x: 85, y: 90 } // Último en el centro
+    ];
+
+    simbolosCarta.forEach((s, i) => {
+        const pos = posiciones[i];
+        const angulo = Math.floor(Math.random() * 360);
+        html += `<i class="fa-solid ${s}" style="position: absolute; left: ${pos.x}px; top: ${pos.y}px; font-size: 24px; color: #1e293b; transform: rotate(${angulo}deg);"></i>`;
+    });
+    
+    html += `</div>`;
+    EP.insertarCartaEnCanvas(html, 200, 200);
+}
+
+
+// ================= MOTORES EXACTOS (v227.0) =================
+
+// --- MUNCHKIN ---
+function cat_insertarCartaMunchkinPuerta() {
+    const puertas = [
+        { n: '3,872 Orcos', i: 'fa-dragon', c: '#b91c1c' },
+        { n: 'Amazonas', i: 'fa-female', c: '#be123c' },
+        { n: 'Ancient', i: 'fa-book', c: '#78350f' },
+        { n: 'Bebé', i: 'fa-baby', c: '#f59e0b' },
+        { n: 'Bigfoot', i: 'fa-paw', c: '#78350f' },
+        { n: 'Bullrog', i: 'fa-dragon', c: '#b91c1c' },
+        { n: 'Trampa!', i: 'fa-bomb', c: '#dc2626' },
+        { n: 'Clérigo', i: 'fa-cross', c: '#2563eb' },
+        { n: 'Cangrejos', i: 'fa-shrimp', c: '#b91c1c' },
+        { n: 'Maldición!', i: 'fa-skull', c: '#4c1d95' },
+        { n: 'Intervención Divina', i: 'fa-hands-praying', c: '#2563eb' },
+        { n: 'Limo Babeante', i: 'fa-tint', c: '#15803d' },
+        { n: 'Enano', i: 'fa-male', c: '#78350f' },
+        { n: 'Elfo', i: 'fa-leaf', c: '#15803d' },
+        { n: 'Nariz Flotante', i: 'fa-eye', c: '#ca8a04' },
+        { n: 'Ranas Voladoras', i: 'fa-frog', c: '#15803d' },
+        { n: 'Gacela', i: 'fa-horse', c: '#78350f' },
+        { n: 'Octaedro Gelatinoso', i: 'fa-cube', c: '#15803d' },
+        { n: 'Necrófagos', i: 'fa-ghost', c: '#4c1d95' },
+        { n: 'Híbrido', i: 'fa-user', c: '#b91c1c' },
+        { n: 'Mediano', i: 'fa-child', c: '#ca8a04' },
+        { n: 'Arpías', i: 'fa-dove', c: '#b91c1c' },
+        { n: 'Ayúdame!', i: 'fa-hand-holding-heart', c: '#2563eb' },
+        { n: 'Hipogrifo', i: 'fa-horse', c: '#78350f' },
+        { n: 'Ilusión', i: 'fa-mask', c: '#4c1d95' },
+        { n: 'Vendedor de Seguros', i: 'fa-briefcase', c: '#1e293b' },
+        { n: 'Rey Tut', i: 'fa-crown', c: '#ca8a04' },
+        { n: 'Goblin Cojo', i: 'fa-user-injured', c: '#15803d' },
+        { n: 'Pollo Enorme Enojado', i: 'fa-drumstick-bite', c: '#ca8a04' },
+        { n: 'Abogados', i: 'fa-gavel', c: '#1e293b' },
+        { n: 'Leprechaun', i: 'fa-hat-wizard', c: '#15803d' },
+        { n: 'Compañero', i: 'fa-clone', c: '#4c1d95' },
+        { n: 'Rata Mazo', i: 'fa-rat', c: '#78350f' },
+        { n: 'Sr. Huesos', i: 'fa-skull', c: '#1e293b' },
+        { n: 'Trol de la Red', i: 'fa-wifi', c: '#4c1d95' },
+        { n: 'Fuera de Almuerzo', i: 'fa-utensils', c: '#ca8a04' },
+        { n: 'Pit Bull', i: 'fa-dog', c: '#78350f' },
+        { n: 'Platicore', i: 'fa-shield', c: '#1e293b' },
+        { n: 'Dragón de Plutonio', i: 'fa-dragon', c: '#b91c1c' },
+        { n: 'Planta en Maceta', i: 'fa-seedling', c: '#15803d' },
+        { n: 'Pukachu', i: 'fa-bolt', c: '#ca8a04' },
+        { n: 'Geek Chillón', i: 'fa-glasses', c: '#4c1d95' },
+        { n: 'Caracoles Veloces', i: 'fa-snail', c: '#15803d' },
+        { n: 'Squidzilla', i: 'fa-spider', c: '#b91c1c' },
+        { n: 'Gólem de Piedra', i: 'fa-mountain', c: '#475569' },
+        { n: 'Super Munchkin', i: 'fa-star', c: '#ca8a04' },
+        { n: 'Ladrón', i: 'fa-mask', c: '#1e293b' },
+        { n: 'Demonio Lengua', i: 'fa-tongue', c: '#b91c1c' },
+        { n: 'Maldición Realmente Insoportable', i: 'fa-skull', c: '#4c1d95' },
+        { n: 'Caballo No-Muerto', i: 'fa-horse', c: '#4c1d95' },
+        { n: 'Horror Indescriptible', i: 'fa-ghost', c: '#1e293b' },
+        { n: 'Monstruo Errante', i: 'fa-dragon', c: '#b91c1c' },
+        { n: 'Vampiro Aspirante', i: 'fa-bat', c: '#4c1d95' },
+        { n: 'Guerrero', i: 'fa-sword', c: '#b91c1c' },
+        { n: 'Espectro', i: 'fa-ghost', c: '#1e293b' },
+        { n: 'Hermanos Wight', i: 'fa-ghost', c: '#4c1d95' },
+        { n: 'Mago', i: 'fa-hat-wizard', c: '#2563eb' }
+    ];
+    const p = puertas[Math.floor(Math.random() * puertas.length)];
+    const front = `
+        <div class="carta-pro" style="background: #fdfbf7; border: 3px solid ${p.c}; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+            <i class="fa-solid ${p.i}" style="font-size: 50px; color: ${p.c}; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 16px; font-weight: bold; color: ${p.c}; text-align: center;">${p.n}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#78350f; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-door-closed" style="font-size:50px; color:#fdf6e3;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarCartaMunchkinTesoro() {
+    const tesoros = [
+        { n: '1,000 Monedas de Oro', i: 'fa-coins', c: '#ca8a04' },
+        { n: 'Cetro de Napalm', i: 'fa-fire', c: '#dc2626' },
+        { n: 'Botas de Patear Traseros', i: 'fa-shoe-prints', c: '#78350f' },
+        { n: 'Casco con Cuernos', i: 'fa-hat-cowboy', c: '#4c1d95' },
+        { n: 'Espada Láser', i: 'fa-bolt', c: '#0284c7' },
+        { n: 'Armadura de Mithril', i: 'fa-shield', c: '#475569' },
+        { n: 'Poción de Curación', i: 'fa-flask', c: '#16a34a' },
+        { n: 'Anillo de Poder', i: 'fa-ring', c: '#ca8a04' },
+        { n: 'Amuleto de Protección', i: 'fa-gem', c: '#2563eb' },
+        { n: 'Báculo del Mago', i: 'fa-wand-magic-sparkles', c: '#4c1d95' },
+        { n: 'Capa de Invisibilidad', i: 'fa-user-secret', c: '#1e293b' },
+        { n: 'Pergamino de Deseo', i: 'fa-scroll', c: '#f59e0b' },
+        { n: 'Daga Envenenada', i: 'fa-dagger', c: '#15803d' },
+        { n: 'Escudo de Dragón', i: 'fa-shield-halved', c: '#b91c1c' },
+        { n: 'Grimorio Antiguo', i: 'fa-book', c: '#78350f' }
+    ];
+    const t = tesoros[Math.floor(Math.random() * tesoros.length)];
+    const front = `
+        <div class="carta-pro" style="background: #fef3c7; border: 3px solid #ca8a04; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+            <i class="fa-solid ${t.i}" style="font-size: 50px; color: ${t.c}; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 16px; font-weight: bold; color: ${t.c}; text-align: center;">${t.n}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#ca8a04; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-sack-dollar" style="font-size:50px; color:#fdf6e3;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarDadoMunchkin(posX, posY) {
+    const valores = ['1','2','3','4','5','6'];
+    const val = valores[Math.floor(Math.random() * valores.length)];
+    const html = `<div style="width: 50px; height: 50px; background: #fcd34d; border: 3px solid #78350f; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"><span style="font-family: 'Playfair Display'; font-size: 28px; font-weight: bold; color: #78350f;">${val}</span></div>`;
+    EP.insertarCartaEnCanvas(html, 50, 50, posX, posY);
+}
+
+// --- CIUDADELAS ---
+function cat_insertarCartaCiudadelasPersonaje() {
+    const personajes = [
+        { n: 'Asesino', i: 'fa-skull', c: '#1e293b' },
+        { n: 'Ladrón', i: 'fa-hand-sparkles', c: '#4c1d95' },
+        { n: 'Mago', i: 'fa-hat-wizard', c: '#2563eb' },
+        { n: 'Rey', i: 'fa-crown', c: '#ca8a04' },
+        { n: 'Obispo', i: 'fa-church', c: '#b91c1c' },
+        { n: 'Mercader', i: 'fa-coins', c: '#15803d' },
+        { n: 'Arquitecto', i: 'fa-hammer', c: '#78350f' },
+        { n: 'Condottiero', i: 'fa-chess-knight', c: '#b91c1c' }
+    ];
+    const p = personajes[Math.floor(Math.random() * personajes.length)];
+    const front = `
+        <div class="carta-pro" style="background: #fef3c7; border: 3px solid #78350f; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+            <i class="fa-solid ${p.i}" style="font-size: 50px; color: ${p.c}; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 16px; font-weight: bold; color: #78350f; text-align: center;">${p.n}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#78350f; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-chess-rook" style="font-size:50px; color:#fef3c7;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarCartaCiudadelasDistrito() {
+    const distritos = [
+        { n: 'Catedral', i: 'fa-church', c: '#b91c1c', tipo: 'Religioso' },
+        { n: 'Castillo', i: 'fa-chess-rook', c: '#1e293b', tipo: 'Militar' },
+        { n: 'Mercado', i: 'fa-store', c: '#15803d', tipo: 'Comercial' },
+        { n: 'Palacio', i: 'fa-crown', c: '#ca8a04', tipo: 'Noble' },
+        { n: 'Biblioteca', i: 'fa-book', c: '#2563eb', tipo: 'Ciencia' },
+        { n: 'Muralla', i: 'fa-shield', c: '#475569', tipo: 'Militar' },
+        { n: 'Puerto', i: 'fa-anchor', c: '#0284c7', tipo: 'Comercial' },
+        { n: 'Universidad', i: 'fa-graduation-cap', c: '#4c1d95', tipo: 'Ciencia' }
+    ];
+    const d = distritos[Math.floor(Math.random() * distritos.length)];
+    const front = `
+        <div class="carta-pro" style="background: #fdfbf7; border: 3px solid ${d.c}; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; position: relative;">
+            <i class="fa-solid ${d.i}" style="font-size: 50px; color: ${d.c}; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 14px; font-weight: bold; color: ${d.c}; text-align: center;">${d.n}</div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 5px;">${d.tipo}</div>
+            <div style="position: absolute; top: 8px; right: 8px; background: #ca8a04; color: white; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">2</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#fde68a; border-radius:8px; display:flex; align-items:center; justify-content:center; border:2px solid #ca8a04;"><i class="fa-solid fa-city" style="font-size:50px; color:#78350f;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarMonedaCiudadelas(posX, posY) {
+    const html = `<div style="width: 30px; height: 30px; background: radial-gradient(circle at 30% 30%, #fef08a 0%, #f59e0b 40%, #b45309 100%); border: 2px solid #78350f; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"><span style="color: #78350f; font-weight: bold; font-size: 14px;">$</span></div>`;
+    EP.insertarCartaEnCanvas(html, 30, 30, posX, posY);
+}
+
+// --- ROOT ---
+function cat_insertarCartaRootAccion() {
+    const facciones = [
+        { n: 'Marquesado', i: 'fa-crown', c: '#b91c1c' },
+        { n: 'Nido de Águilas', i: 'fa-feather', c: '#1e40af' },
+        { n: 'Alianza', i: 'fa-tree', c: '#15803d' },
+        { n: 'Vagabundo', i: 'fa-person-hiking', c: '#6d28d9' }
+    ];
+    const f = facciones[Math.floor(Math.random() * facciones.length)];
+    const front = `
+        <div class="carta-pro" style="background: #fdfbf7; border: 3px solid ${f.c}; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+            <i class="fa-solid ${f.i}" style="font-size: 50px; color: ${f.c}; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 14px; font-weight: bold; color: ${f.c}; text-align: center;">${f.n}</div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 5px;">Acción</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#1e293b; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-tree" style="font-size:50px; color:#15803d;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarCartaRootReferencia() {
+    const front = `
+        <div class="carta-pro" style="background: #e2e8f0; border: 2px solid #1e293b; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+            <i class="fa-solid fa-book" style="font-size: 40px; color: #1e293b; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 14px; font-weight: bold; color: #1e293b; text-align: center;">Referencia</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#1e293b; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-tree" style="font-size:50px; color:#15803d;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarFichaRoot(tipo, posX, posY) {
+    let color, icon;
+    if (tipo === 'claro') { color = '#15803d'; icon = 'fa-tree'; }
+    else if (tipo === 'objeto') { color = '#ca8a04'; icon = 'fa-gem'; }
+    else if (tipo === 'guerrero') { color = '#b91c1c'; icon = 'fa-shield'; }
+    else { color = '#475569'; icon = 'fa-circle'; }
+    const html = `<div style="width: 40px; height: 40px; background: ${color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"><i class="fa-solid ${icon}" style="color: white; font-size: 20px;"></i></div>`;
+    EP.insertarCartaEnCanvas(html, 40, 40, posX, posY);
+}
+
+// --- ARKHAM HORROR LCG ---
+function cat_insertarCartaArkhamInvestigador() {
+    const investigadores = [
+        { n: 'Roland Banks', i: 'fa-user-tie', c: '#1e40af' },
+        { n: 'Daisy Walker', i: 'fa-book', c: '#6d28d9' },
+        { n: 'Agnes Baker', i: 'fa-hat-wizard', c: '#be123c' },
+        { n: 'Wendy Adams', i: 'fa-child', c: '#15803d' },
+        { n: 'Skids O\'Toole', i: 'fa-user-secret', c: '#b45309' }
+    ];
+    const inv = investigadores[Math.floor(Math.random() * investigadores.length)];
+    const front = `
+        <div class="carta-pro" style="background: #0f172a; border: 3px solid ${inv.c}; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
+            <i class="fa-solid ${inv.i}" style="font-size: 60px; color: ${inv.c}; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 16px; font-weight: bold;">${inv.n}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#1e293b; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-eye" style="font-size:50px; color:#94a3b8;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarCartaArkhamJugador() {
+    const cartas = [
+        { n: 'Investigación', i: 'fa-search', c: '#0284c7' },
+        { n: 'Disparo', i: 'fa-bullseye', c: '#b91c1c' },
+        { n: 'Esquivar', i: 'fa-person-running', c: '#15803d' },
+        { n: 'Aliado', i: 'fa-user-friends', c: '#6d28d9' },
+        { n: 'Objeto', i: 'fa-box', c: '#ca8a04' }
+    ];
+    const c = cartas[Math.floor(Math.random() * cartas.length)];
+    const front = `
+        <div class="carta-pro" style="background: #f8fafc; border: 2px solid ${c.c}; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+            <i class="fa-solid ${c.i}" style="font-size: 50px; color: ${c.c}; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 14px; font-weight: bold; color: ${c.c}; text-align: center;">${c.n}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#1e293b; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-eye" style="font-size:50px; color:#94a3b8;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarCartaArkhamEscenario() {
+    const escenarios = [
+        { n: 'El Encuentro', i: 'fa-ghost', c: '#4c1d95' },
+        { n: 'La Casa', i: 'fa-home', c: '#78350f' },
+        { n: 'El Ritual', i: 'fa-hat-wizard', c: '#be123c' },
+        { n: 'Los Antiguos', i: 'fa-eye', c: '#1e293b' }
+    ];
+    const e = escenarios[Math.floor(Math.random() * escenarios.length)];
+    const front = `
+        <div class="carta-pro" style="background: #0f172a; border: 3px solid ${e.c}; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
+            <i class="fa-solid ${e.i}" style="font-size: 60px; color: ${e.c}; margin-bottom: 10px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 16px; font-weight: bold;">${e.n}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#1e293b; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-eye" style="font-size:50px; color:#94a3b8;"></i></div>`;
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330);
+}
+
+function cat_insertarFichaArkham(tipo, posX, posY) {
+    let color, icon;
+    if (tipo === 'caos') { color = '#6d28d9'; icon = 'fa-dice'; }
+    else if (tipo === 'recurso') { color = '#ca8a04'; icon = 'fa-coins'; }
+    else if (tipo === 'pista') { color = '#0284c7'; icon = 'fa-search'; }
+    else if (tipo === 'horror') { color = '#b91c1c'; icon = 'fa-ghost'; }
+    else { color = '#475569'; icon = 'fa-heart-crack'; }
+    const html = `<div style="width: 35px; height: 35px; background: ${color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"><i class="fa-solid ${icon}" style="color: white; font-size: 18px;"></i></div>`;
+    EP.insertarCartaEnCanvas(html, 35, 35, posX, posY);
+}

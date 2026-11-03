@@ -106,3 +106,36 @@ function insertarBarcoNavegante(posX, posY) {
     const html = `<div style="position:relative; width:60px; height:35px;"><div style="width:60px; height:20px; background:linear-gradient(180deg, #a0522d 0%, #451a03 100%); border-radius:0 0 15px 15px; position:absolute; bottom:0;"></div><div style="position:absolute; bottom:15px; left:28px; width:4px; height:25px; background:#451a03;"></div><div style="position:absolute; bottom:20px; left:30px; width:0; height:0; border-top:10px solid transparent; border-bottom:10px solid transparent; border-left:20px solid #fef3c7;"></div></div>`;
     EP.insertarCartaEnCanvas(html, 60, 35, posX, posY);
 }
+
+
+// ================= COMPONENTES EXACTOS CATÁN (v222.0) =================
+
+function insertarDadoCatan(valor, posX, posY) {
+    const html = `
+        <div style="width: 50px; height: 50px; background: white; border: 2px solid #cbd5e1; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <span style="font-family: 'Playfair Display'; font-size: 28px; font-weight: bold; color: #1e293b;">${valor || '?'}</span>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 50, 50, posX, posY);
+}
+
+function insertarCartaDesarrolloCatan(tipo, posX, posY) {
+    const tipos = {
+        'caballero': { n: 'Caballero', i: 'fa-chess-knight', c: '#b91c1c' },
+        'punto': { n: 'Punto de Victoria', i: 'fa-trophy', c: '#ca8a04' },
+        'camino': { n: 'Construcción de Caminos', i: 'fa-road', c: '#15803d' },
+        'abundancia': { n: 'Año de la Abundancia', i: 'fa-wheat-awn', c: '#d97706' },
+        'monopolio': { n: 'Monopolio', i: 'fa-hand-holding-dollar', c: '#4c1d95' }
+    };
+    const t = tipos[tipo] || tipos['caballero'];
+    
+    const front = `
+        <div class="carta-pro" style="background: #fdfbf7; border: 2px solid ${t.c}; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px;">
+            <i class="fa-solid ${t.i}" style="font-size: 50px; color: ${t.c}; margin-bottom: 15px;"></i>
+            <div style="font-family: 'Merriweather'; font-size: 14px; font-weight: bold; color: ${t.c}; text-align: center;">${t.n}</div>
+        </div>
+    `;
+    const back = `<div style="width:100%; height:100%; background:#8B4513; border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-scroll" style="font-size:50px; color:#fdf6e3;"></i></div>`;
+    
+    EP.insertarCartaEnCanvas(EP.wrapIn3D(front, back, 240, 330), 240, 330, posX, posY);
+}
