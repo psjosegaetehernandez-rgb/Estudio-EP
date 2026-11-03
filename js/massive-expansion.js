@@ -315,3 +315,72 @@ function insertarCartaCoup() {
     wrapper.addEventListener('dblclick', (e) => { if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') wrapper.querySelector('.carta-container').classList.toggle('flipped'); });
     showToast("Carta de Rol (Coup) insertada", "success");
 }
+
+
+// ================= TOKENS DE ALTA FIDELIDAD (v213.0) =================
+// Sobrescribimos las funciones antiguas para que usen SVG y CSS 3D
+
+function insertarTrainToken() {
+    const html = `
+        <div style="width: 50px; height: 45px; background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%); border: 2px solid #7f1d1d; border-radius: 8px 8px 4px 4px; position: relative; box-shadow: 0 6px 10px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.3);">
+            <!-- Chimenea -->
+            <div style="position: absolute; top: -12px; right: 6px; width: 14px; height: 15px; background: #1e293b; border-radius: 3px 3px 0 0; border: 2px solid #0f172a; border-bottom: none; box-shadow: inset 0 2px 2px rgba(255,255,255,0.2);"></div>
+            <!-- Ventana -->
+            <div style="position: absolute; top: 8px; left: 8px; width: 16px; height: 12px; background: #bae6fd; border-radius: 3px; border: 2px solid #0f172a; box-shadow: inset 0 0 4px rgba(0,0,0,0.5);"></div>
+            <!-- Ruedas -->
+            <div style="position: absolute; bottom: -6px; left: 4px; width: 12px; height: 12px; background: #334155; border-radius: 50%; border: 2px solid #0f172a; box-shadow: inset 0 0 4px rgba(255,255,255,0.5);"></div>
+            <div style="position: absolute; bottom: -6px; right: 4px; width: 12px; height: 12px; background: #334155; border-radius: 50%; border: 2px solid #0f172a; box-shadow: inset 0 0 4px rgba(255,255,255,0.5);"></div>
+            <div style="position: absolute; bottom: -4px; left: 20px; width: 10px; height: 10px; background: #334155; border-radius: 50%; border: 2px solid #0f172a; box-shadow: inset 0 0 4px rgba(255,255,255,0.5);"></div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 60, 60);
+    if(typeof showToast === 'function') showToast("Tren insertado", "success");
+}
+
+function insertarBoatToken() {
+    const html = `
+        <svg viewBox="0 0 100 100" style="width: 55px; height: 55px; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4));">
+            <!-- Casco del barco -->
+            <path d="M 10 65 L 90 65 L 75 90 L 25 90 Z" fill="#78350f" stroke="#451a03" stroke-width="3"/>
+            <path d="M 10 65 L 90 65" stroke="#fcd34d" stroke-width="4" stroke-linecap="round"/>
+            <!-- Mástil -->
+            <rect x="46" y="15" width="8" height="50" fill="#451a03" rx="2" />
+            <!-- Vela Izquierda -->
+            <path d="M 46 20 Q 15 45 46 60 Z" fill="#fef3c7" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Vela Derecha -->
+            <path d="M 54 25 Q 85 50 54 65 Z" fill="#fef3c7" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+    `;
+    EP.insertarCartaEnCanvas(html, 60, 60);
+    if(typeof showToast === 'function') showToast("Barco insertado", "success");
+}
+
+function insertarCoinToken() {
+    const html = `
+        <div style="width: 45px; height: 45px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fef08a 0%, #f59e0b 40%, #b45309 100%); border: 3px solid #78350f; box-shadow: 0 6px 10px rgba(0,0,0,0.4), inset 0 0 10px rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; position: relative;">
+            <i class="fa-solid fa-star" style="color: #78350f; font-size: 20px; filter: drop-shadow(1px 1px 1px rgba(255,255,255,0.5));"></i>
+            <!-- Brillo interior -->
+            <div style="position: absolute; top: 5px; left: 8px; width: 15px; height: 8px; background: rgba(255,255,255,0.7); border-radius: 50%; transform: rotate(-30deg);"></div>
+        </div>
+    `;
+    EP.insertarCartaEnCanvas(html, 50, 50);
+    if(typeof showToast === 'function') showToast("Moneda insertada", "success");
+}
+
+function insertarHeartToken() {
+    const html = `
+        <svg viewBox="0 0 24 24" style="width: 45px; height: 45px; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4));">
+            <defs>
+                <linearGradient id="heartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#f87171" />
+                    <stop offset="100%" stop-color="#b91c1c" />
+                </linearGradient>
+            </defs>
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#heartGrad)" stroke="#7f1d1d" stroke-width="1.5"/>
+            <!-- Brillo del corazón -->
+            <path d="M7.5 6c-1.5 0-2.5 1-2.5 2.5" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+    `;
+    EP.insertarCartaEnCanvas(html, 50, 50);
+    if(typeof showToast === 'function') showToast("Vida insertada", "success");
+}

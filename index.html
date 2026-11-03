@@ -67,7 +67,7 @@
         </header>
 
         <div class="editor-workspace">
-            <!-- PANEL IZQUIERDO -->
+            <!-- PANEL IZQUIERDO COMPLETO -->
             <aside class="tools-panel">
                 <div class="tool-tabs" style="flex-wrap: wrap;">
                     <button class="tool-tab active" onclick="switchTool('mazos', this)"><i class="fa-solid fa-layer-group"></i> Cartas</button>
@@ -85,6 +85,7 @@
                             <div class="tool-card" onclick="insertarNotaAdhesiva()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-note-sticky"></i></div><div class="tool-info"><h4>Nota Adhesiva</h4><p>Ideas</p></div></div>
                             <div class="tool-card" onclick="insertarCarta()"><div class="tool-icon"><i class="fa-solid fa-plus"></i></div><div class="tool-info"><h4>Nueva Carta</h4><p>Flip 3D</p></div></div>
                             <div class="tool-card" onclick="insertarCartaNaipe()"><div class="tool-icon"><i class="fa-solid fa-diamond"></i></div><div class="tool-info"><h4>Carta Naipe</h4><p>Barajas</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaDuo()"><div class="tool-icon"><i class="fa-solid fa-puzzle-piece"></i></div><div class="tool-info"><h4>Carta Duo</h4><p>Refranes</p></div></div>
                             <div class="tool-card" onclick="insertarCartaEvento()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-virus"></i></div><div class="tool-info"><h4>Carta Evento</h4><p>Crisis</p></div></div>
                             <div class="tool-card" onclick="insertarCartaRol()"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-user-secret"></i></div><div class="tool-info"><h4>Carta Rol</h4><p>Oculto</p></div></div>
                         </div>
@@ -95,10 +96,15 @@
                             <div class="tool-card" onclick="insertarTopTrumps()"><div class="tool-icon"><i class="fa-solid fa-ranking-star"></i></div><div class="tool-info"><h4>Top Trumps</h4><p>Stats</p></div></div>
                             <div class="tool-card" onclick="insertarSushiGo()"><div class="tool-icon"><i class="fa-solid fa-utensils"></i></div><div class="tool-info"><h4>Sushi Go</h4><p>Drafting</p></div></div>
                             <div class="tool-card" onclick="insertarCharada()"><div class="tool-icon"><i class="fa-solid fa-person-running"></i></div><div class="tool-info"><h4>Charada</h4><p>Mímica</p></div></div>
+                            <div class="tool-card" onclick="insertarRolOculto()"><div class="tool-icon"><i class="fa-solid fa-mask"></i></div><div class="tool-info"><h4>Rol Oculto</h4><p>Deducción</p></div></div>
                             <div class="tool-card" onclick="insertarCartaMitoRealidad()" style="border-left: 4px solid #dc2626;"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-scale-balanced"></i></div><div class="tool-info"><h4>Mito/Realidad</h4><p>Debate</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaCompromiso()" style="border-left: 4px solid #8B3A3A;"><div class="tool-icon" style="color:#8B3A3A;"><i class="fa-solid fa-file-signature"></i></div><div class="tool-info"><h4>Compromiso</h4><p>Acuerdos</p></div></div>
                             <div class="tool-card" onclick="insertarTarjetaReflexion('inicio')" style="border-left: 4px solid #D4A373;"><div class="tool-icon" style="color:#D4A373;"><i class="fa-solid fa-sun"></i></div><div class="tool-info"><h4>Reflexión: Inicio</h4><p>Expectativas</p></div></div>
+                            <div class="tool-card" onclick="insertarTarjetaReflexion('cierre')" style="border-left: 4px solid #D4A373;"><div class="tool-icon" style="color:#D4A373;"><i class="fa-solid fa-moon"></i></div><div class="tool-info"><h4>Reflexión: Cierre</h4><p>Aprendizajes</p></div></div>
+                            <div class="tool-card" onclick="insertarCuboNet()"><div class="tool-icon"><i class="fa-solid fa-cube"></i></div><div class="tool-info"><h4>Cubo 3D</h4><p>Recortable</p></div></div>
                             <div class="tool-card" onclick="document.getElementById('input-csv').click()" style="border-left: 4px solid #16a34a;"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-file-csv"></i></div><div class="tool-info"><h4>Importar CSV</h4><p>Mazos</p></div></div>
                             <input type="file" id="input-csv" accept=".csv" onchange="procesarArchivoCSV(event)" style="display:none;">
+                            <div class="tool-card" onclick="insertarCodigoQR()" style="border-left: 4px solid #1e293b;"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-qrcode"></i></div><div class="tool-info"><h4>Código QR</h4><p>Enlaces</p></div></div>
                         </div>
                     </details>
                 </div>
@@ -110,9 +116,13 @@
                         <div class="ux-details-content">
                             <div class="tool-card" onclick="insertarPizarraFacilitador()" style="border-left: 4px solid #d97706;"><div class="tool-icon" style="color:#d97706;"><i class="fa-solid fa-clipboard-list"></i></div><div class="tool-info"><h4>Pizarra Facilitador</h4><p>Guion</p></div></div>
                             <div class="tool-card" onclick="insertarMuroPostits()"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-note-sticky"></i></div><div class="tool-info"><h4>Muro Post-its</h4><p>Evaluación</p></div></div>
+                            <div class="tool-card" onclick="insertarTableroIAP()"><div class="tool-icon" style="color:#9a3412;"><i class="fa-solid fa-list-check"></i></div><div class="tool-info"><h4>Tablero IAP</h4><p>Fases</p></div></div>
                             <div class="tool-card" onclick="insertarSemaforo()"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-traffic-light"></i></div><div class="tool-info"><h4>Semáforo</h4><p>Cierre</p></div></div>
                             <div class="tool-card" onclick="insertarMatrizDinamica()"><div class="tool-icon"><i class="fa-solid fa-table-list"></i></div><div class="tool-info"><h4>Matriz Dinámica</h4><p>Cálculo</p></div></div>
                             <div class="tool-card" onclick="insertarPlanificador()"><div class="tool-icon"><i class="fa-solid fa-calendar-days"></i></div><div class="tool-info"><h4>Planificador</h4><p>Guion</p></div></div>
+                            <div class="tool-card" onclick="insertarArbolProblemas()"><div class="tool-icon"><i class="fa-solid fa-tree"></i></div><div class="tool-info"><h4>Árbol</h4><p>Problemas</p></div></div>
+                            <div class="tool-card" onclick="insertarFlorEvaluacion()"><div class="tool-icon"><i class="fa-solid fa-fan"></i></div><div class="tool-info"><h4>Flor</h4><p>Evaluación</p></div></div>
+                            <div class="tool-card" onclick="insertarNodoRed()"><div class="tool-icon"><i class="fa-solid fa-circle-nodes"></i></div><div class="tool-info"><h4>Nodo Red</h4><p>Sociograma</p></div></div>
                         </div>
                     </details>
                 </div>
@@ -124,15 +134,50 @@
                         <div class="ux-details-content">
                             <div class="tool-card" onclick="insertarGeneradorTokens()"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-coins"></i></div><div class="tool-info"><h4>Tokens</h4><p>Fichas</p></div></div>
                             <div class="tool-card" onclick="insertarConsolaGM()" style="border-left: 4px solid #4ade80;"><div class="tool-icon" style="color:#4ade80;"><i class="fa-solid fa-gamepad"></i></div><div class="tool-info"><h4>Consola GM</h4><p>Puntajes</p></div></div>
+                            <div class="tool-card" onclick="insertarTimeline()"><div class="tool-icon"><i class="fa-solid fa-timeline"></i></div><div class="tool-info"><h4>Línea de Tiempo</h4><p>Hitster</p></div></div>
+                            <div class="tool-card" onclick="insertarSkyTeam()"><div class="tool-icon"><i class="fa-solid fa-plane"></i></div><div class="tool-info"><h4>Sky Team</h4><p>Co-op</p></div></div>
+                            <div class="tool-card" onclick="insertarRollWrite()"><div class="tool-icon"><i class="fa-solid fa-route"></i></div><div class="tool-info"><h4>Roll & Write</h4><p>Rutas</p></div></div>
+                            <div class="tool-card" onclick="insertarBingo()"><div class="tool-icon"><i class="fa-solid fa-table-cells"></i></div><div class="tool-info"><h4>Tablero Bingo</h4><p>5x5</p></div></div>
                             <div class="tool-card" onclick="insertarTableroTrivial()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-chart-pie"></i></div><div class="tool-info"><h4>Trivial</h4><p>Quiz</p></div></div>
+                            <div class="tool-card" onclick="insertarCodigoSecreto()"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-user-secret"></i></div><div class="tool-info"><h4>Codenames</h4><p>Código</p></div></div>
                             <div class="tool-card" onclick="insertarLosetaCarcassonne()"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-map"></i></div><div class="tool-info"><h4>Carcassonne</h4><p>Loseta</p></div></div>
+                            <div class="tool-card" onclick="insertarTableroDobble()"><div class="tool-icon" style="color:#0284c7;"><i class="fa-brands fa-fly"></i></div><div class="tool-info"><h4>Dobble</h4><p>Reflejos</p></div></div>
+                            <div class="tool-card" onclick="insertarTableroGrid()"><div class="tool-icon"><i class="fa-solid fa-border-all"></i></div><div class="tool-info"><h4>Grid</h4><p>Serpientes</p></div></div>
+                            <div class="tool-card" onclick="insertarDialWavelength()"><div class="tool-icon" style="color:#be123c;"><i class="fa-solid fa-gauge-high"></i></div><div class="tool-info"><h4>Dial Wavelength</h4><p>Escala</p></div></div>
+                            <div class="tool-card" onclick="insertarRastreadorCoop()"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-heart-pulse"></i></div><div class="tool-info"><h4>Co-op Tracker</h4><p>Crisis</p></div></div>
+                            <div class="tool-card" onclick="insertarMercadoDeckBuilding()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-store"></i></div><div class="tool-info"><h4>Mercado</h4><p>Deck-Building</p></div></div>
+                            <div class="tool-card" onclick="insertarDiarioCampana()"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-book-journal-whills"></i></div><div class="tool-info"><h4>Diario</h4><p>Campaña</p></div></div>
                         </div>
                     </details>
                     <details class="ux-details">
                         <summary>Cartas de Juegos</summary>
                         <div class="ux-details-content">
                             <div class="tool-card" onclick="insertarCartaUno()" style="border-left: 4px solid #dc2626;"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-clone"></i></div><div class="tool-info"><h4>Carta UNO</h4><p>+2</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaUnoReversa()"><div class="tool-icon" style="color:#2563eb;"><i class="fa-solid fa-rotate-left"></i></div><div class="tool-info"><h4>Reversa</h4><p>Invierte</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaUnoBloqueo()"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-ban"></i></div><div class="tool-info"><h4>Bloqueo</h4><p>Pierdes</p></div></div>
                             <div class="tool-card" onclick="insertarCartaDixit()"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-moon"></i></div><div class="tool-info"><h4>Dixit</h4><p>Asociación</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaDrafting()"><div class="tool-icon" style="color:#f59e0b;"><i class="fa-solid fa-layer-group"></i></div><div class="tool-info"><h4>Drafting</h4><p>Sushi Go</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaConversacional()"><div class="tool-icon" style="color:#0369a1;"><i class="fa-regular fa-comment-dots"></i></div><div class="tool-info"><h4>Conversacional</h4><p>Diálogo</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaMemoria()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-clock-rotate-left"></i></div><div class="tool-info"><h4>Memoria</h4><p>Historia</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaDilema()"><div class="tool-icon" style="color:#be123c;"><i class="fa-solid fa-code-branch"></i></div><div class="tool-info"><h4>Dilema</h4><p>Ética</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaTetralema()"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-border-all"></i></div><div class="tool-info"><h4>Tetralema</h4><p>Villasante</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaTinderblox()"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-tree"></i></div><div class="tool-info"><h4>Tinderblox</h4><p>Destreza</p></div></div>
+                            <div class="tool-card" onclick="insertarPanelSkyTeam()"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-plane"></i></div><div class="tool-info"><h4>Sky Team</h4><p>Co-op</p></div></div>
+                            <div class="tool-card" onclick="insertarLineaTiempoHitster()"><div class="tool-icon" style="color:#be123c;"><i class="fa-solid fa-timeline"></i></div><div class="tool-info"><h4>Hitster</h4><p>Línea T.</p></div></div>
+                            <div class="tool-card" onclick="insertarHojaRollWrite()"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-route"></i></div><div class="tool-info"><h4>Roll & Write</h4><p>Rutas</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaAtaque()"><div class="tool-icon" style="color:#b91c1c;"><i class="fa-solid fa-burst"></i></div><div class="tool-info"><h4>Ataque</h4><p>Take That</p></div></div>
+                        </div>
+                    </details>
+                    <details class="ux-details">
+                        <summary>Componentes v33.0</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="insertarHexCatan('Bosque', '#2e7d32', 'fa-tree')"><div class="tool-icon" style="color:#2e7d32;"><i class="fa-solid fa-tree"></i></div><div class="tool-info"><h4>Hex Bosque</h4><p>Catán</p></div></div>
+                            <div class="tool-card" onclick="insertarHexCatan('Montaña', '#78909c', 'fa-mountain')"><div class="tool-icon" style="color:#78909c;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Hex Montaña</h4><p>Catán</p></div></div>
+                            <div class="tool-card" onclick="insertarPobladoCatan()"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-house"></i></div><div class="tool-info"><h4>Poblado</h4><p>Catán</p></div></div>
+                            <div class="tool-card" onclick="insertarCiudadCatan()"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-city"></i></div><div class="tool-info"><h4>Ciudad</h4><p>Catán</p></div></div>
+                            <div class="tool-card" onclick="insertarOrganoVirus('Corazón', 'fa-heart-pulse')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-heart-pulse"></i></div><div class="tool-info"><h4>Órgano</h4><p>Virus</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaVirus()"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-virus"></i></div><div class="tool-info"><h4>Virus</h4><p>Virus</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaUNOHF('#dc2626', '5')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-clone"></i></div><div class="tool-info"><h4>UNO Rojo</h4><p>Alta Fidelidad</p></div></div>
                         </div>
                     </details>
                     <details class="ux-details">
@@ -140,6 +185,23 @@
                         <div class="ux-details-content">
                             <div class="tool-card" onclick="EPComponentsEngine.insertarHex()"><div class="tool-icon" style="color:#2e7d32;"><i class="fa-solid fa-hexagon"></i></div><div class="tool-info"><h4>Tablero Catán</h4><p>Panal Hex</p></div></div>
                             <div class="tool-card" onclick="EPComponentsEngine.insertarMapa()"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-map"></i></div><div class="tool-info"><h4>Mapa Pandemic</h4><p>Nodos</p></div></div>
+                            <div class="tool-card" onclick="EPComponentsEngine.insertarPerimetro()"><div class="tool-icon" style="color:#9a3412;"><i class="fa-solid fa-border-all"></i></div><div class="tool-info"><h4>Tablero Perímetro</h4><p>Monopoly</p></div></div>
+                            <div class="tool-card" onclick="EPComponentsEngine.insertarCubo('#dc2626')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-cube"></i></div><div class="tool-info"><h4>Cubo 3D</h4><p>Pandemic</p></div></div>
+                            <div class="tool-card" onclick="EPComponentsEngine.insertarMeepleCSS()"><div class="tool-icon" style="color:#8B3A3A;"><i class="fa-solid fa-person"></i></div><div class="tool-info"><h4>Meeple CSS</h4><p>Madera</p></div></div>
+                        </div>
+                    </details>
+                    <details class="ux-details">
+                        <summary>Catán (Tablero Completo)</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="insertarTableroCompletoCatan()"><div class="tool-icon" style="color:#2e7d32;"><i class="fa-solid fa-hexagon"></i></div><div class="tool-info"><h4>Isla Completa</h4><p>19 Hexágonos</p></div></div>
+                            <div class="tool-card" onclick="insertarKitJugadorCatan('#dc2626')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-users"></i></div><div class="tool-info"><h4>Kit Jugador</h4><p>Rojo</p></div></div>
+                            <div class="tool-card" onclick="insertarKitJugadorCatan('#0284c7')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-users"></i></div><div class="tool-info"><h4>Kit Jugador</h4><p>Azul</p></div></div>
+                            <div class="tool-card" onclick="insertarKitJugadorCatan('#15803d')"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-users"></i></div><div class="tool-info"><h4>Kit Jugador</h4><p>Verde</p></div></div>
+                            <div class="tool-card" onclick="insertarKitJugadorCatan('#ca8a04')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-users"></i></div><div class="tool-info"><h4>Kit Jugador</h4><p>Amarillo</p></div></div>
+                            <div class="tool-card" onclick="insertarLadronCatan()"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-user-secret"></i></div><div class="tool-info"><h4>Ladrón</h4><p>Peón Negro</p></div></div>
+                            <div class="tool-card" onclick="insertarPuertoCatan()"><div class="tool-icon" style="color:#8B4513;"><i class="fa-solid fa-anchor"></i></div><div class="tool-info"><h4>Puerto</h4><p>Aleatorio</p></div></div>
+                            <div class="tool-card" onclick="insertarFichasNumeroCatan()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-hashtag"></i></div><div class="tool-info"><h4>Todos los Números</h4><p>18 Fichas</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaCaballeroCatan()"><div class="tool-icon" style="color:#b91c1c;"><i class="fa-solid fa-chess-knight"></i></div><div class="tool-info"><h4>Carta Caballero</h4><p>Ladrón</p></div></div>
                         </div>
                     </details>
                 </div>
@@ -153,6 +215,14 @@
                             <button class="btn btn-outline" onclick="document.getElementById('file-mapa').click()" style="width:100%; margin-bottom:10px;"><i class="fa-solid fa-upload"></i> Subir Mapa</button>
                             <input type="file" id="file-mapa" accept="image/*" onchange="subirMapaBase(event)" style="display:none;">
                             <button class="btn btn-outline" onclick="insertarPinMapa(300, 300)" style="width:100%; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Añadir Pin</button>
+                            
+                            <h4 style="font-size:12px; color:#64748b; margin-bottom:10px; margin-top:15px;">Elementos Básicos</h4>
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px;">
+                                <button class="btn btn-outline" style="font-size:11px; padding:8px;" onclick="insertarIconoMapa('school', '#0284c7')"><i class="fa-solid fa-school"></i> Escuela</button>
+                                <button class="btn btn-outline" style="font-size:11px; padding:8px;" onclick="insertarIconoMapa('tree', '#166534')"><i class="fa-solid fa-tree"></i> Plaza</button>
+                                <button class="btn btn-outline" style="font-size:11px; padding:8px;" onclick="insertarIconoMapa('user', '#475569')"><i class="fa-solid fa-user"></i> Actor</button>
+                                <button class="btn btn-outline" style="font-size:11px; padding:8px; border-color:#dc2626; color:#dc2626;" onclick="insertarZonaCalor('rojo')"><i class="fa-solid fa-fire"></i> Peligro</button>
+                            </div>
                         </div>
                     </details>
                 </div>
@@ -292,6 +362,7 @@
         </div>
     </div>
 
+    <!-- SCRIPTS -->
     <script src="js/app.js"></script>
     <script src="js/drag-drop.js"></script>
     <script src="js/herramientas.js"></script>
