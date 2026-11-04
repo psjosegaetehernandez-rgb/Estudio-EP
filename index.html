@@ -181,8 +181,44 @@
                 <!-- CARTAS -->
                 <div class="tool-content active" id="tool-mazos">
                     
+                    <!-- SECCIÓN MITOS DE AMÉRICA -->
+                    <details class="ux-details" style="border-left: 4px solid #2E7D32;" open>
+                        <summary style="color: #2E7D32; font-weight: bold;"><i class="fa-solid fa-earth-americas"></i> Mitos de América (Mapuche)</summary>
+                        <div class="ux-details-content">
+                            <!-- Cartas Principales -->
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_relato')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Relato</h4><p>Historia</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_territorio')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Territorio</h4><p>Paisaje</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_encuentro')"><div class="tool-icon" style="color:#38bdf8;"><i class="fa-solid fa-water"></i></div><div class="tool-info"><h4>Encuentro</h4><p>Ser / Elemento</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_desafio')"><div class="tool-icon" style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="tool-info"><h4>Desafío</h4><p>Problema</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_memoria')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-brain"></i></div><div class="tool-info"><h4>Memoria</h4><p>Reflexión</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_acontecimiento')"><div class="tool-icon" style="color:#f59e0b;"><i class="fa-solid fa-cloud-bolt"></i></div><div class="tool-info"><h4>Acontecimiento</h4><p>Evento</p></div></div>
+                            
+                            <!-- Tokens -->
+                            <div class="tool-card" onclick="crearTokenMitos('Semillas', '#16a34a', 'fa-seedling')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-seedling"></i></div><div class="tool-info"><h4>Token Semillas</h4><p>Regeneración</p></div></div>
+                            <div class="tool-card" onclick="crearTokenMitos('Agua', '#0284c7', 'fa-droplet')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-droplet"></i></div><div class="tool-info"><h4>Token Agua</h4><p>Desafíos</p></div></div>
+                            <div class="tool-card" onclick="crearTokenMitos('Memoria', '#ca8a04', 'fa-scroll')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Token Memoria</h4><p>Relatos</p></div></div>
+                            <div class="tool-card" onclick="crearTokenMitos('Vínculos', '#a855f7', 'fa-link')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-link"></i></div><div class="tool-info"><h4>Token Vínculos</h4><p>Cooperación</p></div></div>
+
+                            <!-- Personajes -->
+                            <div class="tool-card" onclick="crearPersonajeMitos('Exploradora', 'fa-compass', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-compass"></i></div><div class="tool-info"><h4>Exploradora</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Narrador', 'fa-book', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-book"></i></div><div class="tool-info"><h4>Narrador</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Observadora', 'fa-eye', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-eye"></i></div><div class="tool-info"><h4>Observadora</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Mediador', 'fa-handshake', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-handshake"></i></div><div class="tool-info"><h4>Mediador</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Guardiana', 'fa-shield-halved', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-shield-halved"></i></div><div class="tool-info"><h4>Guardiana</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Cartógrafo', 'fa-map', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-map"></i></div><div class="tool-info"><h4>Cartógrafo</h4><p>Personaje</p></div></div>
+
+                            <!-- Zonas / Tablero -->
+                            <div class="tool-card" onclick="crearZonaMitos('Bosque ancestral', 'fa-tree', '#22c55e')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-tree"></i></div><div class="tool-info"><h4>Zona Bosque</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Montañas', 'fa-mountain', '#64748b')"><div class="tool-icon" style="color:#64748b;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Zona Montañas</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Aguas', 'fa-water', '#0284c7')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-water"></i></div><div class="tool-info"><h4>Zona Aguas</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Volcanes', 'fa-fire', '#dc2626')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-fire"></i></div><div class="tool-info"><h4>Zona Volcanes</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Comunidad', 'fa-users', '#ca8a04')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-users"></i></div><div class="tool-info"><h4>Zona Comunidad</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Senderos', 'fa-shoe-prints', '#78350f')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-shoe-prints"></i></div><div class="tool-info"><h4>Zona Senderos</h4><p>Tablero</p></div></div>
+                        </div>
+                    </details>
+
                     <!-- SECCIÓN EXPANSIÓN EL GRIMORIO -->
-                    <details class="ux-details" style="border-left: 4px solid #6b21a8;" open>
+                    <details class="ux-details" style="border-left: 4px solid #6b21a8;">
                         <summary style="color: #6b21a8; font-weight: bold;"><i class="fa-solid fa-book-skull"></i> Grimorio de las 13 Puertas</summary>
                         <div class="ux-details-content">
                             <!-- Personajes -->
@@ -229,38 +265,6 @@
                             <div class="tool-card" onclick="crearTokenSombras('Rosa', '#991b1b', 'fa-fan')"><div class="tool-icon" style="color:#991b1b;"><i class="fa-solid fa-fan"></i></div><div class="tool-info"><h4>Token Rosa</h4><p>Sociedad</p></div></div>
                             <div class="tool-card" onclick="crearTokenSombras('Cráneo', '#1e293b', 'fa-skull')"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-skull"></i></div><div class="tool-info"><h4>Token Cráneo</h4><p>Peligro</p></div></div>
                             <div class="tool-card" onclick="crearTokenSombras('Ojo', '#4c1d95', 'fa-eye')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-eye"></i></div><div class="tool-info"><h4>Token Ojo</h4><p>Vigilancia</p></div></div>
-                        </div>
-                    </details>
-
-                    <!-- SECCIÓN MITOS DE AMÉRICA COMPLETA -->
-                    <details class="ux-details" style="border-left: 4px solid #D4AF37;">
-                        <summary style="color: #D4AF37; font-weight: bold;"><i class="fa-solid fa-dragon"></i> Mitos de América</summary>
-                        <div class="ux-details-content">
-                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_relato')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Relato</h4><p>Mitos</p></div></div>
-                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_territorio')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Territorio</h4><p>Paisajes</p></div></div>
-                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_encuentro')"><div class="tool-icon" style="color:#8b5cf6;"><i class="fa-solid fa-handshake"></i></div><div class="tool-info"><h4>Encuentro</h4><p>Seres</p></div></div>
-                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_desafio')"><div class="tool-icon" style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="tool-info"><h4>Desafío</h4><p>Problemas</p></div></div>
-                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_memoria')"><div class="tool-icon" style="color:#3b82f6;"><i class="fa-solid fa-brain"></i></div><div class="tool-info"><h4>Memoria</h4><p>Reflexión</p></div></div>
-                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_acontecimiento')"><div class="tool-icon" style="color:#f59e0b;"><i class="fa-solid fa-bolt"></i></div><div class="tool-info"><h4>Acontecimiento</h4><p>Cambios</p></div></div>
-                            
-                            <div class="tool-card" onclick="crearTokenMitos('Semillas', '#16a34a', 'fa-seedling')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-seedling"></i></div><div class="tool-info"><h4>Token Semillas</h4><p>Regeneración</p></div></div>
-                            <div class="tool-card" onclick="crearTokenMitos('Agua', '#0284c7', 'fa-droplet')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-droplet"></i></div><div class="tool-info"><h4>Token Agua</h4><p>Desafíos</p></div></div>
-                            <div class="tool-card" onclick="crearTokenMitos('Memoria', '#ca8a04', 'fa-scroll')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Token Memoria</h4><p>Relatos</p></div></div>
-                            <div class="tool-card" onclick="crearTokenMitos('Vínculos', '#a855f7', 'fa-link')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-link"></i></div><div class="tool-info"><h4>Token Vínculos</h4><p>Cooperación</p></div></div>
-
-                            <div class="tool-card" onclick="crearPersonajeMitos('Exploradora', 'fa-compass', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-compass"></i></div><div class="tool-info"><h4>Exploradora</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Narrador', 'fa-book', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-book"></i></div><div class="tool-info"><h4>Narrador</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Observadora', 'fa-eye', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-eye"></i></div><div class="tool-info"><h4>Observadora</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Mediador', 'fa-handshake', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-handshake"></i></div><div class="tool-info"><h4>Mediador</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Guardiana', 'fa-shield-halved', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-shield-halved"></i></div><div class="tool-info"><h4>Guardiana</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Cartógrafo', 'fa-map', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-map"></i></div><div class="tool-info"><h4>Cartógrafo</h4><p>Personaje</p></div></div>
-
-                            <div class="tool-card" onclick="crearZonaMitos('Bosque', 'fa-tree', '#22c55e')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-tree"></i></div><div class="tool-info"><h4>Zona Bosque</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Montañas', 'fa-mountain', '#64748b')"><div class="tool-icon" style="color:#64748b;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Zona Montañas</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Aguas', 'fa-water', '#0284c7')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-water"></i></div><div class="tool-info"><h4>Zona Aguas</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Volcanes', 'fa-fire', '#dc2626')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-fire"></i></div><div class="tool-info"><h4>Zona Volcanes</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Comunidad', 'fa-users', '#ca8a04')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-users"></i></div><div class="tool-info"><h4>Zona Comunidad</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Senderos', 'fa-shoe-prints', '#78350f')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-shoe-prints"></i></div><div class="tool-info"><h4>Zona Senderos</h4><p>Tablero</p></div></div>
                         </div>
                     </details>
 
@@ -952,9 +956,16 @@
             'imagen': { color: '#e2e8f0', border: '2px solid #cbd5e1', icon: 'fa-image', title: '', text: '', back: 'Escribe la pista aquí...', hideText: true },
             'frase': { color: '#ffffff', border: '4px solid #0284c7', icon: '', title: 'PALABRA', text: 'PALABRA', back: 'Instrucciones del dorso...', bigText: true },
             
+            // EXPANSIÓN MITOS DE AMÉRICA
+            'mitos_relato': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-scroll', title: 'RELATO', text: 'Título del relato...', colorText: '#e2e8f0', back: 'Narración y fuente...' },
+            'mitos_territorio': { color: '#2d1e12', border: '3px solid #22c55e', icon: 'fa-mountain', title: 'TERRITORIO', text: 'Nombre del territorio...', colorText: '#86efac', back: 'Descripción geográfica y relación con el relato...' },
+            'mitos_encuentro': { color: '#0f172a', border: '3px solid #38bdf8', icon: 'fa-water', title: 'ENCUENTRO', text: 'Ser o elemento...', colorText: '#7dd3fc', back: 'Descripción y rol en el juego...' },
+            'mitos_desafio': { color: '#1a0f0a', border: '3px solid #ef4444', icon: 'fa-triangle-exclamation', title: 'DESAFÍO', text: 'Situación problémica...', colorText: '#fca5a5', back: 'Pregunta educativa y efecto...' },
+            'mitos_memoria': { color: '#2e1065', border: '3px solid #a855f7', icon: 'fa-brain', title: 'MEMORIA', text: 'Pregunta de reflexión...', colorText: '#d8b4fe', back: 'Espacio para diálogo...' },
+            'mitos_acontecimiento': { color: '#082f49', border: '3px solid #f59e0b', icon: 'fa-cloud-bolt', title: 'ACONTECIMIENTO', text: 'Evento climático o social...', colorText: '#fde047', back: 'Efecto en el tablero...' },
+
             // EXPANSIÓN GRIMORIO DE LAS 13 PUERTAS
             'grimorio_personaje': { color: '#0f0f0f', border: '3px solid #D4AF37', icon: 'fa-user-tie', title: 'INVESTIGADOR', text: 'Nombre del personaje...', colorText: '#D4AF37', back: 'Habilidad y secreto...' },
-            
             'grimorio_hechizo_evocacion': { color: '#450a0a', border: '3px solid #dc2626', icon: 'fa-fire', title: 'EVOCACIÓN', text: 'Nombre del Hechizo...', colorText: '#fca5a5', back: 'Efecto, coste y componentes...' },
             'grimorio_hechizo_ilusion': { color: '#2e1065', border: '3px solid #a855f7', icon: 'fa-eye', title: 'ILUSIONISMO', text: 'Nombre del Hechizo...', colorText: '#d8b4fe', back: 'Efecto, coste y componentes...' },
             'grimorio_hechizo_alquimia': { color: '#422006', border: '3px solid #ca8a04', icon: 'fa-flask', title: 'ALQUIMIA ARCANA', text: 'Nombre del Hechizo...', colorText: '#fde047', back: 'Efecto, coste y componentes...' },
@@ -962,7 +973,6 @@
             'grimorio_hechizo_herbolaria': { color: '#052e16', border: '3px solid #15803d', icon: 'fa-leaf', title: 'HERBOLARIA', text: 'Nombre del Hechizo...', colorText: '#86efac', back: 'Efecto, coste y componentes...' },
             'grimorio_hechizo_astromancia': { color: '#082f49', border: '3px solid #0284c7', icon: 'fa-star', title: 'ASTROMANCIA', text: 'Nombre del Hechizo...', colorText: '#7dd3fc', back: 'Efecto, coste y componentes...' },
             'grimorio_hechizo_proteccion': { color: '#1e293b', border: '3px solid #94a3b8', icon: 'fa-shield-halved', title: 'PROTECCIÓN', text: 'Nombre del Hechizo...', colorText: '#e2e8f0', back: 'Efecto, coste y componentes...' },
-
             'grimorio_ritual': { color: '#1c1917', border: '3px solid #be123c', icon: 'fa-circle-nodes', title: 'RITUAL', text: 'Nombre del Ritual...', colorText: '#fda4af', back: 'Requisitos y resultado...' },
             'grimorio_grimorio': { color: '#2a1a0f', border: '3px solid #78350f', icon: 'fa-book', title: 'GRIMORIO', text: 'Nombre del Libro...', colorText: '#fcd34d', back: 'Conocimiento que otorga...' },
             'grimorio_criatura': { color: '#1f1f1f', border: '3px solid #991b1b', icon: 'fa-dragon', title: 'CRIATURA', text: 'Nombre de la Entidad...', colorText: '#fca5a5', back: 'Habilidad y debilidad...' },
@@ -978,14 +988,6 @@
             'sombras_localizacion': { color: '#064e3b', border: '3px solid #15803d', icon: 'fa-map-location-dot', title: 'LOCALIZACIÓN', text: 'Nombre del lugar...', colorText: '#86efac', back: 'Descripción del lugar...' },
             'sombras_acontecimiento': { color: '#1c1917', border: '3px solid #ca8a04', icon: 'fa-bolt', title: 'ACONTECIMIENTO', text: 'Describe el evento...', colorText: '#fde047', back: 'Efecto en el juego...' },
             'sombras_expediente': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-folder-open', title: 'EXPEDIENTE', text: 'Nombre del caso...', colorText: '#D4AF37', back: 'Resumen del expediente...' },
-
-            // MITOS DE AMÉRICA
-            'mitos_relato': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-scroll', title: 'RELATO', text: 'Escribe el mito aquí...', colorText: '#e2e8f0', back: 'Fuente o instrucciones...' },
-            'mitos_territorio': { color: '#0f172a', border: '3px solid #22c55e', icon: 'fa-mountain', title: 'TERRITORIO', text: 'Describe el paisaje...', colorText: '#e2e8f0', back: 'Relación con el relato...' },
-            'mitos_encuentro': { color: '#0f172a', border: '3px solid #8b5cf6', icon: 'fa-handshake', title: 'ENCUENTRO', text: 'Describe el ser o elemento...', colorText: '#e2e8f0', back: 'Instrucciones...' },
-            'mitos_desafio': { color: '#0f172a', border: '3px solid #ef4444', icon: 'fa-triangle-exclamation', title: 'DESAFÍO', text: 'Describe el problema...', colorText: '#e2e8f0', back: 'Pregunta para el grupo...' },
-            'mitos_memoria': { color: '#0f172a', border: '3px solid #3b82f6', icon: 'fa-brain', title: 'MEMORIA', text: 'Pregunta de reflexión...', colorText: '#e2e8f0', back: 'Aprendizaje esperado...' },
-            'mitos_acontecimiento': { color: '#0f172a', border: '3px solid #f59e0b', icon: 'fa-bolt', title: 'ACONTECIMIENTO', text: 'Describe el cambio...', colorText: '#e2e8f0', back: 'Efecto de juego...' },
 
             // CATÁN Y EXPANSIONES
             'catan_madera': { color: '#fdfbf7', border: '3px solid #2e7d32', icon: 'fa-tree', title: 'MADERA', text: 'Escribe el texto aquí...' },
