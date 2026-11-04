@@ -181,8 +181,39 @@
                 <!-- CARTAS -->
                 <div class="tool-content active" id="tool-mazos">
                     
+                    <!-- SECCIÓN EXPANSIÓN EL GRIMORIO -->
+                    <details class="ux-details" style="border-left: 4px solid #6b21a8;" open>
+                        <summary style="color: #6b21a8; font-weight: bold;"><i class="fa-solid fa-book-skull"></i> Grimorio de las 13 Puertas</summary>
+                        <div class="ux-details-content">
+                            <!-- Personajes -->
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_personaje')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-user-tie"></i></div><div class="tool-info"><h4>Personaje Mágico</h4><p>Investigador</p></div></div>
+                            
+                            <!-- Hechizos -->
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_hechizo_evocacion')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-fire"></i></div><div class="tool-info"><h4>Evocación</h4><p>Carmesí</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_hechizo_ilusion')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-eye"></i></div><div class="tool-info"><h4>Ilusionismo</h4><p>Violeta</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_hechizo_alquimia')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-flask"></i></div><div class="tool-info"><h4>Alquimia</h4><p>Oro</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_hechizo_nigromancia')"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-skull"></i></div><div class="tool-info"><h4>Nigromancia</h4><p>Negro</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_hechizo_herbolaria')"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-leaf"></i></div><div class="tool-info"><h4>Herbolaria</h4><p>Verde</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_hechizo_astromancia')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-star"></i></div><div class="tool-info"><h4>Astromancia</h4><p>Azul</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_hechizo_proteccion')"><div class="tool-icon" style="color:#64748b;"><i class="fa-solid fa-shield-halved"></i></div><div class="tool-info"><h4>Protección</h4><p>Plata</p></div></div>
+
+                            <!-- Otros Componentes -->
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_ritual')"><div class="tool-icon" style="color:#be123c;"><i class="fa-solid fa-circle-nodes"></i></div><div class="tool-info"><h4>Ritual</h4><p>Ceremonia</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_grimorio')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-book"></i></div><div class="tool-info"><h4>Grimorio</h4><p>Libro</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_criatura')"><div class="tool-icon" style="color:#991b1b;"><i class="fa-solid fa-dragon"></i></div><div class="tool-info"><h4>Criatura</h4><p>Entidad</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_artefacto')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-gem"></i></div><div class="tool-info"><h4>Artefacto</h4><p>Objeto Mágico</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_maldicion')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-ghost"></i></div><div class="tool-info"><h4>Maldición</h4><p>Efecto</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('grimorio_expediente')"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-folder-open"></i></div><div class="tool-info"><h4>Expediente</h4><p>Misión</p></div></div>
+                            
+                            <!-- Tokens Especiales -->
+                            <div class="tool-card" onclick="crearTokenGrimorio('Energía Arcana', '#0284c7', 'fa-bolt')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-bolt"></i></div><div class="tool-info"><h4>Token Energía</h4><p>Arcana</p></div></div>
+                            <div class="tool-card" onclick="crearTokenGrimorio('Corrupción', '#4c1d95', 'fa-droplet')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-droplet"></i></div><div class="tool-info"><h4>Token Corrupción</h4><p>Peligro</p></div></div>
+                            <div class="tool-card" onclick="crearTokenGrimorio('Sello', '#D4AF37', 'fa-stamp')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-stamp"></i></div><div class="tool-info"><h4>Token Sello</h4><p>Llave</p></div></div>
+                        </div>
+                    </details>
+
                     <!-- SECCIÓN ARCHIVO DE LAS SOMBRAS -->
-                    <details class="ux-details" style="border-left: 4px solid #B8860B;" open>
+                    <details class="ux-details" style="border-left: 4px solid #B8860B;">
                         <summary style="color: #B8860B; font-weight: bold;"><i class="fa-solid fa-magnifying-glass"></i> Archivo de las Sombras</summary>
                         <div class="ux-details-content">
                             <div class="tool-card" onclick="crearCartaConDiseno('sombras_personaje')"><div class="tool-icon" style="color:#B8860B;"><i class="fa-solid fa-user-tie"></i></div><div class="tool-info"><h4>Personaje</h4><p>Investigador</p></div></div>
@@ -203,7 +234,7 @@
 
                     <!-- SECCIÓN MITOS DE AMÉRICA COMPLETA -->
                     <details class="ux-details" style="border-left: 4px solid #D4AF37;">
-                        <summary style="color: #D4AF37; font-weight: bold;"><i class="fa-solid fa-dragon"></i> Mitos de América (Completo)</summary>
+                        <summary style="color: #D4AF37; font-weight: bold;"><i class="fa-solid fa-dragon"></i> Mitos de América</summary>
                         <div class="ux-details-content">
                             <div class="tool-card" onclick="crearCartaConDiseno('mitos_relato')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Relato</h4><p>Mitos</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('mitos_territorio')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Territorio</h4><p>Paisajes</p></div></div>
@@ -921,7 +952,25 @@
             'imagen': { color: '#e2e8f0', border: '2px solid #cbd5e1', icon: 'fa-image', title: '', text: '', back: 'Escribe la pista aquí...', hideText: true },
             'frase': { color: '#ffffff', border: '4px solid #0284c7', icon: '', title: 'PALABRA', text: 'PALABRA', back: 'Instrucciones del dorso...', bigText: true },
             
-            // ARCHIVO DE LAS SOMBRAS
+            // EXPANSIÓN GRIMORIO DE LAS 13 PUERTAS
+            'grimorio_personaje': { color: '#0f0f0f', border: '3px solid #D4AF37', icon: 'fa-user-tie', title: 'INVESTIGADOR', text: 'Nombre del personaje...', colorText: '#D4AF37', back: 'Habilidad y secreto...' },
+            
+            'grimorio_hechizo_evocacion': { color: '#450a0a', border: '3px solid #dc2626', icon: 'fa-fire', title: 'EVOCACIÓN', text: 'Nombre del Hechizo...', colorText: '#fca5a5', back: 'Efecto, coste y componentes...' },
+            'grimorio_hechizo_ilusion': { color: '#2e1065', border: '3px solid #a855f7', icon: 'fa-eye', title: 'ILUSIONISMO', text: 'Nombre del Hechizo...', colorText: '#d8b4fe', back: 'Efecto, coste y componentes...' },
+            'grimorio_hechizo_alquimia': { color: '#422006', border: '3px solid #ca8a04', icon: 'fa-flask', title: 'ALQUIMIA ARCANA', text: 'Nombre del Hechizo...', colorText: '#fde047', back: 'Efecto, coste y componentes...' },
+            'grimorio_hechizo_nigromancia': { color: '#000000', border: '3px solid #475569', icon: 'fa-skull', title: 'NIGROMANCIA', text: 'Nombre del Hechizo...', colorText: '#cbd5e1', back: 'Efecto, coste y componentes...' },
+            'grimorio_hechizo_herbolaria': { color: '#052e16', border: '3px solid #15803d', icon: 'fa-leaf', title: 'HERBOLARIA', text: 'Nombre del Hechizo...', colorText: '#86efac', back: 'Efecto, coste y componentes...' },
+            'grimorio_hechizo_astromancia': { color: '#082f49', border: '3px solid #0284c7', icon: 'fa-star', title: 'ASTROMANCIA', text: 'Nombre del Hechizo...', colorText: '#7dd3fc', back: 'Efecto, coste y componentes...' },
+            'grimorio_hechizo_proteccion': { color: '#1e293b', border: '3px solid #94a3b8', icon: 'fa-shield-halved', title: 'PROTECCIÓN', text: 'Nombre del Hechizo...', colorText: '#e2e8f0', back: 'Efecto, coste y componentes...' },
+
+            'grimorio_ritual': { color: '#1c1917', border: '3px solid #be123c', icon: 'fa-circle-nodes', title: 'RITUAL', text: 'Nombre del Ritual...', colorText: '#fda4af', back: 'Requisitos y resultado...' },
+            'grimorio_grimorio': { color: '#2a1a0f', border: '3px solid #78350f', icon: 'fa-book', title: 'GRIMORIO', text: 'Nombre del Libro...', colorText: '#fcd34d', back: 'Conocimiento que otorga...' },
+            'grimorio_criatura': { color: '#1f1f1f', border: '3px solid #991b1b', icon: 'fa-dragon', title: 'CRIATURA', text: 'Nombre de la Entidad...', colorText: '#fca5a5', back: 'Habilidad y debilidad...' },
+            'grimorio_artefacto': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-gem', title: 'ARTEFACTO', text: 'Nombre del Objeto...', colorText: '#D4AF37', back: 'Poder y limitaciones...' },
+            'grimorio_maldicion': { color: '#4c1d95', border: '3px solid #1e1b4b', icon: 'fa-ghost', title: 'MALDICIÓN', text: 'Nombre de la Maldición...', colorText: '#c4b5fd', back: 'Efecto y forma de romperla...' },
+            'grimorio_expediente': { color: '#1e293b', border: '3px solid #64748b', icon: 'fa-folder-open', title: 'EXPEDIENTE', text: 'Nombre del Caso...', colorText: '#e2e8f0', back: 'Objetivos y fases...' },
+
+            // ARCHIVO DE LAS SOMBRAS (Juego Base)
             'sombras_personaje': { color: '#1a1a1a', border: '3px solid #B8860B', icon: 'fa-user-tie', title: 'INVESTIGADOR', text: 'Nombre y especialidad...', colorText: '#D4AF37', back: 'Habilidad y secreto...' },
             'sombras_incognita': { color: '#0f172a', border: '3px solid #38bdf8', icon: 'fa-question', title: 'INCÓGNITA', text: '¿Qué sucedió?', colorText: '#38bdf8', back: 'Pregunta principal...' },
             'sombras_evidencia': { color: '#fdfbf7', border: '3px solid #78350f', icon: 'fa-fingerprint', title: 'EVIDENCIA', text: 'Descripción de la pista...', colorText: '#451a03', back: 'Análisis científico...' },
@@ -1034,6 +1083,32 @@
                         front.style.background = color;
                         front.style.border = '4px solid #D4AF37';
                         front.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+                        front.innerHTML = `<i class="fa-solid ${icono}" style="font-size: 50px; color: #fff; z-index: 10;"></i><div class="carta-texto" style="display:none;"></div>`;
+                        back.style.display = 'none'; 
+                    }
+                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
+                    if (typeof showToast === 'function') showToast(`Token ${nombre} creado`, 'success');
+                    if (typeof autosave === 'function') autosave();
+                }
+            }, 50);
+        }
+
+        function crearTokenGrimorio(nombre, color, icono) {
+            if (typeof insertarCarta !== 'function') return;
+            insertarCarta();
+            setTimeout(() => {
+                const cartas = document.querySelectorAll('#canvas > .canvas-element');
+                const nuevaCarta = cartas[cartas.length - 1];
+                if (nuevaCarta) {
+                    const front = nuevaCarta.querySelector('.carta-front');
+                    const back = nuevaCarta.querySelector('.carta-back');
+                    if (front && back) {
+                        nuevaCarta.style.width = '100px';
+                        nuevaCarta.style.height = '100px';
+                        front.style.borderRadius = '50%';
+                        front.style.background = color;
+                        front.style.border = '4px solid #D4AF37';
+                        front.style.boxShadow = '0 4px 10px rgba(0,0,0,0.5)';
                         front.innerHTML = `<i class="fa-solid ${icono}" style="font-size: 50px; color: #fff; z-index: 10;"></i><div class="carta-texto" style="display:none;"></div>`;
                         back.style.display = 'none'; 
                     }
