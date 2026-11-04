@@ -14,7 +14,7 @@
 .border-boal { border: 6px solid var(--primary); background: repeating-linear-gradient(45deg, #ffffff, #ffffff 10px, #fff5f0 10px, #fff5f0 20px); }
 .border-drp { border: 2px dotted #64748b; border-radius: 0; background: #ffffff; }
 .border-korol { border: 4px double #556B2F; background: #fdfbf7; }
-.carta-front.con-imagen-fondo .carta-texto { background: rgba(255, 255, 255, 0.85); padding: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); backdrop-filter: blur(4px); margin: auto; max-width: 90%; text-shadow: none; color: #1e293b; }
+
 /* --- ESTILOS DE LOS NAIPES (v68.0) --- */
 .carta-naipe {
     width: 200px;
@@ -47,3 +47,40 @@
 .naipe-centro h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: #1e293b; margin: 0; }
 .palo-rojo .naipe-palo, .palo-rojo .naipe-num { color: #dc2626; }
 .palo-negro .naipe-palo, .palo-negro .naipe-num { color: #1e293b; }
+
+/* ==================================================== */
+/* PARCHE DE SEGURIDAD: IMAGEN DE FONDO Y TEXTO         */
+/* ==================================================== */
+
+/* 1. Forzar a la carta a contener todo sin desbordarse */
+.carta-front { position: relative !important; overflow: hidden !important; }
+
+/* 2. Cualquier imagen subida se vuelve un fondo estático */
+.carta-front > img, .carta-front .imagen-fondo {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    z-index: 1 !important; /* Capa del fondo */
+    pointer-events: none !important; 
+}
+
+/* 3. El texto y los íconos siempre flotan arriba */
+.carta-icono, .carta-texto, .carta-footer {
+    position: relative !important;
+    z-index: 10 !important; /* Capa frontal */
+}
+
+/* 4. Clase para el efecto "Cristal" en el texto */
+.texto-con-fondo {
+    background: rgba(255, 255, 255, 0.90) !important;
+    padding: 15px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+    backdrop-filter: blur(4px) !important;
+    margin: auto !important;
+    max-width: 90% !important;
+    text-shadow: none !important;
+}

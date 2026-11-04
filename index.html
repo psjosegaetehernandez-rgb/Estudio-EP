@@ -66,6 +66,7 @@
                 <button class="btn btn-outline" onclick="descargarBackupTotal()" style="color: #16a34a; border-color: #16a34a;"><i class="fa-solid fa-cloud-arrow-down"></i> Backup</button>
                 <button class="btn btn-outline" onclick="document.getElementById('input-restaurar').click()" style="color: #0284c7; border-color: #0284c7;"><i class="fa-solid fa-cloud-arrow-up"></i> Restaurar</button>
                 <input type="file" id="input-restaurar" accept=".json" onchange="restaurarBackupTotal(event)" style="display:none;">
+                <button class="btn btn-outline" onclick="ejecutarDiagnostico()" style="color: #a855f7; border-color: #a855f7;" title="Comprobar estado del sistema"><i class="fa-solid fa-heart-pulse"></i></button>
             </div>
         </header>
         <div class="projects-grid" id="projects-list"></div>
@@ -360,6 +361,19 @@
                             <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px;">
                                 <h4 style="color: #1e293b; margin-bottom: 8px; font-size: 13px;"><i class="fa-solid fa-file-lines"></i> Anverso</h4>
                                 <div class="form-group"><label>Texto / Título</label><textarea id="prop-text" oninput="actualizarPropiedad('texto', this.value)"></textarea></div>
+                                
+                                <!-- NUEVOS CONTROLES DE TEXTO -->
+                                <div class="form-group" style="display:flex; gap:10px; align-items:center; margin-top:10px;">
+                                    <div style="flex:1;">
+                                        <label style="font-size:10px;">Color Letra</label>
+                                        <input type="color" id="prop-text-color" value="#333333" oninput="actualizarColorTexto(this.value)" style="width: 100%; height: 30px; cursor:pointer;">
+                                    </div>
+                                    <div style="flex:1; display:flex; align-items:center; gap:5px;">
+                                        <input type="checkbox" id="prop-text-bg" onchange="toggleFondoTexto(this.checked)">
+                                        <label for="prop-text-bg" style="font-size:10px; cursor:pointer;">Fondo Blanco</label>
+                                    </div>
+                                </div>
+
                                 <div class="form-group" style="border-top: 1px dashed #ccc; padding-top: 10px; margin-top: 10px;">
                                     <label>Subir Imagen (Fondo)</label><input type="file" id="input-img-carta" accept="image/*" onchange="subirImagenCarta(event)" style="width:100%; font-size:11px; margin-bottom:5px;">
                                     <div id="controles-img-carta" style="display:none; background: #e0f2fe; padding: 10px; border-radius: 6px;">
@@ -597,6 +611,7 @@
     <script src="js/escape-rooms.js"></script>
     <script src="js/tts-engine.js"></script>
     <script src="js/backup-engine.js"></script>
+    <script src="js/diagnostico.js"></script>
     
     <script src="js/catalogo.js"></script>
     <script src="js/help-data.js"></script>
@@ -606,8 +621,38 @@
     <script src="js/app.js"></script>
     <script src="js/panel-derecho.js"></script>
     
-    <!-- SCRIPT DE SIMULACIÓN DE IA (Para que el chat funcione sin API) -->
+    <!-- SCRIPT DE SIMULACIÓN DE IA Y NUEVOS CONTROLES -->
     <script>
+        // --- Funciones para el control del texto de la carta ---
+        function obtenerElementoSeleccionado() {
+            // Busca el elemento que tiene la clase selected o el último clicado
+            return document.querySelector('.canvas-element.selected') || 
+                   document.querySelector('.carta-3d.selected') || 
+                   window.elementoSeleccionado;
+        }
+
+        function actualizarColorTexto(color) {
+            const el = obtenerElementoSeleccionado();
+            if (el) {
+                const textDiv = el.querySelector('.carta-texto');
+                if (textDiv) textDiv.style.color = color;
+                if(typeof autosave === 'function') autosave();
+            }
+        }
+
+        function toggleFondoTexto(isChecked) {
+            const el = obtenerElementoSeleccionado();
+            if (el) {
+                const textDiv = el.querySelector('.carta-texto');
+                if (textDiv) {
+                    if (isChecked) textDiv.classList.add('texto-con-fondo');
+                    else textDiv.classList.remove('texto-con-fondo');
+                }
+                if(typeof autosave === 'function') autosave();
+            }
+        }
+
+        // --- Función de la IA ---
         function enviarMensajeAI() {
             const input = document.getElementById('ai-chat-input');
             const msg = input.value.trim();
