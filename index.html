@@ -17,6 +17,40 @@
     <link rel="stylesheet" href="css/game-components.css">
     <link rel="stylesheet" href="css/massive-expansion.css">
     <link rel="stylesheet" href="css/card-layouts.css">
+    
+    <!-- CSS CRÍTICO PARA LA BARRA SUPERIOR -->
+    <style>
+        .editor-topbar {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 10px 20px !important;
+            background: white !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            gap: 10px !important;
+            height: auto !important;
+        }
+        .topbar-actions {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            justify-content: flex-end !important;
+            flex: 1;
+        }
+        .topbar-group {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 5px !important;
+            background: rgba(0,0,0,0.02);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        @media (max-width: 1600px) {
+            .topbar-actions { justify-content: flex-start !important; margin-top: 10px; }
+        }
+    </style>
 </head>
 <body>
     <div id="toast-container"></div>
@@ -40,7 +74,7 @@
             </div>
             <div class="topbar-actions">
                 <div class="topbar-group">
-                    <span id="autosave-status" style="font-size: 11px; color: #64748b; font-weight: bold; margin-right: 5px;">Guardado ✔</span>
+                    <span id="autosave-status" style="font-size: 11px; color: #64748b; font-weight: bold; margin-right: 5px; align-self: center;">Guardado ✔</span>
                     <button class="btn btn-outline" onclick="toggleTema()" title="Modo Oscuro"><i class="fa-solid fa-moon"></i></button>
                     <button class="btn btn-outline" onclick="toggleFocusMode()" title="Modo Enfoque"><i class="fa-solid fa-expand"></i></button>
                     <button class="btn btn-outline" onclick="iniciarModoJuego()" title="Modo Juego" style="color:#16a34a; border-color:#16a34a; font-weight:bold;"><i class="fa-solid fa-play"></i> Jugar</button>
@@ -48,6 +82,9 @@
                     <button class="btn btn-outline" onclick="toggleLiveMode()" title="Proyector"><i class="fa-solid fa-tv"></i> Proyector</button>
                     <button class="btn btn-outline" onclick="abrirAI()" title="IA" style="color:#a855f7; border-color:#a855f7;"><i class="fa-solid fa-robot"></i> IA</button>
                     <button class="btn btn-outline" onclick="abrirWizard()" title="Asistente" style="color:#8B3A3A; border-color:#8B3A3A; font-weight:bold;"><i class="fa-solid fa-wand-magic-sparkles"></i> Asistente</button>
+                    
+                    <!-- NUEVO BOTÓN DE AYUDA -->
+                    <button class="btn btn-outline" onclick="abrirAyuda()" title="Manual de Instrucciones" style="color:#0ea5e9; border-color:#0ea5e9; font-weight:bold;"><i class="fa-solid fa-circle-question"></i> Ayuda</button>
                 </div>
                 <div class="topbar-group">
                     <button class="btn btn-outline" onclick="toggleVistaPrevia()" title="Vista Previa"><i class="fa-solid fa-eye"></i></button>
@@ -64,7 +101,7 @@
                     <button class="btn btn-outline" onclick="document.getElementById('input-importar-json').click()" title="Importar JSON" style="color:#ca8a04; border-color:#ca8a04;"><i class="fa-solid fa-upload"></i></button>
                     <input type="file" id="input-importar-json" accept=".json" onchange="importarProyecto(event)" style="display:none;">
                 </div>
-                <button class="btn btn-primary btn-cta" onclick="abrirVistaPrevia()"><i class="fa-solid fa-box-open"></i> Exportar</button>
+                <button class="btn btn-primary btn-cta" onclick="abrirVistaPrevia()" style="height: 36px; align-self: center;"><i class="fa-solid fa-box-open"></i> Exportar</button>
             </div>
         </header>
 
@@ -296,7 +333,6 @@
                         </div>
 
                         <!-- GRUPO CARTA -->
-                        <!-- GRUPO CARTA -->
                         <div id="props-carta" style="display:none;">
                             <!-- Anverso -->
                             <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px;">
@@ -351,6 +387,71 @@
         </div>
     </div>
 
+    <!-- MODAL DE MODO JUEGO -->
+    <div id="game-mode-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.95); z-index: 100000; flex-direction: column; align-items: center; justify-content: center; color: white;">
+        <h1 style="font-family: 'Merriweather'; font-size: 36px; color: #22c55e; margin-bottom: 20px;"><i class="fa-solid fa-clock"></i> MODO JUEGO</h1>
+        <div id="game-timer-display" style="font-family: monospace; font-size: 80px; font-weight: bold; margin-bottom: 30px;">60:00</div>
+        
+        <div style="background: #1e293b; padding: 20px; border-radius: 12px; width: 600px; max-width: 90%; margin-bottom: 20px;">
+            <h3 style="color: #cbd5e1; margin-bottom: 10px; border-bottom: 1px solid #334155; padding-bottom: 5px;">Pistas Reveladas</h3>
+            <div id="game-clues-list" style="max-height: 150px; overflow-y: auto; margin-bottom: 10px;"></div>
+            <button id="game-reveal-btn" class="btn btn-primary" style="width: 100%; background: #d97706; border: none;" onclick="revelarPistaJuego()">Revelar Siguiente Pista</button>
+        </div>
+
+        <div style="background: #1e293b; padding: 20px; border-radius: 12px; width: 600px; max-width: 90%; display: flex; gap: 10px; align-items: center;">
+            <input type="text" id="game-code-input" placeholder="Código final..." style="flex: 1; padding: 15px; font-size: 20px; border-radius: 8px; border: none; text-align: center; font-family: monospace;">
+            <button class="btn btn-primary" style="padding: 15px 30px; background: #16a34a; border: none; font-size: 18px;" onclick="verificarCodigoJuego()">Probar</button>
+        </div>
+        <div id="game-code-result" style="margin-top: 15px; font-size: 20px; min-height: 30px;"></div>
+
+        <button class="btn btn-outline" style="margin-top: 40px; color: #ef4444; border-color: #ef4444;" onclick="cerrarModoJuego()"><i class="fa-solid fa-xmark"></i> Salir del Juego</button>
+    </div>
+
+    <!-- DRAWER DE IA FREIRE -->
+    <div id="ai-drawer" style="display: none; position: fixed; top: 0; right: 0; width: 400px; height: 100vh; background: white; box-shadow: -5px 0 20px rgba(0,0,0,0.2); z-index: 99999; flex-direction: column;">
+        <div style="background: #8B3A3A; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; font-family: 'Playfair Display'; font-size: 18px;"><i class="fa-solid fa-robot"></i> Asistente Freire</h3>
+            <button onclick="cerrarAI()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
+        </div>
+        <div id="ai-chat-messages" style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+            <!-- Mensajes de IA van aquí -->
+        </div>
+        <div style="padding: 15px; border-top: 1px solid #e2e8f0; background: #f8fafc;">
+            <input type="text" placeholder="Pide una idea pedagógica..." style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;" onkeypress="if(event.key==='Enter') alert('Modo Demo: Conecta tu API Key para usar la IA real.')">
+        </div>
+    </div>
+
+    <!-- MODAL DE AYUDA Y MANUAL -->
+    <div id="help-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.8); z-index: 100001; align-items: center; justify-content: center;">
+        <div style="width: 90%; max-width: 1000px; height: 85vh; background: white; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            
+            <!-- Header -->
+            <div style="background: #0ea5e9; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; font-family: 'Playfair Display'; font-size: 20px;"><i class="fa-solid fa-book"></i> Manual de Juego y Ayuda</h3>
+                <button onclick="cerrarAyuda()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+
+            <!-- Body -->
+            <div style="display: flex; flex: 1; overflow: hidden;">
+                
+                <!-- Sidebar -->
+                <div style="width: 300px; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; background: #f8fafc;">
+                    <div style="padding: 15px; border-bottom: 1px solid #e2e8f0;">
+                        <input type="text" placeholder="Buscar juego..." oninput="renderAyuda(this.value)" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px;">
+                    </div>
+                    <div id="help-list-container" style="flex: 1; overflow-y: auto;">
+                        <!-- Lista generada por JS -->
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div id="help-detail-content" style="flex: 1; padding: 30px; overflow-y: auto; background: white;">
+                    <!-- Detalle generado por JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- TEMPORIZADOR -->
     <div id="widget-timer" ondblclick="toggleFullscreenTimer()" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#1e293b; color:white; padding:15px 25px; border-radius:50px; display:flex; align-items:center; gap:15px; z-index:9999;">
         <div id="timer-display" style="font-family:monospace; font-size:24px; font-weight:bold;">15:00</div>
@@ -388,50 +489,14 @@
         </div>
     </div>
 
-    <!-- SCRIPTS -->
-    <!-- MODAL DE MODO JUEGO -->
-    <div id="game-mode-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.95); z-index: 100000; flex-direction: column; align-items: center; justify-content: center; color: white;">
-        <h1 style="font-family: 'Merriweather'; font-size: 36px; color: #22c55e; margin-bottom: 20px;"><i class="fa-solid fa-clock"></i> MODO JUEGO</h1>
-        <div id="game-timer-display" style="font-family: monospace; font-size: 80px; font-weight: bold; margin-bottom: 30px;">60:00</div>
-        
-        <div style="background: #1e293b; padding: 20px; border-radius: 12px; width: 600px; max-width: 90%; margin-bottom: 20px;">
-            <h3 style="color: #cbd5e1; margin-bottom: 10px; border-bottom: 1px solid #334155; padding-bottom: 5px;">Pistas Reveladas</h3>
-            <div id="game-clues-list" style="max-height: 150px; overflow-y: auto; margin-bottom: 10px;"></div>
-            <button id="game-reveal-btn" class="btn btn-primary" style="width: 100%; background: #d97706; border: none;" onclick="revelarPistaJuego()">Revelar Siguiente Pista</button>
-        </div>
-
-        <div style="background: #1e293b; padding: 20px; border-radius: 12px; width: 600px; max-width: 90%; display: flex; gap: 10px; align-items: center;">
-            <input type="text" id="game-code-input" placeholder="Código final..." style="flex: 1; padding: 15px; font-size: 20px; border-radius: 8px; border: none; text-align: center; font-family: monospace;">
-            <button class="btn btn-primary" style="padding: 15px 30px; background: #16a34a; border: none; font-size: 18px;" onclick="verificarCodigoJuego()">Probar</button>
-        </div>
-        <div id="game-code-result" style="margin-top: 15px; font-size: 20px; min-height: 30px;"></div>
-
-        <button class="btn btn-outline" style="margin-top: 40px; color: #ef4444; border-color: #ef4444;" onclick="cerrarModoJuego()"><i class="fa-solid fa-xmark"></i> Salir del Juego</button>
-    </div>
-
-    <!-- DRAWER DE IA FREIRE -->
-    <div id="ai-drawer" style="display: none; position: fixed; top: 0; right: 0; width: 400px; height: 100vh; background: white; box-shadow: -5px 0 20px rgba(0,0,0,0.2); z-index: 99999; flex-direction: column;">
-        <div style="background: #8B3A3A; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="margin: 0; font-family: 'Playfair Display'; font-size: 18px;"><i class="fa-solid fa-robot"></i> Asistente Freire</h3>
-            <button onclick="cerrarAI()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
-        </div>
-        <div id="ai-chat-messages" style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
-            <!-- Mensajes de IA van aquí -->
-        </div>
-        <div style="padding: 15px; border-top: 1px solid #e2e8f0; background: #f8fafc;">
-            <input type="text" placeholder="Pide una idea pedagógica..." style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;" onkeypress="if(event.key==='Enter') alert('Modo Demo: Conecta tu API Key para usar la IA real.')">
-        </div>
-    </div>
-    <script src="js/game-mode.js"></script>
-    <script src="js/ai-assistant.js"></script>
-    <script src="js/collab.js"></script>
-    <script src="js/app.js"></script>
+    <!-- SCRIPTS (Orden correcto) -->
     <script src="js/drag-drop.js"></script>
     <script src="js/herramientas.js"></script>
     <script src="js/components-engine.js"></script>
     <script src="js/componentes-extra.js"></script>
     <script src="js/card-engine.js"></script>
-    <script src="js/catalog-engines.js"></script>`n    <script src="js/workshop-engines.js"></script>
+    <script src="js/catalog-engines.js"></script>
+    <script src="js/workshop-engines.js"></script>
     <script src="js/catan-engines.js"></script>
     <script src="js/v40-engines.js"></script>
     <script src="js/massive-expansion.js"></script>
@@ -440,7 +505,17 @@
     <script src="js/csv-qr-module.js"></script>
     <script src="js/pwa-ia-live.js"></script>
     <script src="js/wizard.js"></script>
+    <script src="js/game-mode.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script src="js/collab.js"></script>
+    
+    <!-- Catálogo y Ayuda van de la mano: catálogo primero, luego ayuda -->
     <script src="js/catalogo.js"></script>
+    <script src="js/help-data.js"></script>
+    <script src="js/help.js"></script>
+    
+    <!-- App y Panel al final -->
+    <script src="js/app.js"></script>
     <script src="js/panel-derecho.js"></script>
 </body>
 </html>
