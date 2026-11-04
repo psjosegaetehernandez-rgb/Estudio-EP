@@ -32,14 +32,16 @@
         .btn-delete-proyecto { position: absolute; top: 10px; right: 10px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s; }
         .btn-delete-proyecto:hover { transform: scale(1.1); background: #dc2626; }
         
-        /* Estilos del Tablero de Progreso */
-        .tablero-mitos { background: #1e293b; border: 3px solid #D4AF37; border-radius: 12px; padding: 20px; width: 600px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 10; }
-        .dimension-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
-        .dimension-box h4 { margin: 0 0 10px 0; font-family: 'Playfair Display'; font-size: 16px; text-align: center; }
-        .checkboxes { display: flex; justify-content: center; gap: 8px; }
-        .check-box { width: 25px; height: 25px; border: 2px solid #cbd5e1; border-radius: 4px; cursor: pointer; transition: 0.2s; }
-        .check-box:hover { background: rgba(255,255,255,0.2); }
-        .check-box.checked { background: #22c55e; border-color: #22c55e; }
+        .tablero-atlas { background: #0f172a; border: 4px solid #D4AF37; border-radius: 12px; padding: 20px; width: 800px; display: flex; flex-direction: column; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 10; }
+        .atlas-region-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 15px; }
+        .atlas-region-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.3); text-align: center; cursor: pointer; transition: 0.3s; }
+        .atlas-region-box:hover { background: rgba(212, 175, 55, 0.2); border-color: #D4AF37; }
+        .atlas-region-box h4 { margin: 0; font-family: 'Playfair Display'; font-size: 14px; color: #D4AF37; }
+        .atlas-region-box p { margin: 5px 0 0 0; font-size: 10px; color: #94a3b8; }
+
+        .preview-card-wrapper { background: white; padding: 10px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; }
+        .preview-card-wrapper img { max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #ccc; }
+        .preview-card-wrapper p { margin: 5px 0 0 0; font-size: 11px; color: #64748b; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -111,12 +113,58 @@
 
                 <div class="tool-content active" id="tool-mazos">
                     
-                    <!-- SECCIÓN MITOS DE AMÉRICA -->
-                    <details class="ux-details" style="border-left: 4px solid #2E7D32;" open>
+                    <!-- SECCIÓN EL SIGLO DE LAS MÁQUINAS -->
+                    <details class="ux-details" style="border-left: 4px solid #b87333;">
+                        <summary style="color: #b87333; font-weight: bold;"><i class="fa-solid fa-gears"></i> El Siglo de las Máquinas</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_invento_fisica')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-bolt"></i></div><div class="tool-info"><h4>Física</h4><p>Invento</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_invento_quimica')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-flask"></i></div><div class="tool-info"><h4>Química</h4><p>Invento</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_invento_biologia')"><div class="tool-icon" style="color:#166534;"><i class="fa-solid fa-dna"></i></div><div class="tool-info"><h4>Biología</h4><p>Invento</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_invento_ingenieria')"><div class="tool-icon" style="color:#b87333;"><i class="fa-solid fa-wrench"></i></div><div class="tool-info"><h4>Ingeniería</h4><p>Invento</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_invento_matematicas')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-calculator"></i></div><div class="tool-info"><h4>Matemáticas</h4><p>Invento</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_invento_astronomia')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-star"></i></div><div class="tool-info"><h4>Astronomía</h4><p>Invento</p></div></div>
+                            
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_experimento')"><div class="tool-icon" style="color:#b45309;"><i class="fa-solid fa-vial"></i></div><div class="tool-info"><h4>Experimento</h4><p>Ciencia</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_automata')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-robot"></i></div><div class="tool-info"><h4>Autómata</h4><p>Máquina</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_anomalia')"><div class="tool-icon" style="color:#991b1b;"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="tool-info"><h4>Anomalía</h4><p>Fenómeno</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('steampunk_artefacto')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-gem"></i></div><div class="tool-info"><h4>Artefacto</h4><p>Instrumento</p></div></div>
+                        </div>
+                    </details>
+
+                    <!-- SECCIÓN EL LABERINTO DE LA MENTE -->
+                    <details class="ux-details" style="border-left: 4px solid #5f9ea0;">
+                        <summary style="color: #5f9ea0; font-weight: bold;"><i class="fa-solid fa-brain"></i> El Laberinto de la Mente</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="crearCartaConDiseno('laberinto_evidencia')"><div class="tool-icon" style="color:#0ea5e9;"><i class="fa-solid fa-microscope"></i></div><div class="tool-info"><h4>Evidencia Científica</h4><p>Análisis</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('laberinto_expediente')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-folder-open"></i></div><div class="tool-info"><h4>Expediente Clínico</h4><p>Caso</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('laberinto_testimonio')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-comment-dots"></i></div><div class="tool-info"><h4>Testimonio</h4><p>Relato</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('laberinto_pensamiento')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-lightbulb"></i></div><div class="tool-info"><h4>Pensamiento</h4><p>Cognición</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('laberinto_intervencion')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-hands-holding"></i></div><div class="tool-info"><h4>Intervención</h4><p>Apoyo</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('laberinto_factor')"><div class="tool-icon" style="color:#9a3412;"><i class="fa-solid fa-network-wired"></i></div><div class="tool-info"><h4>Factor Biopsicosocial</h4><p>Contexto</p></div></div>
+                        </div>
+                    </details>
+
+                    <!-- SECCIÓN ATLAS DE LAS CIVILIZACIONES -->
+                    <details class="ux-details" style="border-left: 4px solid #D4AF37;" open>
+                        <summary style="color: #D4AF37; font-weight: bold;"><i class="fa-solid fa-globe"></i> Atlas de las Civilizaciones</summary>
+                        <div class="ux-details-content">
+                            <div style="background: #fffbeb; padding: 10px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #fcd34d;">
+                                <h4 style="margin: 0 0 8px 0; font-size: 12px; color: #92400e;">Herramientas del Atlas</h4>
+                                <button class="btn btn-outline" style="width:100%; margin-bottom:5px; font-size:11px; text-align:left; border-color:#D4AF37; color:#92400e;" onclick="insertarTableroAtlas()"><i class="fa-solid fa-earth-americas"></i> Insertar Tablero Atlas</button>
+                                <button class="btn btn-outline" style="width:100%; margin-bottom:5px; font-size:11px; text-align:left; border-color:#dc2626; color:#dc2626;" onclick="crearCartaConDiseno('atlas_historia')"><i class="fa-solid fa-monument"></i> Carta de Memoria Crítica</button>
+                                <button class="btn btn-outline" style="width:100%; margin-bottom:5px; font-size:11px; text-align:left; border-color:#8b5cf6; color:#8b5cf6;" onclick="crearCartaConDiseno('atlas_comparacion')"><i class="fa-solid fa-scale-balanced"></i> Carta de Comparación</button>
+                            </div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('atlas_relato')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Relato Global</h4><p>Cualquier Cultura</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('atlas_territorio')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Territorio Global</h4><p>Geografía</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('atlas_encuentro')"><div class="tool-icon" style="color:#38bdf8;"><i class="fa-solid fa-masks-theater"></i></div><div class="tool-info"><h4>Encuentro Global</h4><p>Seres / Dioses</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('atlas_desafio')"><div class="tool-icon" style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="tool-info"><h4>Desafío Global</h4><p>Problema</p></div></div>
+                        </div>
+                    </details>
+
+                    <!-- SECCIÓN MITOS DE AMÉRICA (MAPUCHE) -->
+                    <details class="ux-details" style="border-left: 4px solid #2E7D32;">
                         <summary style="color: #2E7D32; font-weight: bold;"><i class="fa-solid fa-earth-americas"></i> Mitos de América (Mapuche)</summary>
                         <div class="ux-details-content">
-                            
-                            <!-- HERRAMIENTAS DE JUEGO -->
                             <div style="background: #f0fdf4; padding: 10px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #bbf7d0;">
                                 <h4 style="margin: 0 0 8px 0; font-size: 12px; color: #166534;">Herramientas del Juego</h4>
                                 <button class="btn btn-outline" style="width:100%; margin-bottom:5px; font-size:11px; text-align:left; border-color:#16a34a; color:#16a34a;" onclick="insertarTableroProgresoMitos()"><i class="fa-solid fa-table-cells-large"></i> Insertar Tablero de Progreso</button>
@@ -124,40 +172,16 @@
                                 <button class="btn btn-outline" style="width:100%; margin-bottom:5px; font-size:11px; text-align:left; border-color:#dc2626; color:#dc2626;" onclick="insertarMazoDesafiosMitos()"><i class="fa-solid fa-layer-group"></i> Generar 18 Desafíos</button>
                                 <button class="btn btn-outline" style="width:100%; font-size:11px; text-align:left; border-color:#a855f7; color:#a855f7;" onclick="insertarMazoMemoriasMitos()"><i class="fa-solid fa-brain"></i> Generar 12 Memorias</button>
                             </div>
-
-                            <!-- Cartas Principales -->
                             <div class="tool-card" onclick="crearCartaConDiseno('mitos_relato')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Relato</h4><p>Historia</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('mitos_territorio')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Territorio</h4><p>Paisaje</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('mitos_encuentro')"><div class="tool-icon" style="color:#38bdf8;"><i class="fa-solid fa-water"></i></div><div class="tool-info"><h4>Encuentro</h4><p>Ser / Elemento</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('mitos_desafio')"><div class="tool-icon" style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="tool-info"><h4>Desafío</h4><p>Problema</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('mitos_memoria')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-brain"></i></div><div class="tool-info"><h4>Memoria</h4><p>Reflexión</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('mitos_acontecimiento')"><div class="tool-icon" style="color:#f59e0b;"><i class="fa-solid fa-cloud-bolt"></i></div><div class="tool-info"><h4>Acontecimiento</h4><p>Evento</p></div></div>
-                            
-                            <!-- Tokens -->
-                            <div class="tool-card" onclick="crearTokenMitos('Semillas', '#16a34a', 'fa-seedling')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-seedling"></i></div><div class="tool-info"><h4>Token Semillas</h4><p>Regeneración</p></div></div>
-                            <div class="tool-card" onclick="crearTokenMitos('Agua', '#0284c7', 'fa-droplet')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-droplet"></i></div><div class="tool-info"><h4>Token Agua</h4><p>Desafíos</p></div></div>
-                            <div class="tool-card" onclick="crearTokenMitos('Memoria', '#ca8a04', 'fa-scroll')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Token Memoria</h4><p>Relatos</p></div></div>
-                            <div class="tool-card" onclick="crearTokenMitos('Vínculos', '#a855f7', 'fa-link')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-link"></i></div><div class="tool-info"><h4>Token Vínculos</h4><p>Cooperación</p></div></div>
-
-                            <!-- Personajes -->
-                            <div class="tool-card" onclick="crearPersonajeMitos('Exploradora', 'fa-compass', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-compass"></i></div><div class="tool-info"><h4>Exploradora</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Narrador', 'fa-book', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-book"></i></div><div class="tool-info"><h4>Narrador</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Observadora', 'fa-eye', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-eye"></i></div><div class="tool-info"><h4>Observadora</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Mediador', 'fa-handshake', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-handshake"></i></div><div class="tool-info"><h4>Mediador</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Guardiana', 'fa-shield-halved', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-shield-halved"></i></div><div class="tool-info"><h4>Guardiana</h4><p>Personaje</p></div></div>
-                            <div class="tool-card" onclick="crearPersonajeMitos('Cartógrafo', 'fa-map', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-map"></i></div><div class="tool-info"><h4>Cartógrafo</h4><p>Personaje</p></div></div>
-
-                            <!-- Zonas / Tablero -->
-                            <div class="tool-card" onclick="crearZonaMitos('Bosque ancestral', 'fa-tree', '#22c55e')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-tree"></i></div><div class="tool-info"><h4>Zona Bosque</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Montañas', 'fa-mountain', '#64748b')"><div class="tool-icon" style="color:#64748b;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Zona Montañas</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Aguas', 'fa-water', '#0284c7')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-water"></i></div><div class="tool-info"><h4>Zona Aguas</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Volcanes', 'fa-fire', '#dc2626')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-fire"></i></div><div class="tool-info"><h4>Zona Volcanes</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Comunidad', 'fa-users', '#ca8a04')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-users"></i></div><div class="tool-info"><h4>Zona Comunidad</h4><p>Tablero</p></div></div>
-                            <div class="tool-card" onclick="crearZonaMitos('Senderos', 'fa-shoe-prints', '#78350f')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-shoe-prints"></i></div><div class="tool-info"><h4>Zona Senderos</h4><p>Tablero</p></div></div>
                         </div>
                     </details>
 
-                    <!-- OTRAS SECCIONES (Resumidas para no saturar el archivo) -->
+                    <!-- SECCIÓN EXPANSIÓN EL GRIMORIO -->
                     <details class="ux-details" style="border-left: 4px solid #6b21a8;">
                         <summary style="color: #6b21a8; font-weight: bold;"><i class="fa-solid fa-book-skull"></i> Grimorio de las 13 Puertas</summary>
                         <div class="ux-details-content">
@@ -175,12 +199,10 @@
                             <div class="tool-card" onclick="crearCartaConDiseno('grimorio_artefacto')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-gem"></i></div><div class="tool-info"><h4>Artefacto</h4><p>Objeto Mágico</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('grimorio_maldicion')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-ghost"></i></div><div class="tool-info"><h4>Maldición</h4><p>Efecto</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('grimorio_expediente')"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-folder-open"></i></div><div class="tool-info"><h4>Expediente</h4><p>Misión</p></div></div>
-                            <div class="tool-card" onclick="crearTokenGrimorio('Energía Arcana', '#0284c7', 'fa-bolt')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-bolt"></i></div><div class="tool-info"><h4>Token Energía</h4><p>Arcana</p></div></div>
-                            <div class="tool-card" onclick="crearTokenGrimorio('Corrupción', '#4c1d95', 'fa-droplet')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-droplet"></i></div><div class="tool-info"><h4>Token Corrupción</h4><p>Peligro</p></div></div>
-                            <div class="tool-card" onclick="crearTokenGrimorio('Sello', '#D4AF37', 'fa-stamp')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-stamp"></i></div><div class="tool-info"><h4>Token Sello</h4><p>Llave</p></div></div>
                         </div>
                     </details>
 
+                    <!-- SECCIÓN ARCHIVO DE LAS SOMBRAS -->
                     <details class="ux-details" style="border-left: 4px solid #B8860B;">
                         <summary style="color: #B8860B; font-weight: bold;"><i class="fa-solid fa-magnifying-glass"></i> Archivo de las Sombras</summary>
                         <div class="ux-details-content">
@@ -191,14 +213,10 @@
                             <div class="tool-card" onclick="crearCartaConDiseno('sombras_localizacion')"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-map-location-dot"></i></div><div class="tool-info"><h4>Localización</h4><p>Lugar</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('sombras_acontecimiento')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-bolt"></i></div><div class="tool-info"><h4>Acontecimiento</h4><p>Evento</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('sombras_expediente')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-folder-open"></i></div><div class="tool-info"><h4>Expediente</h4><p>Misión</p></div></div>
-                            <div class="tool-card" onclick="crearTokenSombras('Lupa', '#B8860B', 'fa-magnifying-glass')"><div class="tool-icon" style="color:#B8860B;"><i class="fa-solid fa-magnifying-glass"></i></div><div class="tool-info"><h4>Token Lupa</h4><p>Investigación</p></div></div>
-                            <div class="tool-card" onclick="crearTokenSombras('Llave', '#64748b', 'fa-key')"><div class="tool-icon" style="color:#64748b;"><i class="fa-solid fa-key"></i></div><div class="tool-info"><h4>Token Llave</h4><p>Acceso</p></div></div>
-                            <div class="tool-card" onclick="crearTokenSombras('Rosa', '#991b1b', 'fa-fan')"><div class="tool-icon" style="color:#991b1b;"><i class="fa-solid fa-fan"></i></div><div class="tool-info"><h4>Token Rosa</h4><p>Sociedad</p></div></div>
-                            <div class="tool-card" onclick="crearTokenSombras('Cráneo', '#1e293b', 'fa-skull')"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-skull"></i></div><div class="tool-info"><h4>Token Cráneo</h4><p>Peligro</p></div></div>
-                            <div class="tool-card" onclick="crearTokenSombras('Ojo', '#4c1d95', 'fa-eye')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-eye"></i></div><div class="tool-info"><h4>Token Ojo</h4><p>Vigilancia</p></div></div>
                         </div>
                     </details>
 
+                    <!-- SECCIÓN CATÁN Y EXPANSIONES (RESTAURADA) -->
                     <details class="ux-details" style="border-left: 4px solid #d97706;">
                         <summary style="color: #d97706; font-weight: bold;"><i class="fa-solid fa-hexagon"></i> Catán y Expansiones</summary>
                         <div class="ux-details-content">
@@ -208,19 +226,40 @@
                             <div class="tool-card" onclick="crearCartaConDiseno('catan_oveja')"><div class="tool-icon" style="color:#65a30d;"><i class="fa-solid fa-cloud"></i></div><div class="tool-info"><h4>Oveja</h4><p>Recurso</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('catan_piedra')"><div class="tool-icon" style="color:#475569;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Piedra</h4><p>Recurso</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('catan_desarrollo')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-book"></i></div><div class="tool-info"><h4>Desarrollo</h4><p>Especial</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_navegantes')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-ship"></i></div><div class="tool-info"><h4>Navegantes</h4><p>Expansión</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_ciudades')"><div class="tool-icon" style="color:#d97706;"><i class="fa-solid fa-chess-rook"></i></div><div class="tool-info"><h4>Ciudades</h4><p>Expansión</p></div></div>
                         </div>
                     </details>
 
+                    <!-- SECCIÓN ESCAPE Y MISTERIO (RESTAURADA) -->
                     <details class="ux-details" style="border-left: 4px solid #dc2626;">
                         <summary style="color: #dc2626; font-weight: bold;"><i class="fa-solid fa-door-closed"></i> Escape & Misterio</summary>
                         <div class="ux-details-content">
                             <div class="tool-card" onclick="crearCartaConDiseno('escape_pista')"><div class="tool-icon" style="color:#d97706;"><i class="fa-solid fa-search"></i></div><div class="tool-info"><h4>Pista</h4><p>Escape</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('escape_codigo')"><div class="tool-icon" style="color:#38bdf8;"><i class="fa-solid fa-lock"></i></div><div class="tool-info"><h4>Código</h4><p>Escape</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('escape_objeto')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-box"></i></div><div class="tool-info"><h4>Objeto</h4><p>Escape</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_cluedo_sospechoso')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-user-secret"></i></div><div class="tool-info"><h4>Cluedo</h4><p>Sospechoso</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_cluedo_arma')"><div class="tool-icon" style="color:#991b1b;"><i class="fa-solid fa-gun"></i></div><div class="tool-info"><h4>Cluedo</h4><p>Arma</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_caso_cerrado')"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-folder-open"></i></div><div class="tool-info"><h4>Caso Cerrado</h4><p>Evidencia</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('escape_sherlock')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-magnifying-glass"></i></div><div class="tool-info"><h4>Sherlock</h4><p>Misterio</p></div></div>
                         </div>
                     </details>
 
+                    <!-- SECCIÓN OTROS JUEGOS (RESTAURADA) -->
+                    <details class="ux-details" style="border-left: 4px solid #0284c7;">
+                        <summary style="color: #0284c7; font-weight: bold;"><i class="fa-solid fa-dice"></i> Otros Juegos</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_pandemic_rol')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-user-doctor"></i></div><div class="tool-info"><h4>Pandemic</h4><p>Rol</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_pandemic_evento')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-virus-covid"></i></div><div class="tool-info"><h4>Pandemic</h4><p>Evento</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_dixit')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-moon"></i></div><div class="tool-info"><h4>Dixit</h4><p>Abstracto</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_hombres_lobo')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-paw"></i></div><div class="tool-info"><h4>Hombres Lobo</h4><p>Rol Oculto</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_virus_organo')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-heart-pulse"></i></div><div class="tool-info"><h4>Virus</h4><p>Órgano</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_virus_medicina')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-syringe"></i></div><div class="tool-info"><h4>Virus</h4><p>Medicina</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_zombies_evento')"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-skull"></i></div><div class="tool-info"><h4>Zombies!!!</h4><p>Evento</p></div></div>
+                        </div>
+                    </details>
+
+                    <!-- SECCIÓN MAZOS BASE (RESTAURADA) -->
                     <details class="ux-details">
                         <summary>Mazos Base</summary>
                         <div class="ux-details-content">
@@ -229,51 +268,28 @@
                             <div class="tool-card" onclick="crearCartaConDiseno('evento')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-virus"></i></div><div class="tool-info"><h4>Carta Evento</h4><p>Crisis</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('imagen')"><div class="tool-icon" style="color:#8B3A3A;"><i class="fa-solid fa-image"></i></div><div class="tool-info"><h4>Carta Imagen</h4><p>Dixit/Mímica</p></div></div>
                             <div class="tool-card" onclick="crearCartaConDiseno('frase')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-quote-left"></i></div><div class="tool-info"><h4>Carta Frase</h4><p>Charadas</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaNaipe()"><div class="tool-icon"><i class="fa-solid fa-diamond"></i></div><div class="tool-info"><h4>Carta Naipe</h4><p>Barajas</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaDuo()"><div class="tool-icon"><i class="fa-solid fa-puzzle-piece"></i></div><div class="tool-info"><h4>Carta Duo</h4><p>Refranes</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaRol()"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-user-secret"></i></div><div class="tool-info"><h4>Carta Rol</h4><p>Oculto</p></div></div>
                         </div>
                     </details>
-                </div>
 
-                <!-- GESTIÓN, JUEGOS, MAPEO, CATÁLOGO (Mantenidos igual) -->
-                <div class="tool-content" id="tool-gestion">
-                    <details class="ux-details" open>
-                        <summary>Dinámicas de Grupo</summary>
+                    <!-- SECCIÓN FORMATOS ESPECIALES (RESTAURADA) -->
+                    <details class="ux-details">
+                        <summary>Formatos Especiales</summary>
                         <div class="ux-details-content">
-                            <div class="tool-card" onclick="insertarPizarraFacilitador()" style="border-left: 4px solid #d97706;"><div class="tool-icon" style="color:#d97706;"><i class="fa-solid fa-clipboard-list"></i></div><div class="tool-info"><h4>Pizarra Facilitador</h4><p>Guion</p></div></div>
-                            <div class="tool-card" onclick="insertarMuroPostits()"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-note-sticky"></i></div><div class="tool-info"><h4>Muro Post-its</h4><p>Evaluación</p></div></div>
-                            <div class="tool-card" onclick="insertarTableroIAP()"><div class="tool-icon" style="color:#9a3412;"><i class="fa-solid fa-list-check"></i></div><div class="tool-info"><h4>Tablero IAP</h4><p>Fases</p></div></div>
-                            <div class="tool-card" onclick="insertarSemaforo()"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-traffic-light"></i></div><div class="tool-info"><h4>Semáforo</h4><p>Cierre</p></div></div>
-                        </div>
-                    </details>
-                </div>
-                <div class="tool-content" id="tool-juegos">
-                    <details class="ux-details" open>
-                        <summary>Motores y Tableros</summary>
-                        <div class="ux-details-content">
-                            <div class="tool-card" onclick="insertarGeneradorTokens()"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-coins"></i></div><div class="tool-info"><h4>Tokens</h4><p>Fichas</p></div></div>
-                            <div class="tool-card" onclick="insertarConsolaGM()" style="border-left: 4px solid #4ade80;"><div class="tool-icon" style="color:#4ade80;"><i class="fa-solid fa-gamepad"></i></div><div class="tool-info"><h4>Consola GM</h4><p>Puntajes</p></div></div>
-                            <div class="tool-card" onclick="insertarTimeline()"><div class="tool-icon"><i class="fa-solid fa-timeline"></i></div><div class="tool-info"><h4>Línea de Tiempo</h4><p>Hitster</p></div></div>
-                            <div class="tool-card" onclick="insertarBingo()"><div class="tool-icon"><i class="fa-solid fa-table-cells"></i></div><div class="tool-info"><h4>Tablero Bingo</h4><p>5x5</p></div></div>
-                            <div class="tool-card" onclick="insertarTableroTrivial()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-chart-pie"></i></div><div class="tool-info"><h4>Trivial</h4><p>Quiz</p></div></div>
-                        </div>
-                    </details>
-                </div>
-                <div class="tool-content" id="tool-mapeo">
-                    <details class="ux-details" open>
-                        <summary>Controles de Mapa</summary>
-                        <div class="ux-details-content">
-                            <button class="btn btn-primary" onclick="activarModoMapa()" style="width:100%; margin-bottom:10px; background:#0284c7;"><i class="fa-solid fa-earth-americas"></i> Modo Mapa</button>
-                            <button class="btn btn-outline" onclick="document.getElementById('file-mapa').click()" style="width:100%; margin-bottom:10px;"><i class="fa-solid fa-upload"></i> Subir Mapa</button>
-                            <input type="file" id="file-mapa" accept="image/*" onchange="subirMapaBase(event)" style="display:none;">
-                            <button class="btn btn-outline" onclick="insertarPinMapa(300, 300)" style="width:100%; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Añadir Pin</button>
-                        </div>
-                    </details>
-                </div>
-                <div class="tool-content" id="tool-catalogo">
-                    <details class="ux-details" open>
-                        <summary>Catálogo Maestro</summary>
-                        <div class="ux-details-content">
-                            <input type="text" id="buscador-catalogo" placeholder="Buscar juego..." oninput="filtrarCatalogo(this.value)" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px; margin-bottom:10px; font-size:12px;">
-                            <div id="catalogo-grid" style="display:flex; flex-direction:column; gap:10px;"></div>
+                            <div class="tool-card" onclick="insertarTopTrumps()"><div class="tool-icon"><i class="fa-solid fa-ranking-star"></i></div><div class="tool-info"><h4>Top Trumps</h4><p>Stats</p></div></div>
+                            <div class="tool-card" onclick="insertarSushiGo()"><div class="tool-icon"><i class="fa-solid fa-utensils"></i></div><div class="tool-info"><h4>Sushi Go</h4><p>Drafting</p></div></div>
+                            <div class="tool-card" onclick="insertarCharada()"><div class="tool-icon"><i class="fa-solid fa-person-running"></i></div><div class="tool-info"><h4>Charada</h4><p>Mímica</p></div></div>
+                            <div class="tool-card" onclick="insertarRolOculto()"><div class="tool-icon"><i class="fa-solid fa-mask"></i></div><div class="tool-info"><h4>Rol Oculto</h4><p>Deducción</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaMitoRealidad()" style="border-left: 4px solid #dc2626;"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-scale-balanced"></i></div><div class="tool-info"><h4>Mito/Realidad</h4><p>Debate</p></div></div>
+                            <div class="tool-card" onclick="insertarCartaCompromiso()" style="border-left: 4px solid #8B3A3A;"><div class="tool-icon" style="color:#8B3A3A;"><i class="fa-solid fa-file-signature"></i></div><div class="tool-info"><h4>Compromiso</h4><p>Acuerdos</p></div></div>
+                            <div class="tool-card" onclick="insertarTarjetaReflexion('inicio')" style="border-left: 4px solid #D4A373;"><div class="tool-icon" style="color:#D4A373;"><i class="fa-solid fa-sun"></i></div><div class="tool-info"><h4>Reflexión: Inicio</h4><p>Expectativas</p></div></div>
+                            <div class="tool-card" onclick="insertarTarjetaReflexion('cierre')" style="border-left: 4px solid #D4A373;"><div class="tool-icon" style="color:#D4A373;"><i class="fa-solid fa-moon"></i></div><div class="tool-info"><h4>Reflexión: Cierre</h4><p>Aprendizajes</p></div></div>
+                            <div class="tool-card" onclick="insertarCuboNet()"><div class="tool-icon"><i class="fa-solid fa-cube"></i></div><div class="tool-info"><h4>Cubo 3D</h4><p>Recortable</p></div></div>
+                            <div class="tool-card" onclick="document.getElementById('input-csv').click()" style="border-left: 4px solid #16a34a;"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-file-csv"></i></div><div class="tool-info"><h4>Importar CSV</h4><p>Mazos</p></div></div>
+                            <input type="file" id="input-csv" accept=".csv" onchange="procesarArchivoCSV(event)" style="display:none;">
+                            <div class="tool-card" onclick="insertarCodigoQR()" style="border-left: 4px solid #1e293b;"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-qrcode"></i></div><div class="tool-info"><h4>Código QR</h4><p>Enlaces</p></div></div>
                         </div>
                     </details>
                 </div>
@@ -289,106 +305,35 @@
             <aside class="properties-panel">
                 <h3><i class="fa-solid fa-pen-nib"></i> Propiedades</h3>
                 <div style="flex:1; overflow-y:auto; padding-right:5px; display:flex; flex-direction:column;">
-                    
-                    <div id="catalogo-detalle-panel" style="display: none; flex-direction: column; gap: 15px; height: 100%;">
-                        <div style="background: #FDFBF7; border-left: 4px solid #8B3A3A; padding: 15px; border-radius: 0 8px 8px 0;">
-                            <h3 id="cat-nombre" style="font-family:'Playfair Display'; color:#8B3A3A; margin-bottom: 5px;">Nombre del Juego</h3>
-                            <span id="cat-familia" style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: bold;">Familia</span>
-                        </div>
-                        <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;">
-                            <div style="background: white; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px;">
-                                <h4 style="color: #1e293b; margin-bottom: 8px; font-size: 13px;"><i class="fa-solid fa-book-open"></i> Reglas del Juego</h4>
-                                <p id="cat-objetivo" style="font-size: 11px; margin-bottom: 6px;"><b>Objetivo:</b> <span></span></p>
-                                <p id="cat-preparacion" style="font-size: 11px; margin-bottom: 6px;"><b>Preparación:</b> <span></span></p>
-                                <p id="cat-turno" style="font-size: 11px;"><b>Turno:</b> <span></span></p>
-                            </div>
-                            <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 12px;">
-                                <h4 style="color: #92400e; margin-bottom: 8px; font-size: 13px;"><i class="fa-solid fa-hands-holding-circle"></i> Adaptación EP</h4>
-                                <p id="cat-ep-objetivo" style="font-size: 11px; font-weight: bold; margin-bottom: 8px;"><span></span></p>
-                                <ul id="cat-ep-preguntas" style="font-size: 11px; padding-left: 15px;"></ul>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" style="width: 100%; padding: 15px; background: #8B3A3A; border: none;" onclick="cargarDesdePanelCatalogo()"><i class="fa-solid fa-cloud-arrow-down"></i> Cargar Componentes</button>
-                    </div>
-
                     <div id="props-empty" class="props-placeholder">Selecciona un elemento.</div>
                     <div id="props-content" style="display:none;">
-                        
-                        <!-- GRUPO TABLERO -->
-                        <div class="form-group" id="grupo-tablero" style="display:none; border-top: 2px solid #0284c7; padding-top: 10px; margin-top: 10px; background: #f0f9ff; padding: 10px; border-radius: 6px;">
-                            <h4 style="color: #0284c7; margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-map"></i> Personalizar Tablero</h4>
-                            <div class="form-group"><label>Subir Imagen</label><input type="file" id="input-img-tablero" accept="image/*" onchange="subirImagenTablero(event)" style="width:100%; font-size:11px;"></div>
-                            <div id="controles-img-tablero" style="display:none; background: #e0f2fe; padding: 10px; border-radius: 6px;">
-                                <label style="font-size:10px; color:#0284c7;">Zoom</label><input type="range" id="tablero-zoom" min="1" max="3" step="0.1" value="1" oninput="ajustarImagenTablero('zoom', this.value)" style="width:100%;">
-                                <label style="font-size:10px; color:#0284c7;">Pos X</label><input type="range" id="tablero-posx" min="0" max="100" value="50" oninput="ajustarImagenTablero('x', this.value)" style="width:100%;">
-                                <label style="font-size:10px; color:#0284c7;">Pos Y</label><input type="range" id="tablero-posy" min="0" max="100" value="50" oninput="ajustarImagenTablero('y', this.value)" style="width:100%;">
-                            </div>
-                        </div>
-
-                        <!-- GRUPO TOKEN -->
-                        <div class="form-group" id="grupo-token" style="display:none; border-top: 2px solid #4c1d95; padding-top: 10px; margin-top: 10px; background: #f8fafc; padding: 10px; border-radius: 6px;">
-                            <h4 style="color: #4c1d95; margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-coins"></i> Editor de Ficha</h4>
-                            <div class="form-group"><label>Color</label><input type="color" id="prop-token-color" oninput="cambiarColorToken(this.value)" style="width: 100%; height: 30px;"></div>
-                            <div class="form-group"><label>Texto Central</label><input type="text" id="prop-token-texto" oninput="cambiarTextoToken(this.value)" style="width: 100%; padding: 5px;"></div>
-                            <div class="form-group"><label>Subir Imagen</label><input type="file" id="input-token-img" accept="image/*" onchange="subirImagenToken(event)" style="width:100%; font-size:11px;"></div>
-                        </div>
-
-                        <!-- GRUPO CARTA -->
                         <div id="props-carta" style="display:none;">
-                            <!-- Anverso -->
                             <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px;">
                                 <h4 style="color: #1e293b; margin-bottom: 8px; font-size: 13px;"><i class="fa-solid fa-file-lines"></i> Anverso</h4>
                                 <div class="form-group"><label>Texto / Título</label><textarea id="prop-text" oninput="actualizarPropiedad('texto', this.value)"></textarea></div>
-                                
                                 <div class="form-group" style="display:flex; gap:10px; align-items:center; margin-top:10px;">
                                     <div style="flex:1;">
                                         <label style="font-size:10px;">Color Letra</label>
                                         <input type="color" id="prop-text-color" value="#333333" oninput="actualizarColorTexto(this.value)" style="width: 100%; height: 30px; cursor:pointer;">
                                     </div>
-                                    <div style="flex:1; display:flex; align-items:center; gap:5px;">
-                                        <input type="checkbox" id="prop-text-bg" onchange="toggleFondoTexto(this.checked)">
-                                        <label for="prop-text-bg" style="font-size:10px; cursor:pointer;">Fondo Blanco</label>
-                                    </div>
                                 </div>
-
                                 <div class="form-group" style="border-top: 1px dashed #ccc; padding-top: 10px; margin-top: 10px;">
-                                    <label>Subir Imagen (Fondo)</label><input type="file" id="input-img-carta" accept="image/*" onchange="subirImagenCarta(event)" style="width:100%; font-size:11px; margin-bottom:5px;">
-                                    <div id="controles-img-carta" style="display:none; background: #e0f2fe; padding: 10px; border-radius: 6px;">
-                                        <label style="font-size:10px;">Zoom</label><input type="range" id="carta-zoom" min="1" max="3" step="0.1" value="1" oninput="ajustarImagenCarta('zoom', this.value)" style="width:100%;">
-                                        <label style="font-size:10px;">Pos X</label><input type="range" id="carta-posx" min="0" max="100" value="50" oninput="ajustarImagenCarta('x', this.value)" style="width:100%;">
-                                        <label style="font-size:10px;">Pos Y</label><input type="range" id="carta-posy" min="0" max="100" value="50" oninput="ajustarImagenCarta('y', this.value)" style="width:100%;">
-                                    </div>
+                                    <label>Subir Imagen (Fondo)</label><input type="file" id="input-img-carta" accept="image/*" onchange="subirImagenCarta(event)" style="width:100%; font-size:11px;">
                                 </div>
                             </div>
-
-                            <!-- Dorso -->
                             <div style="background: #f3e8ff; border: 1px solid #d8b4fe; border-radius: 6px; padding: 10px; margin-bottom: 10px;">
                                 <h4 style="color: #6b21a8; margin-bottom: 8px; font-size: 13px;"><i class="fa-solid fa-clone"></i> Dorso</h4>
                                 <div class="form-group"><label>Texto / Instrucciones</label><textarea id="prop-instrucciones" oninput="actualizarPropiedad('instrucciones', this.value)"></textarea></div>
-                                <div class="form-group">
-                                    <label>Color de Fondo</label>
-                                    <input type="color" id="prop-dorso-color" oninput="cambiarColorDorso(this.value)" style="width: 100%; height: 30px;">
-                                </div>
                                 <div class="form-group" style="border-top: 1px dashed #d8b4fe; padding-top: 10px; margin-top: 10px;">
-                                    <label>Subir Imagen al Dorso</label><input type="file" id="input-img-dorso" accept="image/*" onchange="subirImagenDorso(event)" style="width:100%; font-size:11px; margin-bottom:5px;">
-                                    <div id="controles-img-dorso" style="display:none; background: #e0f2fe; padding: 10px; border-radius: 6px;">
-                                        <label style="font-size:10px;">Zoom</label><input type="range" id="dorso-zoom" min="1" max="3" step="0.1" value="1" oninput="ajustarImagenDorso('zoom', this.value)" style="width:100%;">
-                                        <label style="font-size:10px;">Pos X</label><input type="range" id="dorso-posx" min="0" max="100" value="50" oninput="ajustarImagenDorso('x', this.value)" style="width:100%;">
-                                        <label style="font-size:10px;">Pos Y</label><input type="range" id="dorso-posy" min="0" max="100" value="50" oninput="ajustarImagenDorso('y', this.value)" style="width:100%;">
-                                    </div>
+                                    <label>Subir Imagen al Dorso</label><input type="file" id="input-img-dorso" accept="image/*" onchange="subirImagenDorso(event)" style="width:100%; font-size:11px;">
                                 </div>
-                                <button class="btn btn-outline" style="width:100%; margin-top:10px; color:#ef4444; border-color:#ef4444;" onclick="quitarImagenDorso()"><i class="fa-solid fa-trash"></i> Quitar Imagen del Dorso</button>
                             </div>
-
-                            <button class="btn btn-secondary" style="width:100%; margin-bottom:10px;" onclick="voltearCarta()"><i class="fa-solid fa-rotate"></i> Voltear Carta para Ver Dorso</button>
-                        </div>
-
-                        <!-- GRUPO ESPECIFICO -->
-                        <div id="props-especifico" style="display:none;">
-                            <div class="form-group"><label id="lbl-especifico">Contenido</label><textarea id="prop-especifico-text" oninput="actualizarPropiedad('especifico', this.value)"></textarea></div>
+                            <button class="btn btn-secondary" style="width:100%; margin-bottom:10px;" onclick="voltearCarta()"><i class="fa-solid fa-rotate"></i> Voltear Carta</button>
                         </div>
                     </div>
                 </div>
+                
+                <!-- ACCIONES DE LA CARTA (REINCORPORADO) -->
                 <div id="props-actions" style="display:none; flex-shrink:0; padding-top:15px; margin-top:10px; border-top:1px solid #eee;">
                     <div style="display:flex; gap:10px;">
                         <button class="btn btn-secondary" style="flex:1;" onclick="duplicarElemento()">Duplicar</button>
@@ -399,58 +344,35 @@
         </div>
     </div>
 
-    <!-- MODALES Y DEMÁS (Resumido) -->
-    <div id="game-mode-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.95); z-index: 100000; flex-direction: column; align-items: center; justify-content: center; color: white;">
-        <h1 style="font-family: 'Merriweather'; font-size: 36px; color: #22c55e; margin-bottom: 20px;"><i class="fa-solid fa-clock"></i> MODO JUEGO</h1>
-        <div id="game-timer-display" style="font-family: monospace; font-size: 80px; font-weight: bold; margin-bottom: 30px;">60:00</div>
-        <button class="btn btn-outline" style="margin-top: 40px; color: #ef4444; border-color: #ef4444;" onclick="cerrarModoJuego()"><i class="fa-solid fa-xmark"></i> Salir del Juego</button>
-    </div>
-
-    <div id="ai-drawer" style="display: none; position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: white; box-shadow: -5px 0 20px rgba(0,0,0,0.2); z-index: 99999; flex-direction: column;">
-        <div style="background: #8B3A3A; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="margin: 0; font-family: 'Playfair Display'; font-size: 18px;"><i class="fa-solid fa-robot"></i> Asistente IA</h3>
-            <button onclick="cerrarAI()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
-        </div>
-        <div id="ai-tab-pedagogico" style="flex: 1; display: flex; flex-direction: column;">
-            <div id="ai-chat-messages" style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
-                <div style="background:#e0f2fe; padding:10px; border-radius:8px; font-size:12px; color:#0284c7;">
-                    <b>Asistente Freire:</b> Hola. Soy tu asistente pedagógico. Puedo ayudarte a crear preguntas de debriefing o adaptar juegos a la Educación Popular.
-                </div>
+    <!-- MODAL DE EXPORTACIÓN -->
+    <div id="print-modal" class="modal-overlay" style="display: none; z-index: 10000; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; position: fixed; top:0; left:0; width:100vw; height:100vh;">
+        <div class="modal-content" style="max-width: 1100px; width: 95%; height: 90vh; display: flex; flex-direction: column; background: white; border-radius: 12px; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 15px;">
+                <h3 style="margin: 0;"><i class="fa-solid fa-print"></i> Vista Previa e Impresión</h3>
+                <button onclick="cerrarVistaPrevia()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #ef4444;">&times;</button>
             </div>
-            <div style="padding: 15px; border-top: 1px solid #e2e8f0; background: #f8fafc; display: flex; gap: 10px;">
-                <input type="text" id="ai-chat-input" placeholder="Escribe tu mensaje..." style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;" onkeypress="if(event.key==='Enter') enviarMensajeAI()">
-                <button onclick="enviarMensajeAI()" style="background: #8B3A3A; color: white; border: none; padding: 0 15px; border-radius: 6px; cursor: pointer;"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
-
-    <div id="help-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.8); z-index: 100001; align-items: center; justify-content: center;">
-        <div style="width: 90%; max-width: 1000px; height: 85vh; background: white; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-            <div style="background: #0ea5e9; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="margin: 0; font-family: 'Playfair Display'; font-size: 20px;"><i class="fa-solid fa-book"></i> Manual de Juego y Ayuda</h3>
-                <button onclick="cerrarAyuda()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
-            </div>
-            <div style="display: flex; flex: 1; overflow: hidden;">
-                <div style="width: 300px; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; background: #f8fafc;">
-                    <div style="padding: 15px; border-bottom: 1px solid #e2e8f0;">
-                        <input type="text" placeholder="Buscar juego..." oninput="renderAyuda(this.value)" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px;">
+            <div style="display: flex; gap: 20px; flex: 1; overflow: hidden;">
+                <div style="width: 280px; border-right: 1px solid #eee; padding-right: 20px; display: flex; flex-direction: column; gap: 15px;">
+                    <select id="print-size" onchange="actualizarVistaPrevia()" style="width: 100%; padding: 8px;">
+                        <option value="small">Pequeño (12 por hoja)</option>
+                        <option value="medium" selected>Mediano (9 por hoja)</option>
+                        <option value="large">Grande (4 por hoja)</option>
+                    </select>
+                    <label style="cursor:pointer;"><input type="checkbox" id="print-bw" onchange="actualizarVistaPrevia()"> Imprimir en B/N</label>
+                    <label style="cursor:pointer;"><input type="checkbox" id="print-dorsos" onchange="actualizarVistaPrevia()"> Incluir Dorsos</label>
+                    <label style="cursor:pointer;"><input type="checkbox" id="print-mosaico" onchange="actualizarVistaPrevia()"> Incluir Tableros</label>
+                    <div style="margin-top: auto; border-top: 1px solid #eee; padding-top: 15px;">
+                        <p id="print-stats" style="font-size: 12px; color: #64748b; margin-bottom: 10px;">Calculando...</p>
+                        <button class="btn btn-primary" onclick="generarPDFFinal()" style="width: 100%; padding: 15px;"><i class="fa-solid fa-file-pdf"></i> Descargar PDF</button>
+                        <button class="btn btn-outline" onclick="exportarImagenPNG()" style="width: 100%; margin-top: 10px; color: #0284c7; border-color: #0284c7;"><i class="fa-solid fa-image"></i> Descargar Imagen Única</button>
                     </div>
-                    <div id="help-list-container" style="flex: 1; overflow-y: auto;"></div>
                 </div>
-                <div id="help-detail-content" style="flex: 1; padding: 30px; overflow-y: auto; background: white;"></div>
+                <div id="print-preview-area" style="flex: 1; background: #e2e8f0; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; border-radius: 8px;"></div>
             </div>
         </div>
     </div>
 
-    <div id="widget-timer" ondblclick="toggleFullscreenTimer()" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#1e293b; color:white; padding:15px 25px; border-radius:50px; display:flex; align-items:center; gap:15px; z-index:9999;">
-        <div id="timer-display" style="font-family:monospace; font-size:24px; font-weight:bold;">15:00</div>
-        <div style="display:flex; gap:5px;">
-            <button onclick="iniciarTimer()" style="background:#15803d; border:none; color:white; padding:8px 12px; border-radius:50%;"><i class="fa-solid fa-play"></i></button>
-            <button onclick="pausarTimer()" style="background:#ca8a04; border:none; color:white; padding:8px 12px; border-radius:50%;"><i class="fa-solid fa-pause"></i></button>
-            <button onclick="resetTimer()" style="background:#dc2626; border:none; color:white; padding:8px 12px; border-radius:50%;"><i class="fa-solid fa-rotate-left"></i></button>
-        </div>
-    </div>
-
+    <!-- SCRIPTS EXTERNOS -->
     <script src="js/drag-drop.js"></script>
     <script src="js/herramientas.js"></script>
     <script src="js/components-engine.js"></script>
@@ -482,6 +404,7 @@
     <script src="js/app.js"></script>
     <script src="js/panel-derecho.js"></script>
     
+    <!-- MOTOR DE EXPORTACIÓN (CON CLONACIÓN TEMPORAL Y LIMPIEZA DE CLASES) -->
     <script>
         // 1. SISTEMA DE BORRADO DE PROYECTOS
         document.addEventListener('click', function(e) {
@@ -532,18 +455,6 @@
             }
         }
 
-        function toggleFondoTexto(isChecked) {
-            const el = obtenerElementoSeleccionado();
-            if (el) {
-                const textDiv = el.querySelector('.carta-texto');
-                if (textDiv) {
-                    if (isChecked) textDiv.classList.add('texto-con-fondo');
-                    else textDiv.classList.remove('texto-con-fondo');
-                }
-                if(typeof autosave === 'function') autosave();
-            }
-        }
-
         // 3. SUBIDA DE IMÁGENES
         window.subirImagenCarta = function(event) {
             const file = event.target.files[0];
@@ -567,8 +478,6 @@
                     front.querySelectorAll('.placeholder-icon').forEach(icon => icon.style.display = 'none');
                 };
                 img.src = e.target.result;
-                const controls = document.getElementById('controles-img-carta');
-                if(controls) controls.style.display = 'block';
                 if(typeof autosave === 'function') autosave();
             };
             reader.readAsDataURL(file);
@@ -596,8 +505,6 @@
                     back.style.setProperty('border', 'none', 'important');
                 };
                 img.src = e.target.result;
-                const controls = document.getElementById('controles-img-dorso');
-                if(controls) controls.style.display = 'block';
                 if(typeof autosave === 'function') autosave();
             };
             reader.readAsDataURL(file);
@@ -605,42 +512,66 @@
 
         // 4. CATÁLOGO MAESTRO DE DISEÑOS
         const CATALOGO_DISEÑOS = {
-            'evento': { color: '#fffbeb', border: '3px dashed #d97706', icon: 'fa-virus', title: '¡EVENTO!', text: 'Escribe el evento aquí...', back: 'Instrucciones del evento...' },
-            'imagen': { color: '#e2e8f0', border: '2px solid #cbd5e1', icon: 'fa-image', title: '', text: '', back: 'Escribe la pista aquí...', hideText: true },
-            'frase': { color: '#ffffff', border: '4px solid #0284c7', icon: '', title: 'PALABRA', text: 'PALABRA', back: 'Instrucciones del dorso...', bigText: true },
-            
+            // STEAMPUNK
+            'steampunk_invento_fisica': { color: '#0f172a', border: '3px solid #0284c7', icon: 'fa-bolt', title: 'FÍSICA', text: 'Nombre del invento...', colorText: '#7dd3fc', back: 'Efecto y componentes...' },
+            'steampunk_invento_quimica': { color: '#052e16', border: '3px solid #16a34a', icon: 'fa-flask', title: 'QUÍMICA', text: 'Nombre del invento...', colorText: '#86efac', back: 'Efecto y componentes...' },
+            'steampunk_invento_biologia': { color: '#14532d', border: '3px solid #166534', icon: 'fa-dna', title: 'BIOLOGÍA', text: 'Nombre del invento...', colorText: '#bbf7d0', back: 'Efecto y componentes...' },
+            'steampunk_invento_ingenieria': { color: '#291a0c', border: '3px solid #b87333', icon: 'fa-wrench', title: 'INGENIERÍA', text: 'Nombre del invento...', colorText: '#fdba74', back: 'Efecto y componentes...' },
+            'steampunk_invento_matematicas': { color: '#422006', border: '3px solid #ca8a04', icon: 'fa-calculator', title: 'MATEMÁTICAS', text: 'Nombre del invento...', colorText: '#fde047', back: 'Efecto y componentes...' },
+            'steampunk_invento_astronomia': { color: '#2e1065', border: '3px solid #4c1d95', icon: 'fa-star', title: 'ASTRONOMÍA', text: 'Nombre del invento...', colorText: '#d8b4fe', back: 'Efecto y componentes...' },
+            'steampunk_experimento': { color: '#1c1917', border: '3px solid #b45309', icon: 'fa-vial', title: 'EXPERIMENTO', text: 'Hipótesis...', colorText: '#fcd34d', back: 'Materiales y resultado...' },
+            'steampunk_automata': { color: '#1e293b', border: '3px solid #78350f', icon: 'fa-robot', title: 'AUTÓMATA', text: 'Nombre de la máquina...', colorText: '#fde047', back: 'Función y programación...' },
+            'steampunk_anomalia': { color: '#450a0a', border: '3px solid #991b1b', icon: 'fa-triangle-exclamation', title: 'ANOMALÍA', text: 'Descripción del fenómeno...', colorText: '#fca5a5', back: 'Efecto en el juego...' },
+            'steampunk_artefacto': { color: '#0f172a', border: '3px solid #ca8a04', icon: 'fa-gem', title: 'ARTEFACTO', text: 'Nombre del instrumento...', colorText: '#fef08a', back: 'Poder y limitaciones...' },
+
+            // LABERINTO DE LA MENTE
+            'laberinto_evidencia': { color: '#f0f9ff', border: '3px solid #0ea5e9', icon: 'fa-microscope', title: 'EVIDENCIA', text: 'Análisis...', colorText: '#0369a1', back: 'Interpretación clínica...' },
+            'laberinto_expediente': { color: '#f8fafc', border: '3px solid #4c1d95', icon: 'fa-folder-open', title: 'EXPEDIENTE', text: 'Nombre del caso...', colorText: '#5b21b6', back: 'Historia y síntomas...' },
+            'laberinto_testimonio': { color: '#fffbeb', border: '3px solid #ca8a04', icon: 'fa-comment-dots', title: 'TESTIMONIO', text: 'Cita textual...', colorText: '#854d0e', back: 'Interpretación...' },
+            'laberinto_pensamiento': { color: '#fdf4ff', border: '3px solid #a855f7', icon: 'fa-lightbulb', title: 'PENSAMIENTO', text: 'Idea distorsionada...', colorText: '#7e22ce', back: 'Reestructuración cognitiva...' },
+            'laberinto_intervencion': { color: '#f0fdf4', border: '3px solid #16a34a', icon: 'fa-hands-holding', title: 'INTERVENCIÓN', text: 'Estrategia de apoyo...', colorText: '#166534', back: 'Objetivo terapéutico...' },
+            'laberinto_factor': { color: '#fff7ed', border: '3px solid #9a3412', icon: 'fa-network-wired', title: 'FACTOR', text: 'Factor biopsicosocial...', colorText: '#9a3412', back: 'Impacto en el caso...' },
+
+            // ATLAS
+            'atlas_relato': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-globe', title: 'RELATO GLOBAL', text: 'Título del relato...', colorText: '#e2e8f0', back: 'Narración y fuente...' },
+            'atlas_territorio': { color: '#1e293b', border: '3px solid #22c55e', icon: 'fa-map-location-dot', title: 'TERRITORIO GLOBAL', text: 'Nombre del territorio...', colorText: '#86efac', back: 'Descripción y relación...' },
+            'atlas_encuentro': { color: '#0c4a6e', border: '3px solid #38bdf8', icon: 'fa-masks-theater', title: 'ENCUENTRO GLOBAL', text: 'Ser o deidad...', colorText: '#7dd3fc', back: 'Descripción y rol...' },
+            'atlas_desafio': { color: '#450a0a', border: '3px solid #ef4444', icon: 'fa-triangle-exclamation', title: 'DESAFÍO GLOBAL', text: 'Situación...', colorText: '#fca5a5', back: 'Pregunta y efecto...' },
+            'atlas_historia': { color: '#1c1917', border: '3px solid #be123c', icon: 'fa-monument', title: 'MEMORIA CRÍTICA', text: 'Evento histórico...', colorText: '#fda4af', back: 'Contexto y reflexión...' },
+            'atlas_comparacion': { color: '#2e1065', border: '3px solid #a855f7', icon: 'fa-scale-balanced', title: 'COMPARACIÓN', text: 'Tema a comparar...', colorText: '#d8b4fe', back: 'Similitudes y diferencias...' },
+
             // MITOS
             'mitos_relato': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-scroll', title: 'RELATO', text: 'Título del relato...', colorText: '#e2e8f0', back: 'Narración y fuente...' },
-            'mitos_territorio': { color: '#2d1e12', border: '3px solid #22c55e', icon: 'fa-mountain', title: 'TERRITORIO', text: 'Nombre del territorio...', colorText: '#86efac', back: 'Descripción geográfica y relación con el relato...' },
-            'mitos_encuentro': { color: '#0f172a', border: '3px solid #38bdf8', icon: 'fa-water', title: 'ENCUENTRO', text: 'Ser o elemento...', colorText: '#7dd3fc', back: 'Descripción y rol en el juego...' },
-            'mitos_desafio': { color: '#1a0f0a', border: '3px solid #ef4444', icon: 'fa-triangle-exclamation', title: 'DESAFÍO', text: 'Situación problémica...', colorText: '#fca5a5', back: 'Pregunta educativa y efecto...' },
+            'mitos_territorio': { color: '#2d1e12', border: '3px solid #22c55e', icon: 'fa-mountain', title: 'TERRITORIO', text: 'Nombre del territorio...', colorText: '#86efac', back: 'Descripción y relación...' },
+            'mitos_encuentro': { color: '#0f172a', border: '3px solid #38bdf8', icon: 'fa-water', title: 'ENCUENTRO', text: 'Ser o elemento...', colorText: '#7dd3fc', back: 'Descripción y rol...' },
+            'mitos_desafio': { color: '#1a0f0a', border: '3px solid #ef4444', icon: 'fa-triangle-exclamation', title: 'DESAFÍO', text: 'Situación...', colorText: '#fca5a5', back: 'Pregunta y efecto...' },
             'mitos_memoria': { color: '#2e1065', border: '3px solid #a855f7', icon: 'fa-brain', title: 'MEMORIA', text: 'Pregunta de reflexión...', colorText: '#d8b4fe', back: 'Espacio para diálogo...' },
-            'mitos_acontecimiento': { color: '#082f49', border: '3px solid #f59e0b', icon: 'fa-cloud-bolt', title: 'ACONTECIMIENTO', text: 'Evento climático o social...', colorText: '#fde047', back: 'Efecto en el tablero...' },
+            'mitos_acontecimiento': { color: '#082f49', border: '3px solid #f59e0b', icon: 'fa-cloud-bolt', title: 'ACONTECIMIENTO', text: 'Evento climático...', colorText: '#fde047', back: 'Efecto en el tablero...' },
 
             // GRIMORIO
-            'grimorio_personaje': { color: '#0f0f0f', border: '3px solid #D4AF37', icon: 'fa-user-tie', title: 'INVESTIGADOR', text: 'Nombre del personaje...', colorText: '#D4AF37', back: 'Habilidad y secreto...' },
-            'grimorio_hechizo_evocacion': { color: '#450a0a', border: '3px solid #dc2626', icon: 'fa-fire', title: 'EVOCACIÓN', text: 'Nombre del Hechizo...', colorText: '#fca5a5', back: 'Efecto, coste y componentes...' },
-            'grimorio_hechizo_ilusion': { color: '#2e1065', border: '3px solid #a855f7', icon: 'fa-eye', title: 'ILUSIONISMO', text: 'Nombre del Hechizo...', colorText: '#d8b4fe', back: 'Efecto, coste y componentes...' },
-            'grimorio_hechizo_alquimia': { color: '#422006', border: '3px solid #ca8a04', icon: 'fa-flask', title: 'ALQUIMIA ARCANA', text: 'Nombre del Hechizo...', colorText: '#fde047', back: 'Efecto, coste y componentes...' },
-            'grimorio_hechizo_nigromancia': { color: '#000000', border: '3px solid #475569', icon: 'fa-skull', title: 'NIGROMANCIA', text: 'Nombre del Hechizo...', colorText: '#cbd5e1', back: 'Efecto, coste y componentes...' },
-            'grimorio_hechizo_herbolaria': { color: '#052e16', border: '3px solid #15803d', icon: 'fa-leaf', title: 'HERBOLARIA', text: 'Nombre del Hechizo...', colorText: '#86efac', back: 'Efecto, coste y componentes...' },
-            'grimorio_hechizo_astromancia': { color: '#082f49', border: '3px solid #0284c7', icon: 'fa-star', title: 'ASTROMANCIA', text: 'Nombre del Hechizo...', colorText: '#7dd3fc', back: 'Efecto, coste y componentes...' },
-            'grimorio_hechizo_proteccion': { color: '#1e293b', border: '3px solid #94a3b8', icon: 'fa-shield-halved', title: 'PROTECCIÓN', text: 'Nombre del Hechizo...', colorText: '#e2e8f0', back: 'Efecto, coste y componentes...' },
+            'grimorio_personaje': { color: '#0f0f0f', border: '3px solid #D4AF37', icon: 'fa-user-tie', title: 'INVESTIGADOR', text: 'Nombre...', colorText: '#D4AF37', back: 'Habilidad y secreto...' },
+            'grimorio_hechizo_evocacion': { color: '#450a0a', border: '3px solid #dc2626', icon: 'fa-fire', title: 'EVOCACIÓN', text: 'Nombre del Hechizo...', colorText: '#fca5a5', back: 'Efecto y coste...' },
+            'grimorio_hechizo_ilusion': { color: '#2e1065', border: '3px solid #a855f7', icon: 'fa-eye', title: 'ILUSIONISMO', text: 'Nombre del Hechizo...', colorText: '#d8b4fe', back: 'Efecto y coste...' },
+            'grimorio_hechizo_alquimia': { color: '#422006', border: '3px solid #ca8a04', icon: 'fa-flask', title: 'ALQUIMIA', text: 'Nombre del Hechizo...', colorText: '#fde047', back: 'Efecto y coste...' },
+            'grimorio_hechizo_nigromancia': { color: '#000000', border: '3px solid #475569', icon: 'fa-skull', title: 'NIGROMANCIA', text: 'Nombre del Hechizo...', colorText: '#cbd5e1', back: 'Efecto y coste...' },
+            'grimorio_hechizo_herbolaria': { color: '#052e16', border: '3px solid #15803d', icon: 'fa-leaf', title: 'HERBOLARIA', text: 'Nombre del Hechizo...', colorText: '#86efac', back: 'Efecto y coste...' },
+            'grimorio_hechizo_astromancia': { color: '#082f49', border: '3px solid #0284c7', icon: 'fa-star', title: 'ASTROMANCIA', text: 'Nombre del Hechizo...', colorText: '#7dd3fc', back: 'Efecto y coste...' },
+            'grimorio_hechizo_proteccion': { color: '#1e293b', border: '3px solid #94a3b8', icon: 'fa-shield-halved', title: 'PROTECCIÓN', text: 'Nombre del Hechizo...', colorText: '#e2e8f0', back: 'Efecto y coste...' },
             'grimorio_ritual': { color: '#1c1917', border: '3px solid #be123c', icon: 'fa-circle-nodes', title: 'RITUAL', text: 'Nombre del Ritual...', colorText: '#fda4af', back: 'Requisitos y resultado...' },
-            'grimorio_grimorio': { color: '#2a1a0f', border: '3px solid #78350f', icon: 'fa-book', title: 'GRIMORIO', text: 'Nombre del Libro...', colorText: '#fcd34d', back: 'Conocimiento que otorga...' },
-            'grimorio_criatura': { color: '#1f1f1f', border: '3px solid #991b1b', icon: 'fa-dragon', title: 'CRIATURA', text: 'Nombre de la Entidad...', colorText: '#fca5a5', back: 'Habilidad y debilidad...' },
-            'grimorio_artefacto': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-gem', title: 'ARTEFACTO', text: 'Nombre del Objeto...', colorText: '#D4AF37', back: 'Poder y limitaciones...' },
-            'grimorio_maldicion': { color: '#4c1d95', border: '3px solid #1e1b4b', icon: 'fa-ghost', title: 'MALDICIÓN', text: 'Nombre de la Maldición...', colorText: '#c4b5fd', back: 'Efecto y forma de romperla...' },
+            'grimorio_grimorio': { color: '#2a1a0f', border: '3px solid #78350f', icon: 'fa-book', title: 'GRIMORIO', text: 'Nombre del Libro...', colorText: '#fcd34d', back: 'Conocimiento...' },
+            'grimorio_criatura': { color: '#1f1f1f', border: '3px solid #991b1b', icon: 'fa-dragon', title: 'CRIATURA', text: 'Nombre...', colorText: '#fca5a5', back: 'Habilidad y debilidad...' },
+            'grimorio_artefacto': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-gem', title: 'ARTEFACTO', text: 'Nombre...', colorText: '#D4AF37', back: 'Poder...' },
+            'grimorio_maldicion': { color: '#4c1d95', border: '3px solid #1e1b4b', icon: 'fa-ghost', title: 'MALDICIÓN', text: 'Nombre...', colorText: '#c4b5fd', back: 'Efecto y forma de romperla...' },
             'grimorio_expediente': { color: '#1e293b', border: '3px solid #64748b', icon: 'fa-folder-open', title: 'EXPEDIENTE', text: 'Nombre del Caso...', colorText: '#e2e8f0', back: 'Objetivos y fases...' },
 
             // SOMBRAS
-            'sombras_personaje': { color: '#1a1a1a', border: '3px solid #B8860B', icon: 'fa-user-tie', title: 'INVESTIGADOR', text: 'Nombre y especialidad...', colorText: '#D4AF37', back: 'Habilidad y secreto...' },
+            'sombras_personaje': { color: '#1a1a1a', border: '3px solid #B8860B', icon: 'fa-user-tie', title: 'INVESTIGADOR', text: 'Nombre...', colorText: '#D4AF37', back: 'Habilidad...' },
             'sombras_incognita': { color: '#0f172a', border: '3px solid #38bdf8', icon: 'fa-question', title: 'INCÓGNITA', text: '¿Qué sucedió?', colorText: '#38bdf8', back: 'Pregunta principal...' },
-            'sombras_evidencia': { color: '#fdfbf7', border: '3px solid #78350f', icon: 'fa-fingerprint', title: 'EVIDENCIA', text: 'Descripción de la pista...', colorText: '#451a03', back: 'Análisis científico...' },
-            'sombras_sospechoso': { color: '#1e1b4b', border: '3px solid #991b1b', icon: 'fa-mask', title: 'SOSPECHOSO', text: 'Nombre del sospechoso...', colorText: '#fca5a5', back: 'Testimonio...' },
-            'sombras_localizacion': { color: '#064e3b', border: '3px solid #15803d', icon: 'fa-map-location-dot', title: 'LOCALIZACIÓN', text: 'Nombre del lugar...', colorText: '#86efac', back: 'Descripción del lugar...' },
-            'sombras_acontecimiento': { color: '#1c1917', border: '3px solid #ca8a04', icon: 'fa-bolt', title: 'ACONTECIMIENTO', text: 'Describe el evento...', colorText: '#fde047', back: 'Efecto en el juego...' },
-            'sombras_expediente': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-folder-open', title: 'EXPEDIENTE', text: 'Nombre del caso...', colorText: '#D4AF37', back: 'Resumen del expediente...' },
+            'sombras_evidencia': { color: '#fdfbf7', border: '3px solid #78350f', icon: 'fa-fingerprint', title: 'EVIDENCIA', text: 'Descripción...', colorText: '#451a03', back: 'Análisis...' },
+            'sombras_sospechoso': { color: '#1e1b4b', border: '3px solid #991b1b', icon: 'fa-mask', title: 'SOSPECHOSO', text: 'Nombre...', colorText: '#fca5a5', back: 'Testimonio...' },
+            'sombras_localizacion': { color: '#064e3b', border: '3px solid #15803d', icon: 'fa-map-location-dot', title: 'LOCALIZACIÓN', text: 'Lugar...', colorText: '#86efac', back: 'Descripción...' },
+            'sombras_acontecimiento': { color: '#1c1917', border: '3px solid #ca8a04', icon: 'fa-bolt', title: 'ACONTECIMIENTO', text: 'Evento...', colorText: '#fde047', back: 'Efecto...' },
+            'sombras_expediente': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-folder-open', title: 'EXPEDIENTE', text: 'Caso...', colorText: '#D4AF37', back: 'Resumen...' },
 
             // CATAN
             'catan_madera': { color: '#fdfbf7', border: '3px solid #2e7d32', icon: 'fa-tree', title: 'MADERA', text: 'Escribe el texto aquí...' },
@@ -671,22 +602,17 @@
             'juego_zombies_evento': { color: '#111827', border: '3px solid #15803d', icon: 'fa-skull', title: 'ZOMBIES!!!', text: 'Ataque o evento...', colorText: '#4ade80' }
         };
 
-        // 5. FUNCIONES DE CREACIÓN
         function crearCartaConDiseno(tipo, customText = null, customBack = null, customTitle = null) {
             if (typeof insertarCarta !== 'function') return;
             insertarCarta(); 
-            
             setTimeout(() => {
                 const cartas = document.querySelectorAll('#canvas > .canvas-element');
                 const nuevaCarta = cartas[cartas.length - 1];
-                
                 if (nuevaCarta) {
                     const front = nuevaCarta.querySelector('.carta-front');
                     const back = nuevaCarta.querySelector('.carta-back');
-                    
                     if (front && back) {
                         const config = CATALOGO_DISEÑOS[tipo] || CATALOGO_DISEÑOS['evento'];
-                        
                         let textToUse = customText || config.text;
                         let titleToUse = customTitle || config.title;
                         let backToUse = customBack || config.back;
@@ -701,22 +627,18 @@
                                 <div class="carta-texto" style="color: ${config.colorText || '#1e293b'}; font-family: ${config.mono ? "'Courier New', monospace" : "'Merriweather'"}; font-size: ${config.bigText ? '32px' : '14px'}; font-weight: ${config.bigText ? '900' : 'normal'}; ${config.italic ? 'font-style: italic;' : ''} text-align: center; position: relative; z-index: 10;">${textToUse}</div>
                             `;
                         }
-
                         let backHTML = `<div class="carta-texto" style="color: #cbd5e1; font-size: 14px; position: relative; z-index: 10;">${backToUse}</div>`;
-
                         front.className = 'carta-front';
                         front.style.background = config.color;
                         front.style.border = config.border;
                         front.style.justifyContent = 'center';
                         front.style.alignItems = 'center';
                         front.innerHTML = frontHTML;
-
                         back.className = 'carta-back';
                         back.style.background = '#1e293b';
                         back.style.border = '1px solid #0f172a';
                         back.innerHTML = backHTML;
                     }
-
                     if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
                     if (typeof showToast === 'function') showToast('Carta creada correctamente', 'success');
                     if (typeof autosave === 'function') autosave();
@@ -724,126 +646,7 @@
             }, 50); 
         }
 
-        function crearTokenSombras(nombre, color, icono) {
-            if (typeof insertarCarta !== 'function') return;
-            insertarCarta();
-            setTimeout(() => {
-                const cartas = document.querySelectorAll('#canvas > .canvas-element');
-                const nuevaCarta = cartas[cartas.length - 1];
-                if (nuevaCarta) {
-                    const front = nuevaCarta.querySelector('.carta-front');
-                    const back = nuevaCarta.querySelector('.carta-back');
-                    if (front && back) {
-                        nuevaCarta.style.width = '100px'; nuevaCarta.style.height = '100px';
-                        front.style.borderRadius = '50%'; front.style.background = color;
-                        front.style.border = '4px solid #D4AF37'; front.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
-                        front.innerHTML = `<i class="fa-solid ${icono}" style="font-size: 50px; color: #fff; z-index: 10;"></i><div class="carta-texto" style="display:none;"></div>`;
-                        back.style.display = 'none'; 
-                    }
-                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
-                    if (typeof showToast === 'function') showToast(`Token ${nombre} creado`, 'success');
-                    if (typeof autosave === 'function') autosave();
-                }
-            }, 50);
-        }
-
-        function crearTokenGrimorio(nombre, color, icono) {
-            if (typeof insertarCarta !== 'function') return;
-            insertarCarta();
-            setTimeout(() => {
-                const cartas = document.querySelectorAll('#canvas > .canvas-element');
-                const nuevaCarta = cartas[cartas.length - 1];
-                if (nuevaCarta) {
-                    const front = nuevaCarta.querySelector('.carta-front');
-                    const back = nuevaCarta.querySelector('.carta-back');
-                    if (front && back) {
-                        nuevaCarta.style.width = '100px'; nuevaCarta.style.height = '100px';
-                        front.style.borderRadius = '50%'; front.style.background = color;
-                        front.style.border = '4px solid #D4AF37'; front.style.boxShadow = '0 4px 10px rgba(0,0,0,0.5)';
-                        front.innerHTML = `<i class="fa-solid ${icono}" style="font-size: 50px; color: #fff; z-index: 10;"></i><div class="carta-texto" style="display:none;"></div>`;
-                        back.style.display = 'none'; 
-                    }
-                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
-                    if (typeof showToast === 'function') showToast(`Token ${nombre} creado`, 'success');
-                    if (typeof autosave === 'function') autosave();
-                }
-            }, 50);
-        }
-
-        function crearTokenMitos(nombre, color, icono) {
-            if (typeof insertarCarta !== 'function') return;
-            insertarCarta();
-            setTimeout(() => {
-                const cartas = document.querySelectorAll('#canvas > .canvas-element');
-                const nuevaCarta = cartas[cartas.length - 1];
-                if (nuevaCarta) {
-                    const front = nuevaCarta.querySelector('.carta-front');
-                    const back = nuevaCarta.querySelector('.carta-back');
-                    if (front && back) {
-                        nuevaCarta.style.width = '100px'; nuevaCarta.style.height = '100px';
-                        front.style.borderRadius = '50%'; front.style.background = color;
-                        front.style.border = '4px solid #fff'; front.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
-                        front.innerHTML = `<i class="fa-solid ${icono}" style="font-size: 50px; color: #fff; z-index: 10;"></i><div class="carta-texto" style="display:none;"></div>`;
-                        back.style.display = 'none'; 
-                    }
-                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
-                    if (typeof showToast === 'function') showToast(`Token ${nombre} creado`, 'success');
-                    if (typeof autosave === 'function') autosave();
-                }
-            }, 50);
-        }
-
-        function crearPersonajeMitos(nombre, icono, color) {
-            if (typeof insertarCarta !== 'function') return;
-            insertarCarta();
-            setTimeout(() => {
-                const cartas = document.querySelectorAll('#canvas > .canvas-element');
-                const nuevaCarta = cartas[cartas.length - 1];
-                if (nuevaCarta) {
-                    const front = nuevaCarta.querySelector('.carta-front');
-                    const back = nuevaCarta.querySelector('.carta-back');
-                    if (front && back) {
-                        front.style.background = '#1e293b'; front.style.border = `3px solid ${color}`;
-                        front.innerHTML = `
-                            <i class="fa-solid ${icono} placeholder-icon" style="font-size: 80px; color: ${color}; margin-bottom: 20px; z-index: 10;"></i>
-                            <h3 style="color: ${color}; font-family: 'Playfair Display'; font-size: 22px; text-align:center; z-index: 10;">${nombre}</h3>
-                            <div class="carta-texto" style="color: #e2e8f0; font-size: 12px; text-align:center; z-index: 10; display:none;">Habilidad...</div>
-                        `;
-                        back.innerHTML = `<div class="carta-texto" style="color: #cbd5e1; z-index: 10;">Habilidad especial...</div>`;
-                    }
-                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
-                    if (typeof showToast === 'function') showToast(`Personaje ${nombre} creado`, 'success');
-                    if (typeof autosave === 'function') autosave();
-                }
-            }, 50);
-        }
-
-        function crearZonaMitos(nombre, icono, color) {
-            if (typeof insertarCarta !== 'function') return;
-            insertarCarta();
-            setTimeout(() => {
-                const cartas = document.querySelectorAll('#canvas > .canvas-element');
-                const nuevaCarta = cartas[cartas.length - 1];
-                if (nuevaCarta) {
-                    const front = nuevaCarta.querySelector('.carta-front');
-                    const back = nuevaCarta.querySelector('.carta-back');
-                    if (front && back) {
-                        front.style.background = '#0f172a'; front.style.border = `2px dashed ${color}`;
-                        front.innerHTML = `
-                            <i class="fa-solid ${icono} placeholder-icon" style="font-size: 60px; color: ${color}; z-index: 10;"></i>
-                            <h3 style="color: ${color}; font-family: 'Merriweather'; font-size: 18px; text-align:center; margin-top: 15px; z-index: 10;">${nombre}</h3>
-                            <div class="carta-texto" style="display:none;"></div>
-                        `;
-                        back.innerHTML = `<div class="carta-texto" style="color: #cbd5e1; z-index: 10;">Descripción del territorio...</div>`;
-                    }
-                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
-                    if (typeof showToast === 'function') showToast(`Zona ${nombre} creada`, 'success');
-                    if (typeof autosave === 'function') autosave();
-                }
-            }, 50);
-        }
-
-        // 6. NUEVAS FUNCIONES PARA MITOS DE AMÉRICA (TABLERO Y MAZOS)
+        // 5. HERRAMIENTAS
         function insertarTableroProgresoMitos() {
             if (typeof insertarCarta !== 'function') return;
             insertarCarta();
@@ -853,46 +656,21 @@
                 if (nuevaCarta) {
                     const front = nuevaCarta.querySelector('.carta-front');
                     const back = nuevaCarta.querySelector('.carta-back');
-                    
-                    nuevaCarta.style.width = '600px';
-                    nuevaCarta.style.height = '320px';
-                    
+                    nuevaCarta.style.width = '600px'; nuevaCarta.style.height = '320px';
                     if (front && back) {
-                        front.style.background = '#1e293b';
-                        front.style.border = '4px solid #D4AF37';
-                        front.style.borderRadius = '12px';
-                        front.style.padding = '20px';
-                        front.style.display = 'block';
-                        
+                        front.style.background = '#1e293b'; front.style.border = '4px solid #D4AF37'; front.style.borderRadius = '12px'; front.style.padding = '20px'; front.style.display = 'block';
                         let checkboxesHTML = '';
-                        const dimensiones = [
-                            { nombre: 'Territorio', color: '#22c55e' },
-                            { nombre: 'Memoria', color: '#a855f7' },
-                            { nombre: 'Comunidad', color: '#ca8a04' },
-                            { nombre: 'Reciprocidad', color: '#38bdf8' }
-                        ];
-                        
+                        const dimensiones = [ { nombre: 'Territorio', color: '#22c55e' }, { nombre: 'Memoria', color: '#a855f7' }, { nombre: 'Comunidad', color: '#ca8a04' }, { nombre: 'Reciprocidad', color: '#38bdf8' } ];
                         dimensiones.forEach(dim => {
                             let boxes = '';
-                            for(let i=0; i<6; i++) {
-                                boxes += `<div class="check-box" onclick="this.classList.toggle('checked')"></div>`;
-                            }
-                            checkboxesHTML += `
-                                <div class="dimension-box">
-                                    <h4 style="color: ${dim.color};">${dim.nombre}</h4>
-                                    <div class="checkboxes">${boxes}</div>
-                                </div>
-                            `;
+                            for(let i=0; i<6; i++) boxes += `<div class="check-box" onclick="this.classList.toggle('checked')"></div>`;
+                            checkboxesHTML += `<div class="dimension-box"><h4 style="color: ${dim.color};">${dim.nombre}</h4><div class="checkboxes">${boxes}</div></div>`;
                         });
-
                         front.innerHTML = `
                             <h3 style="color: #D4AF37; text-align: center; font-family: 'Playfair Display'; margin-bottom: 20px; font-size: 24px;">Tablero de Progreso Ancestral</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                                ${checkboxesHTML}
-                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">${checkboxesHTML}</div>
                             <p style="text-align: center; font-size: 11px; color: #94a3b8; margin-top: 15px;">Completa 6 avances en cada dimensión para ganar.</p>
                         `;
-                        
                         back.style.display = 'none';
                     }
                     if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
@@ -902,65 +680,278 @@
             }, 50);
         }
 
-        function insertarManualMitos() {
-            crearCartaConDiseno('mitos_memoria', 
-                "1. Explorar el territorio\n2. Descubrir el relato\n3. Dialogar colectivamente\n4. Resolver el desafío\n5. Construir memoria", 
-                "Secuencia de una ronda en Mitos de América. Sigue estos 5 pasos para conectar la mecánica con el aprendizaje.", 
-                "MANUAL DEL FACILITADOR"
-            );
-        }
+        function insertarManualMitos() { crearCartaConDiseno('mitos_memoria', "1. Explorar el territorio\n2. Descubrir el relato\n3. Dialogar colectivamente\n4. Resolver el desafío\n5. Construir memoria", "Secuencia de una ronda en Mitos de América.", "MANUAL DEL FACILITADOR"); }
 
         function insertarMazoDesafiosMitos() {
             const desafios = [
-                "El río está contaminado. Construir una respuesta comunitaria.",
-                "Una historia está desapareciendo. Diseñar una estrategia de transmisión.",
-                "Se destruye un bosque. Identificar las consecuencias territoriales.",
-                "Existen versiones diferentes de un relato. Reconocer la diversidad sin imponer una versión.",
-                "Una comunidad no es escuchada. Proponer una forma de participación.",
-                "Un conocimiento es utilizado sin consentimiento. Debatir sobre respeto y propiedad cultural.",
-                "Un antiguo camino se ha borrado. ¿Cómo recuperamos la conexión entre territorios?",
-                "La sequía afecta a la comunidad. ¿Cómo gestionamos el recurso del agua de forma colectiva?",
-                "Un espíritu de la naturaleza está alterado. ¿Cómo restauramos el equilibrio?",
-                "Los jóvenes migran de la comunidad. ¿Cómo mantener viva la memoria?",
-                "Una empresa quiere explotar el volcán. ¿Cómo protegemos el territorio sagrado?",
-                "El olvido amenaza un relato. ¿A quién le corresponde transmitirlo?",
-                "Hay un conflicto de tierras. ¿Cómo mediamos desde el diálogo?",
-                "Las tradiciones orales se pierden. ¿Cómo usamos la tecnología para preservarlas?",
-                "Un animal del bosque es cazado en exceso. ¿Cómo fomentamos la reciprocidad?",
-                "La comunidad necesita construir un puente. ¿Cómo lo hacemos sin dañar el entorno?",
-                "Un miembro de la comunidad ha roto un acuerdo. ¿Cómo se repara el daño?",
-                "La memoria de los ancianos está en riesgo. ¿Cómo registramos su sabiduría con respeto?"
+                "El río está contaminado. Construir una respuesta comunitaria.", "Una historia está desapareciendo. Diseñar una estrategia de transmisión.", "Se destruye un bosque. Identificar las consecuencias territoriales.", "Existen versiones diferentes de un relato. Reconocer la diversidad sin imponer una versión.", "Una comunidad no es escuchada. Proponer una forma de participación.", "Un conocimiento es utilizado sin consentimiento. Debatir sobre respeto y propiedad cultural.", "Un antiguo camino se ha borrado. ¿Cómo recuperamos la conexión entre territorios?", "La sequía afecta a la comunidad. ¿Cómo gestionamos el recurso del agua de forma colectiva?", "Un espíritu de la naturaleza está alterado. ¿Cómo restauramos el equilibrio?", "Los jóvenes migran de la comunidad. ¿Cómo mantener viva la memoria?", "Una empresa quiere explotar el volcán. ¿Cómo protegemos el territorio sagrado?", "El olvido amenaza un relato. ¿A quién le corresponde transmitirlo?", "Hay un conflicto de tierras. ¿Cómo mediamos desde el diálogo?", "Las tradiciones orales se pierden. ¿Cómo usamos la tecnología para preservarlas?", "Un animal del bosque es cazado en exceso. ¿Cómo fomentamos la reciprocidad?", "La comunidad necesita construir un puente. ¿Cómo lo hacemos sin dañar el entorno?", "Un miembro de la comunidad ha roto un acuerdo. ¿Cómo se repara el daño?", "La memoria de los ancianos está en riesgo. ¿Cómo registramos su sabiduría con respeto?"
             ];
-
-            desafios.forEach((texto, index) => {
-                setTimeout(() => {
-                    crearCartaConDiseno('mitos_desafio', texto, "Pregunta para el grupo: ¿Cómo podemos resolver esta situación desde la cooperación y el respeto?", `DESAFÍO #${index + 1}`);
-                }, index * 100); // Retardo escalonado para que el canvas no colapse
-            });
+            desafios.forEach((texto, index) => { setTimeout(() => { crearCartaConDiseno('mitos_desafio', texto, "Pregunta para el grupo: ¿Cómo podemos resolver esta situación desde la cooperación y el respeto?", `DESAFÍO #${index + 1}`); }, index * 100); });
         }
 
         function insertarMazoMemoriasMitos() {
             const memorias = [
-                "¿Qué historias conoces sobre el territorio donde vives?",
-                "¿Quién te enseñó una historia importante?",
-                "¿Qué conocimientos transmiten las personas mayores?",
-                "¿Qué sucede cuando una comunidad pierde sus lugares de encuentro?",
-                "¿Cómo se relacionan los relatos con la identidad?",
-                "¿Por qué es importante escuchar distintas versiones de una historia?",
-                "¿Cómo te sientes cuando compartes un relato familiar?",
-                "¿Qué diferencia hay entre oír y escuchar una historia?",
-                "¿Qué elementos de la naturaleza te conectan con tus recuerdos?",
-                "¿Cómo podrías enseñar lo que has aprendido hoy?",
-                "¿Qué historias de tu territorio crees que deberían preservarse?",
-                "¿Cómo se relaciona el pasado con el presente en tu vida?"
+                "¿Qué historias conoces sobre el territorio donde vives?", "¿Quién te enseñó una historia importante?", "¿Qué conocimientos transmiten las personas mayores?", "¿Qué sucede cuando una comunidad pierde sus lugares de encuentro?", "¿Cómo se relacionan los relatos con la identidad?", "¿Por qué es importante escuchar distintas versiones de una historia?", "¿Cómo te sientes cuando compartes un relato familiar?", "¿Qué diferencia hay entre oír y escuchar una historia?", "¿Qué elementos de la naturaleza te conectan con tus recuerdos?", "¿Cómo podrías enseñar lo que has aprendido hoy?", "¿Qué historias de tu territorio crees que deberían preservarse?", "¿Cómo se relaciona el pasado con el presente en tu vida?"
             ];
-
-            memorias.forEach((texto, index) => {
-                setTimeout(() => {
-                    crearCartaConDiseno('mitos_memoria', texto, "Espacio de diálogo horizontal. No hay respuestas correctas.", `MEMORIA #${index + 1}`);
-                }, index * 100);
-            });
+            memorias.forEach((texto, index) => { setTimeout(() => { crearCartaConDiseno('mitos_memoria', texto, "Espacio de diálogo horizontal. No hay respuestas correctas.", `MEMORIA #${index + 1}`); }, index * 100); });
         }
+
+        function insertarTableroAtlas() {
+            if (typeof insertarCarta !== 'function') return;
+            insertarCarta();
+            setTimeout(() => {
+                const cartas = document.querySelectorAll('#canvas > .canvas-element');
+                const nuevaCarta = cartas[cartas.length - 1];
+                if (nuevaCarta) {
+                    const front = nuevaCarta.querySelector('.carta-front');
+                    const back = nuevaCarta.querySelector('.carta-back');
+                    nuevaCarta.style.width = '800px'; nuevaCarta.style.height = '400px';
+                    if (front && back) {
+                        front.style.background = '#0f172a'; front.style.border = '4px solid #D4AF37'; front.style.borderRadius = '12px'; front.style.padding = '20px'; front.style.display = 'block';
+                        const regiones = [ "América del Sur", "Mesoamérica", "América del Norte", "África", "Europa", "Asia", "Oceanía", "Civilizaciones Antiguas" ];
+                        let gridHTML = regiones.map(r => `<div class="atlas-region-box" onclick="this.style.borderColor = '#22c55e'; this.style.background = 'rgba(34, 197, 94, 0.2)';"><h4>${r}</h4><p>Explorar región</p></div>`).join('');
+                        front.innerHTML = `
+                            <h3 style="color: #D4AF37; text-align: center; font-family: 'Playfair Display'; margin-bottom: 20px; font-size: 28px;">ATLAS DE LAS CIVILIZACIONES</h3>
+                            <div class="atlas-region-grid">${gridHTML}</div>
+                            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-top: 20px;">Haz clic en una región para marcarla como explorada.</p>
+                        `;
+                        back.style.display = 'none';
+                    }
+                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
+                    if (typeof showToast === 'function') showToast('Tablero del Atlas insertado', 'success');
+                    if (typeof autosave === 'function') autosave();
+                }
+            }, 50);
+        }
+
+        // ====================================================
+        // 6. MOTOR DE EXPORTACIÓN (CON CLONACIÓN TEMPORAL Y LIMPIEZA DE CLASES)
+        // ====================================================
+        let previewData = []; 
+
+        window.abrirVistaPrevia = async function() {
+            const modal = document.getElementById('print-modal');
+            if (modal) modal.style.display = 'flex';
+            await actualizarVistaPrevia();
+        };
+
+        window.cerrarVistaPrevia = function() {
+            const modal = document.getElementById('print-modal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.actualizarVistaPrevia = async function() {
+            const area = document.getElementById('print-preview-area');
+            const stats = document.getElementById('print-stats');
+            if (!area) return;
+
+            area.innerHTML = '<div style="text-align:center; color:#64748b; padding:20px;"><i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>Generando vista previa...</div>';
+            stats.innerText = "Calculando...";
+            
+            const mostrarDorsos = document.getElementById('print-dorsos')?.checked || false;
+            const mostrarTableros = document.getElementById('print-mosaico')?.checked || false;
+            const isBW = document.getElementById('print-bw')?.checked || false;
+
+            const elementos = document.querySelectorAll('#canvas > .canvas-element');
+            previewData = []; 
+
+            area.innerHTML = ''; 
+            const grid = document.createElement('div');
+            grid.style.display = 'grid';
+            grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(150px, 1fr))';
+            grid.style.gap = '15px';
+            grid.style.width = '100%';
+
+            let count = 0;
+
+            for (let i = 0; i < elementos.length; i++) {
+                const el = elementos[i];
+                const isTablero = el.style.width === '800px' || el.style.width === '600px' || el.classList.contains('tablero-element');
+                
+                if (isTablero && !mostrarTableros) continue;
+
+                const front = el.querySelector('.carta-front') || el;
+                const back = el.querySelector('.carta-back');
+
+                // --- CAPTURAR FRENTE ---
+                if (front) {
+                    try {
+                        const canvas = await html2canvas(front, { scale: 1.5, useCORS: true, backgroundColor: '#ffffff', logging: false });
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                        previewData.push({ dataUrl, type: isTablero ? 'tablero' : 'frente', index: i+1 });
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'preview-card-wrapper';
+                        wrapper.innerHTML = `<img src="${dataUrl}"><p>${isTablero ? 'Tablero' : 'Frente'} ${i+1}</p>`;
+                        grid.appendChild(wrapper);
+                        count++;
+                    } catch (e) { console.error("Error capturando frente:", e); }
+                }
+
+                // --- CAPTURAR DORSO (SOLUCIÓN DEFINITIVA: CLONACIÓN TEMPORAL + REMOVER CLASE) ---
+                if (mostrarDorsos && !isTablero && back && back.style.display !== 'none') {
+                    try {
+                        // 1. Crear un contenedor temporal fuera de pantalla
+                        const tempDiv = document.createElement('div');
+                        const width = el.offsetWidth || 250;
+                        const height = el.offsetHeight || 350;
+                        
+                        tempDiv.style.position = 'absolute';
+                        tempDiv.style.left = '-9999px';
+                        tempDiv.style.top = '0';
+                        tempDiv.style.width = width + 'px';
+                        tempDiv.style.height = height + 'px';
+                        tempDiv.style.backgroundColor = '#1e293b';
+                        
+                        // 2. Clonar el dorso
+                        const clone = back.cloneNode(true);
+                        
+                        // 3. Aplanar el clon: ELIMINAR LA CLASE QUE CAUSA EL 3D
+                        clone.classList.remove('carta-back'); 
+                        clone.style.transform = 'none';
+                        clone.style.position = 'relative';
+                        clone.style.width = '100%';
+                        clone.style.height = '100%';
+                        clone.style.display = 'flex';
+                        clone.style.backfaceVisibility = 'visible';
+                        clone.style.borderRadius = '8px'; 
+                        clone.style.backgroundColor = '#1e293b';
+                        
+                        tempDiv.appendChild(clone);
+                        document.body.appendChild(tempDiv);
+                        
+                        // 4. Capturar el contenedor temporal
+                        const canvas = await html2canvas(tempDiv, { 
+                            scale: 1.5, 
+                            useCORS: true, 
+                            backgroundColor: '#1e293b', 
+                            logging: false 
+                        });
+                        
+                        // 5. Limpiar
+                        document.body.removeChild(tempDiv);
+
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                        previewData.push({ dataUrl, type: 'dorso', index: i+1 });
+
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'preview-card-wrapper';
+                        wrapper.innerHTML = `<img src="${dataUrl}"><p>Dorso ${i+1}</p>`;
+                        grid.appendChild(wrapper);
+                        count++;
+
+                    } catch (e) { 
+                        console.error("Error capturando dorso:", e); 
+                    }
+                }
+            }
+
+            if (count === 0) {
+                area.innerHTML = '<p style="color:#64748b; font-style:italic;">No hay elementos para exportar con las opciones seleccionadas.</p>';
+            } else {
+                area.appendChild(grid);
+            }
+            stats.innerText = `Total a exportar: ${count} elementos`;
+        };
+
+        window.generarPDFFinal = async function() {
+            if (!window.jspdf) return alert('La librería jsPDF no está cargada.');
+            if (previewData.length === 0) return alert('Primero genera la vista previa o selecciona elementos.');
+
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const size = document.getElementById('print-size')?.value || 'medium';
+            const isBW = document.getElementById('print-bw')?.checked || false;
+            
+            let cols = 3, rows = 3; 
+            if (size === 'small') { cols = 4; rows = 3; }
+            if (size === 'large') { cols = 2; rows = 2; }
+
+            const pageWidth = 210; 
+            const pageHeight = 297;
+            const margin = 10;
+            const usableWidth = pageWidth - (margin * 2);
+            const usableHeight = pageHeight - (margin * 2);
+            const cellWidth = usableWidth / cols;
+            const cellHeight = usableHeight / rows;
+            
+            let items = previewData.filter(p => p.type !== 'tablero');
+            let tableros = previewData.filter(p => p.type === 'tablero');
+
+            let x = margin;
+            let y = margin;
+            let col = 0;
+            let row = 0;
+
+            if (typeof showToast === 'function') showToast('Generando PDF...', 'info');
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                if (i > 0 && col === 0 && row === 0) pdf.addPage();
+
+                let imgX = x + (col * cellWidth);
+                let imgY = y + (row * cellHeight);
+                
+                let imgProps = pdf.getImageProperties(item.dataUrl);
+                let ratio = imgProps.width / imgProps.height;
+                let drawWidth = cellWidth - 4; 
+                let drawHeight = drawWidth / ratio;
+                
+                if (drawHeight > cellHeight - 4) {
+                    drawHeight = cellHeight - 4;
+                    drawWidth = drawHeight * ratio;
+                }
+
+                pdf.addImage(item.dataUrl, 'JPEG', imgX + 2, imgY + 2, drawWidth, drawHeight);
+                
+                pdf.setDrawColor(200, 200, 200);
+                pdf.rect(imgX, imgY, cellWidth, cellHeight);
+
+                col++;
+                if (col >= cols) { col = 0; row++; }
+                if (row >= rows) { row = 0; col = 0; }
+            }
+
+            for (let i = 0; i < tableros.length; i++) {
+                pdf.addPage();
+                const item = tableros[i];
+                let imgProps = pdf.getImageProperties(item.dataUrl);
+                let ratio = imgProps.width / imgProps.height;
+                let drawWidth = pageWidth - (margin * 2);
+                let drawHeight = drawWidth / ratio;
+                
+                if (drawHeight > pageHeight - (margin * 2)) {
+                    drawHeight = pageHeight - (margin * 2);
+                    drawWidth = drawHeight * ratio;
+                }
+                
+                let cx = (pageWidth - drawWidth) / 2;
+                let cy = (pageHeight - drawHeight) / 2;
+                pdf.addImage(item.dataUrl, 'JPEG', cx, cy, drawWidth, drawHeight);
+            }
+
+            pdf.save('Estudio_EP_Export.pdf');
+            if (typeof showToast === 'function') showToast('PDF descargado correctamente', 'success');
+            window.cerrarVistaPrevia();
+        };
+
+        window.exportarImagenPNG = function() {
+            const canvas = document.getElementById('canvas');
+            if (!canvas) return alert('Lienzo no encontrado.');
+            
+            if (typeof showToast === 'function') showToast('Generando imagen PNG del lienzo...', 'info');
+            
+            html2canvas(canvas, { scale: 2, useCORS: true, backgroundColor: '#f8fafc', logging: false }).then(c => {
+                const link = document.createElement('a');
+                link.download = 'Estudio_EP_Lienzo_Completo.png';
+                link.href = c.toDataURL('image/png');
+                link.click();
+                if (typeof showToast === 'function') showToast('Imagen PNG descargada', 'success');
+            }).catch(e => {
+                console.error(e);
+                alert('Error al exportar imagen: ' + e.message);
+            });
+        };
 
         // --- IA ---
         function enviarMensajeAI() {
@@ -968,18 +959,11 @@
             const msg = input.value.trim();
             if(!msg) return;
             const chat = document.getElementById('ai-chat-messages');
-            
             chat.innerHTML += `<div style="text-align:right; background:#f1f5f9; padding:10px; border-radius:8px; font-size:12px; margin-bottom:10px; color:#1e293b;">${msg}</div>`;
             input.value = '';
             chat.scrollTop = chat.scrollHeight;
-            
             setTimeout(() => {
-                const respuestas = [
-                    "¡Excelente pregunta! En la Educación Popular, partimos de la realidad del sujeto. ¿Cómo podrías aplicar esto en tu taller?",
-                    "Freire nos habla de la praxis: reflexión y acción. Te sugiero que al final del juego hagas una ronda de preguntas para conectar la mecánica con su vida diaria.",
-                    "Para adaptar esto, puedes cambiar las reglas para que nadie gane individualmente, fomentando así la cooperación y el diálogo.",
-                    "Recuerda que el error es una fuente de aprendizaje. Si el juego se pone difícil, pregunta: '¿Qué haríamos distinto como colectivo?'"
-                ];
+                const respuestas = ["¡Excelente pregunta! En la Educación Popular, partimos de la realidad del sujeto.", "Freire nos habla de la praxis: reflexión y acción.", "Para adaptar esto, puedes cambiar las reglas para que nadie gane individualmente."];
                 const randomResp = respuestas[Math.floor(Math.random() * respuestas.length)];
                 chat.innerHTML += `<div style="background:#e0f2fe; padding:10px; border-radius:8px; font-size:12px; margin-bottom:10px; color:#0284c7;"><b>Asistente Freire:</b> ${randomResp}</div>`;
                 chat.scrollTop = chat.scrollHeight;
