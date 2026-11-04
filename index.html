@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
     
     <link rel="stylesheet" href="css/main.css">
@@ -60,7 +61,12 @@
         <header style="text-align: center; margin-bottom: 40px;">
             <h1 style="font-size: 42px; color: #9a3412; margin-bottom: 10px;"><i class="fa-solid fa-hands-holding-circle"></i> Estudio EP</h1>
             <p>Taller Digital de Educación Popular</p>
-            <button class="btn btn-primary" onclick="crearNuevoProyecto()" style="margin: 0 auto;"><i class="fa-solid fa-plus"></i> Nuevo Proyecto</button>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="crearNuevoProyecto()"><i class="fa-solid fa-plus"></i> Nuevo Proyecto</button>
+                <button class="btn btn-outline" onclick="descargarBackupTotal()" style="color: #16a34a; border-color: #16a34a;"><i class="fa-solid fa-cloud-arrow-down"></i> Backup</button>
+                <button class="btn btn-outline" onclick="document.getElementById('input-restaurar').click()" style="color: #0284c7; border-color: #0284c7;"><i class="fa-solid fa-cloud-arrow-up"></i> Restaurar</button>
+                <input type="file" id="input-restaurar" accept=".json" onchange="restaurarBackupTotal(event)" style="display:none;">
+            </div>
         </header>
         <div class="projects-grid" id="projects-list"></div>
     </div>
@@ -241,7 +247,6 @@
                             <div class="tool-card" onclick="insertarCartaCaballeroCatan()"><div class="tool-icon" style="color:#b91c1c;"><i class="fa-solid fa-chess-knight"></i></div><div class="tool-info"><h4>Carta Caballero</h4><p>Ladrón</p></div></div>
                         </div>
                     </details>
-                    <!-- NUEVA SECCIÓN DE ESCENARIOS -->
                     <details class="ux-details" style="margin-top: 10px; border-top: 2px solid #cbd5e1; padding-top: 10px;">
                         <summary style="color: #0284c7; font-weight: bold;"><i class="fa-solid fa-mountain-sun"></i> Escenarios de Fondo</summary>
                         <div class="ux-details-content">
@@ -252,8 +257,6 @@
                             <div class="tool-card" onclick="insertarEscenario('classroom')"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-chalkboard-user"></i></div><div class="tool-info"><h4>Sala de Clases</h4><p>Fondo Educativo</p></div></div>
                         </div>
                     </details>
-                    
-                    <!-- NUEVA SECCIÓN DE ESCAPE ROOMS -->
                     <details class="ux-details" style="margin-top: 10px; border-top: 2px solid #cbd5e1; padding-top: 10px;">
                         <summary style="color: #dc2626; font-weight: bold;"><i class="fa-solid fa-door-closed"></i> Kits de Escape Room</summary>
                         <div class="ux-details-content">
@@ -592,6 +595,8 @@
     <script src="js/minigames.js"></script>
     <script src="js/pdf-engine.js"></script>
     <script src="js/escape-rooms.js"></script>
+    <script src="js/tts-engine.js"></script>
+    <script src="js/backup-engine.js"></script>
     
     <script src="js/catalogo.js"></script>
     <script src="js/help-data.js"></script>
