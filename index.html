@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="css/massive-expansion.css">
     <link rel="stylesheet" href="css/card-layouts.css">
     
-    <!-- CSS CRÍTICO PARA LA BARRA SUPERIOR -->
+    <!-- CSS CRÍTICO Y PARCHE MAESTRO DE IMÁGENES -->
     <style>
         .editor-topbar {
             display: flex !important;
@@ -51,6 +51,63 @@
         @media (max-width: 1600px) {
             .topbar-actions { justify-content: flex-start !important; margin-top: 10px; }
         }
+
+        /* ==================================================== */
+        /* PARCHE MAESTRO PARA IMÁGENES EN CARTAS (BLINDAJE)    */
+        /* ==================================================== */
+        .carta-front, .carta-back { 
+            position: absolute !important; 
+            width: 100% !important;
+            height: 100% !important;
+            overflow: hidden !important; 
+            border-radius: 8px !important;
+        }
+        
+        /* Forzar que cualquier imagen subida se vuelva el fondo */
+        .carta-front img.imagen-fondo,
+        .carta-back img.imagen-fondo {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            z-index: 1 !important;
+            pointer-events: none !important;
+        }
+        
+        /* Obligar al fondo a ser transparente si hay imagen */
+        .carta-front:has(img.imagen-fondo),
+        .carta-back:has(img.imagen-fondo) {
+            background: transparent !important;
+            background-color: transparent !important;
+            background-image: none !important;
+            border-color: transparent !important; 
+        }
+
+        /* El texto y elementos siempre flotan sobre la imagen */
+        .carta-front > *:not(img.imagen-fondo),
+        .carta-back > *:not(img.imagen-fondo) {
+            position: relative !important;
+            z-index: 10 !important;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8) !important;
+        }
+
+        /* Ocultar el ícono de placeholder cuando hay imagen */
+        .carta-front:has(img.imagen-fondo) .placeholder-icon {
+            display: none !important;
+        }
+        
+        /* Botón de eliminar proyecto en el dashboard */
+        .btn-delete-proyecto {
+            position: absolute; top: 10px; right: 10px; 
+            background: #ef4444; color: white; border: none; 
+            border-radius: 50%; width: 30px; height: 30px; 
+            cursor: pointer; z-index: 10; display: flex; 
+            align-items: center; justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s;
+        }
+        .btn-delete-proyecto:hover { transform: scale(1.1); background: #dc2626; }
     </style>
 </head>
 <body>
@@ -123,17 +180,117 @@
 
                 <!-- CARTAS -->
                 <div class="tool-content active" id="tool-mazos">
-                    <details class="ux-details" open>
+                    
+                    <!-- SECCIÓN ARCHIVO DE LAS SOMBRAS -->
+                    <details class="ux-details" style="border-left: 4px solid #B8860B;" open>
+                        <summary style="color: #B8860B; font-weight: bold;"><i class="fa-solid fa-magnifying-glass"></i> Archivo de las Sombras</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="crearCartaConDiseno('sombras_personaje')"><div class="tool-icon" style="color:#B8860B;"><i class="fa-solid fa-user-tie"></i></div><div class="tool-info"><h4>Personaje</h4><p>Investigador</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('sombras_incognita')"><div class="tool-icon" style="color:#38bdf8;"><i class="fa-solid fa-question"></i></div><div class="tool-info"><h4>Incógnita</h4><p>Pregunta</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('sombras_evidencia')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-fingerprint"></i></div><div class="tool-info"><h4>Evidencia</h4><p>Pista Física</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('sombras_sospechoso')"><div class="tool-icon" style="color:#991b1b;"><i class="fa-solid fa-mask"></i></div><div class="tool-info"><h4>Sospechoso</h4><p>Persona</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('sombras_localizacion')"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-map-location-dot"></i></div><div class="tool-info"><h4>Localización</h4><p>Lugar</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('sombras_acontecimiento')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-bolt"></i></div><div class="tool-info"><h4>Acontecimiento</h4><p>Evento</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('sombras_expediente')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-folder-open"></i></div><div class="tool-info"><h4>Expediente</h4><p>Misión</p></div></div>
+                            
+                            <div class="tool-card" onclick="crearTokenSombras('Lupa', '#B8860B', 'fa-magnifying-glass')"><div class="tool-icon" style="color:#B8860B;"><i class="fa-solid fa-magnifying-glass"></i></div><div class="tool-info"><h4>Token Lupa</h4><p>Investigación</p></div></div>
+                            <div class="tool-card" onclick="crearTokenSombras('Llave', '#64748b', 'fa-key')"><div class="tool-icon" style="color:#64748b;"><i class="fa-solid fa-key"></i></div><div class="tool-info"><h4>Token Llave</h4><p>Acceso</p></div></div>
+                            <div class="tool-card" onclick="crearTokenSombras('Rosa', '#991b1b', 'fa-fan')"><div class="tool-icon" style="color:#991b1b;"><i class="fa-solid fa-fan"></i></div><div class="tool-info"><h4>Token Rosa</h4><p>Sociedad</p></div></div>
+                            <div class="tool-card" onclick="crearTokenSombras('Cráneo', '#1e293b', 'fa-skull')"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-skull"></i></div><div class="tool-info"><h4>Token Cráneo</h4><p>Peligro</p></div></div>
+                            <div class="tool-card" onclick="crearTokenSombras('Ojo', '#4c1d95', 'fa-eye')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-eye"></i></div><div class="tool-info"><h4>Token Ojo</h4><p>Vigilancia</p></div></div>
+                        </div>
+                    </details>
+
+                    <!-- SECCIÓN MITOS DE AMÉRICA COMPLETA -->
+                    <details class="ux-details" style="border-left: 4px solid #D4AF37;">
+                        <summary style="color: #D4AF37; font-weight: bold;"><i class="fa-solid fa-dragon"></i> Mitos de América (Completo)</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_relato')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Relato</h4><p>Mitos</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_territorio')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Territorio</h4><p>Paisajes</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_encuentro')"><div class="tool-icon" style="color:#8b5cf6;"><i class="fa-solid fa-handshake"></i></div><div class="tool-info"><h4>Encuentro</h4><p>Seres</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_desafio')"><div class="tool-icon" style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="tool-info"><h4>Desafío</h4><p>Problemas</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_memoria')"><div class="tool-icon" style="color:#3b82f6;"><i class="fa-solid fa-brain"></i></div><div class="tool-info"><h4>Memoria</h4><p>Reflexión</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('mitos_acontecimiento')"><div class="tool-icon" style="color:#f59e0b;"><i class="fa-solid fa-bolt"></i></div><div class="tool-info"><h4>Acontecimiento</h4><p>Cambios</p></div></div>
+                            
+                            <div class="tool-card" onclick="crearTokenMitos('Semillas', '#16a34a', 'fa-seedling')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-seedling"></i></div><div class="tool-info"><h4>Token Semillas</h4><p>Regeneración</p></div></div>
+                            <div class="tool-card" onclick="crearTokenMitos('Agua', '#0284c7', 'fa-droplet')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-droplet"></i></div><div class="tool-info"><h4>Token Agua</h4><p>Desafíos</p></div></div>
+                            <div class="tool-card" onclick="crearTokenMitos('Memoria', '#ca8a04', 'fa-scroll')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-scroll"></i></div><div class="tool-info"><h4>Token Memoria</h4><p>Relatos</p></div></div>
+                            <div class="tool-card" onclick="crearTokenMitos('Vínculos', '#a855f7', 'fa-link')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-link"></i></div><div class="tool-info"><h4>Token Vínculos</h4><p>Cooperación</p></div></div>
+
+                            <div class="tool-card" onclick="crearPersonajeMitos('Exploradora', 'fa-compass', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-compass"></i></div><div class="tool-info"><h4>Exploradora</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Narrador', 'fa-book', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-book"></i></div><div class="tool-info"><h4>Narrador</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Observadora', 'fa-eye', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-eye"></i></div><div class="tool-info"><h4>Observadora</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Mediador', 'fa-handshake', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-handshake"></i></div><div class="tool-info"><h4>Mediador</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Guardiana', 'fa-shield-halved', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-shield-halved"></i></div><div class="tool-info"><h4>Guardiana</h4><p>Personaje</p></div></div>
+                            <div class="tool-card" onclick="crearPersonajeMitos('Cartógrafo', 'fa-map', '#D4AF37')"><div class="tool-icon" style="color:#D4AF37;"><i class="fa-solid fa-map"></i></div><div class="tool-info"><h4>Cartógrafo</h4><p>Personaje</p></div></div>
+
+                            <div class="tool-card" onclick="crearZonaMitos('Bosque', 'fa-tree', '#22c55e')"><div class="tool-icon" style="color:#22c55e;"><i class="fa-solid fa-tree"></i></div><div class="tool-info"><h4>Zona Bosque</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Montañas', 'fa-mountain', '#64748b')"><div class="tool-icon" style="color:#64748b;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Zona Montañas</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Aguas', 'fa-water', '#0284c7')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-water"></i></div><div class="tool-info"><h4>Zona Aguas</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Volcanes', 'fa-fire', '#dc2626')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-fire"></i></div><div class="tool-info"><h4>Zona Volcanes</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Comunidad', 'fa-users', '#ca8a04')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-users"></i></div><div class="tool-info"><h4>Zona Comunidad</h4><p>Tablero</p></div></div>
+                            <div class="tool-card" onclick="crearZonaMitos('Senderos', 'fa-shoe-prints', '#78350f')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-shoe-prints"></i></div><div class="tool-info"><h4>Zona Senderos</h4><p>Tablero</p></div></div>
+                        </div>
+                    </details>
+
+                    <!-- SECCIÓN CATÁN Y EXPANSIONES -->
+                    <details class="ux-details" style="border-left: 4px solid #d97706;">
+                        <summary style="color: #d97706; font-weight: bold;"><i class="fa-solid fa-hexagon"></i> Catán y Expansiones</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_madera')"><div class="tool-icon" style="color:#2e7d32;"><i class="fa-solid fa-tree"></i></div><div class="tool-info"><h4>Madera</h4><p>Recurso</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_ladrillo')"><div class="tool-icon" style="color:#b91c1c;"><i class="fa-solid fa-cubes"></i></div><div class="tool-info"><h4>Ladrillo</h4><p>Recurso</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_trigo')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-wheat-awn"></i></div><div class="tool-info"><h4>Trigo</h4><p>Recurso</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_oveja')"><div class="tool-icon" style="color:#65a30d;"><i class="fa-solid fa-cloud"></i></div><div class="tool-info"><h4>Oveja</h4><p>Recurso</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_piedra')"><div class="tool-icon" style="color:#475569;"><i class="fa-solid fa-mountain"></i></div><div class="tool-info"><h4>Piedra</h4><p>Recurso</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_desarrollo')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-book"></i></div><div class="tool-info"><h4>Desarrollo</h4><p>Especial</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_navegantes')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-ship"></i></div><div class="tool-info"><h4>Navegantes</h4><p>Expansión</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('catan_ciudades')"><div class="tool-icon" style="color:#d97706;"><i class="fa-solid fa-chess-rook"></i></div><div class="tool-info"><h4>Ciudades</h4><p>Expansión</p></div></div>
+                        </div>
+                    </details>
+
+                    <!-- SECCIÓN ESCAPE Y MISTERIO -->
+                    <details class="ux-details" style="border-left: 4px solid #dc2626;">
+                        <summary style="color: #dc2626; font-weight: bold;"><i class="fa-solid fa-door-closed"></i> Escape & Misterio</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_pista')"><div class="tool-icon" style="color:#d97706;"><i class="fa-solid fa-search"></i></div><div class="tool-info"><h4>Pista</h4><p>Escape</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_codigo')"><div class="tool-icon" style="color:#38bdf8;"><i class="fa-solid fa-lock"></i></div><div class="tool-info"><h4>Código</h4><p>Escape</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_objeto')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-box"></i></div><div class="tool-info"><h4>Objeto</h4><p>Escape</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_cluedo_sospechoso')"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-user-secret"></i></div><div class="tool-info"><h4>Cluedo</h4><p>Sospechoso</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_cluedo_arma')"><div class="tool-icon" style="color:#991b1b;"><i class="fa-solid fa-gun"></i></div><div class="tool-info"><h4>Cluedo</h4><p>Arma</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_caso_cerrado')"><div class="tool-icon" style="color:#1e293b;"><i class="fa-solid fa-folder-open"></i></div><div class="tool-info"><h4>Caso Cerrado</h4><p>Evidencia</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('escape_sherlock')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-magnifying-glass"></i></div><div class="tool-info"><h4>Sherlock</h4><p>Misterio</p></div></div>
+                        </div>
+                    </details>
+
+                    <!-- SECCIÓN OTROS JUEGOS -->
+                    <details class="ux-details" style="border-left: 4px solid #0284c7;">
+                        <summary style="color: #0284c7; font-weight: bold;"><i class="fa-solid fa-dice"></i> Otros Juegos</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_pandemic_rol')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-user-doctor"></i></div><div class="tool-info"><h4>Pandemic</h4><p>Rol</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_pandemic_evento')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-virus-covid"></i></div><div class="tool-info"><h4>Pandemic</h4><p>Evento</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_dixit')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-moon"></i></div><div class="tool-info"><h4>Dixit</h4><p>Abstracto</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_hombres_lobo')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-paw"></i></div><div class="tool-info"><h4>Hombres Lobo</h4><p>Rol Oculto</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_virus_organo')"><div class="tool-icon" style="color:#16a34a;"><i class="fa-solid fa-heart-pulse"></i></div><div class="tool-info"><h4>Virus</h4><p>Órgano</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_virus_medicina')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-syringe"></i></div><div class="tool-info"><h4>Virus</h4><p>Medicina</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('juego_zombies_evento')"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-skull"></i></div><div class="tool-info"><h4>Zombies!!!</h4><p>Evento</p></div></div>
+                        </div>
+                    </details>
+
+                    <!-- SECCIÓN MAZOS BASE -->
+                    <details class="ux-details">
                         <summary>Mazos Base</summary>
                         <div class="ux-details-content">
                             <div class="tool-card" onclick="insertarNotaAdhesiva()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-note-sticky"></i></div><div class="tool-info"><h4>Nota Adhesiva</h4><p>Ideas</p></div></div>
                             <div class="tool-card" onclick="insertarCarta()"><div class="tool-icon"><i class="fa-solid fa-plus"></i></div><div class="tool-info"><h4>Nueva Carta</h4><p>Flip 3D</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('evento')"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-virus"></i></div><div class="tool-info"><h4>Carta Evento</h4><p>Crisis</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('imagen')"><div class="tool-icon" style="color:#8B3A3A;"><i class="fa-solid fa-image"></i></div><div class="tool-info"><h4>Carta Imagen</h4><p>Dixit/Mímica</p></div></div>
+                            <div class="tool-card" onclick="crearCartaConDiseno('frase')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-quote-left"></i></div><div class="tool-info"><h4>Carta Frase</h4><p>Charadas</p></div></div>
                             <div class="tool-card" onclick="insertarCartaNaipe()"><div class="tool-icon"><i class="fa-solid fa-diamond"></i></div><div class="tool-info"><h4>Carta Naipe</h4><p>Barajas</p></div></div>
                             <div class="tool-card" onclick="insertarCartaDuo()"><div class="tool-icon"><i class="fa-solid fa-puzzle-piece"></i></div><div class="tool-info"><h4>Carta Duo</h4><p>Refranes</p></div></div>
-                            <div class="tool-card" onclick="insertarCartaEvento()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-virus"></i></div><div class="tool-info"><h4>Carta Evento</h4><p>Crisis</p></div></div>
                             <div class="tool-card" onclick="insertarCartaRol()"><div class="tool-icon" style="color:#4c1d95;"><i class="fa-solid fa-user-secret"></i></div><div class="tool-info"><h4>Carta Rol</h4><p>Oculto</p></div></div>
                         </div>
                     </details>
+
                     <details class="ux-details">
                         <summary>Formatos Especiales</summary>
                         <div class="ux-details-content">
@@ -153,7 +310,7 @@
                     </details>
                 </div>
 
-                <!-- GESTIÓN -->
+                <!-- GESTIÓN, JUEGOS, MAPEO, CATÁLOGO (Mantenidos igual) -->
                 <div class="tool-content" id="tool-gestion">
                     <details class="ux-details" open>
                         <summary>Dinámicas de Grupo</summary>
@@ -170,8 +327,6 @@
                         </div>
                     </details>
                 </div>
-
-                <!-- JUEGOS -->
                 <div class="tool-content" id="tool-juegos">
                     <details class="ux-details" open>
                         <summary>Motores y Tableros</summary>
@@ -267,8 +422,6 @@
                         </div>
                     </details>
                 </div>
-
-                <!-- MAPEO -->
                 <div class="tool-content" id="tool-mapeo">
                     <details class="ux-details" open>
                         <summary>Controles de Mapa</summary>
@@ -288,8 +441,6 @@
                         </div>
                     </details>
                 </div>
-
-                <!-- CATÁLOGO -->
                 <div class="tool-content" id="tool-catalogo">
                     <details class="ux-details" open>
                         <summary>Catálogo Maestro</summary>
@@ -621,14 +772,52 @@
     <script src="js/app.js"></script>
     <script src="js/panel-derecho.js"></script>
     
-    <!-- SCRIPT DE SIMULACIÓN DE IA Y NUEVOS CONTROLES -->
+    <!-- SCRIPT MAESTRO DE PERSONALIZACIÓN Y BLINDAJE -->
     <script>
-        // --- Funciones para el control del texto de la carta ---
+        // ====================================================
+        // 1. SISTEMA DE BORRADO DE PROYECTOS (DASHBOARD)
+        // ====================================================
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-delete-proyecto');
+            if (btn) {
+                e.stopPropagation();
+                const card = btn.closest('.project-card');
+                if (card) {
+                    const title = card.querySelector('h3')?.innerText || card.querySelector('.project-title')?.innerText;
+                    if (confirm(`¿Estás seguro de que quieres eliminar el proyecto "${title}"?`)) {
+                        let keysToRemove = [];
+                        for(let i=0; i<localStorage.length; i++) {
+                            let key = localStorage.key(i);
+                            if(key.includes(title) || key.includes(card.id)) {
+                                keysToRemove.push(key);
+                            }
+                        }
+                        keysToRemove.forEach(k => localStorage.removeItem(k));
+                        location.reload(); 
+                    }
+                }
+            }
+        });
+
+        const observerProyectos = new MutationObserver(() => {
+            document.querySelectorAll('.project-card').forEach(card => {
+                if (!card.querySelector('.btn-delete-proyecto')) {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-delete-proyecto';
+                    btn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+                    btn.title = 'Eliminar Proyecto';
+                    card.style.position = 'relative';
+                    card.appendChild(btn);
+                }
+            });
+        });
+        observerProyectos.observe(document.getElementById('projects-list'), { childList: true });
+
+        // ====================================================
+        // 2. CONTROLES DE TEXTO (PANEL DERECHO)
+        // ====================================================
         function obtenerElementoSeleccionado() {
-            // Busca el elemento que tiene la clase selected o el último clicado
-            return document.querySelector('.canvas-element.selected') || 
-                   document.querySelector('.carta-3d.selected') || 
-                   window.elementoSeleccionado;
+            return window.elementoSeleccionado || document.querySelector('.canvas-element.selected') || document.querySelector('.carta-3d.selected');
         }
 
         function actualizarColorTexto(color) {
@@ -652,7 +841,288 @@
             }
         }
 
-        // --- Función de la IA ---
+        // ====================================================
+        // 3. LÓGICA DE SUBIDA DE IMÁGENES (BLINDAJE)
+        // ====================================================
+        window.subirImagenCarta = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let el = obtenerElementoSeleccionado();
+                if (!el) return alert("Selecciona una carta primero.");
+                
+                let front = el.querySelector('.carta-front') || el.querySelector('.carta-face-front') || el;
+                
+                let img = front.querySelector('img.imagen-fondo');
+                if (!img) {
+                    img = document.createElement('img');
+                    img.className = 'imagen-fondo';
+                    front.insertBefore(img, front.firstChild);
+                }
+                
+                img.onload = () => {
+                    front.style.setProperty('background', 'transparent', 'important');
+                    front.style.setProperty('background-color', 'transparent', 'important');
+                    front.style.setProperty('background-image', 'none', 'important');
+                    front.style.setProperty('border', 'none', 'important');
+                    front.querySelectorAll('.placeholder-icon').forEach(icon => icon.style.display = 'none');
+                };
+                img.src = e.target.result;
+                
+                const controls = document.getElementById('controles-img-carta');
+                if(controls) controls.style.display = 'block';
+                
+                if(typeof autosave === 'function') autosave();
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.subirImagenDorso = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let el = obtenerElementoSeleccionado();
+                if (!el) return alert("Selecciona una carta primero.");
+
+                let back = el.querySelector('.carta-back');
+                if (!back) return;
+
+                let img = back.querySelector('img.imagen-fondo');
+                if (!img) {
+                    img = document.createElement('img');
+                    img.className = 'imagen-fondo';
+                    back.insertBefore(img, back.firstChild);
+                }
+                
+                img.onload = () => {
+                    back.style.setProperty('background', 'transparent', 'important');
+                    back.style.setProperty('background-color', 'transparent', 'important');
+                    back.style.setProperty('background-image', 'none', 'important');
+                    back.style.setProperty('border', 'none', 'important');
+                };
+                img.src = e.target.result;
+
+                const controls = document.getElementById('controles-img-dorso');
+                if(controls) controls.style.display = 'block';
+                
+                if(typeof autosave === 'function') autosave();
+            };
+            reader.readAsDataURL(file);
+        };
+
+        // ====================================================
+        // 4. CATÁLOGO MAESTRO DE DISEÑOS
+        // ====================================================
+        const CATALOGO_DISEÑOS = {
+            // MAZOS BASE
+            'evento': { color: '#fffbeb', border: '3px dashed #d97706', icon: 'fa-virus', title: '¡EVENTO!', text: 'Escribe el evento aquí...', back: 'Instrucciones del evento...' },
+            'imagen': { color: '#e2e8f0', border: '2px solid #cbd5e1', icon: 'fa-image', title: '', text: '', back: 'Escribe la pista aquí...', hideText: true },
+            'frase': { color: '#ffffff', border: '4px solid #0284c7', icon: '', title: 'PALABRA', text: 'PALABRA', back: 'Instrucciones del dorso...', bigText: true },
+            
+            // ARCHIVO DE LAS SOMBRAS
+            'sombras_personaje': { color: '#1a1a1a', border: '3px solid #B8860B', icon: 'fa-user-tie', title: 'INVESTIGADOR', text: 'Nombre y especialidad...', colorText: '#D4AF37', back: 'Habilidad y secreto...' },
+            'sombras_incognita': { color: '#0f172a', border: '3px solid #38bdf8', icon: 'fa-question', title: 'INCÓGNITA', text: '¿Qué sucedió?', colorText: '#38bdf8', back: 'Pregunta principal...' },
+            'sombras_evidencia': { color: '#fdfbf7', border: '3px solid #78350f', icon: 'fa-fingerprint', title: 'EVIDENCIA', text: 'Descripción de la pista...', colorText: '#451a03', back: 'Análisis científico...' },
+            'sombras_sospechoso': { color: '#1e1b4b', border: '3px solid #991b1b', icon: 'fa-mask', title: 'SOSPECHOSO', text: 'Nombre del sospechoso...', colorText: '#fca5a5', back: 'Testimonio...' },
+            'sombras_localizacion': { color: '#064e3b', border: '3px solid #15803d', icon: 'fa-map-location-dot', title: 'LOCALIZACIÓN', text: 'Nombre del lugar...', colorText: '#86efac', back: 'Descripción del lugar...' },
+            'sombras_acontecimiento': { color: '#1c1917', border: '3px solid #ca8a04', icon: 'fa-bolt', title: 'ACONTECIMIENTO', text: 'Describe el evento...', colorText: '#fde047', back: 'Efecto en el juego...' },
+            'sombras_expediente': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-folder-open', title: 'EXPEDIENTE', text: 'Nombre del caso...', colorText: '#D4AF37', back: 'Resumen del expediente...' },
+
+            // MITOS DE AMÉRICA
+            'mitos_relato': { color: '#0f172a', border: '3px solid #D4AF37', icon: 'fa-scroll', title: 'RELATO', text: 'Escribe el mito aquí...', colorText: '#e2e8f0', back: 'Fuente o instrucciones...' },
+            'mitos_territorio': { color: '#0f172a', border: '3px solid #22c55e', icon: 'fa-mountain', title: 'TERRITORIO', text: 'Describe el paisaje...', colorText: '#e2e8f0', back: 'Relación con el relato...' },
+            'mitos_encuentro': { color: '#0f172a', border: '3px solid #8b5cf6', icon: 'fa-handshake', title: 'ENCUENTRO', text: 'Describe el ser o elemento...', colorText: '#e2e8f0', back: 'Instrucciones...' },
+            'mitos_desafio': { color: '#0f172a', border: '3px solid #ef4444', icon: 'fa-triangle-exclamation', title: 'DESAFÍO', text: 'Describe el problema...', colorText: '#e2e8f0', back: 'Pregunta para el grupo...' },
+            'mitos_memoria': { color: '#0f172a', border: '3px solid #3b82f6', icon: 'fa-brain', title: 'MEMORIA', text: 'Pregunta de reflexión...', colorText: '#e2e8f0', back: 'Aprendizaje esperado...' },
+            'mitos_acontecimiento': { color: '#0f172a', border: '3px solid #f59e0b', icon: 'fa-bolt', title: 'ACONTECIMIENTO', text: 'Describe el cambio...', colorText: '#e2e8f0', back: 'Efecto de juego...' },
+
+            // CATÁN Y EXPANSIONES
+            'catan_madera': { color: '#fdfbf7', border: '3px solid #2e7d32', icon: 'fa-tree', title: 'MADERA', text: 'Escribe el texto aquí...' },
+            'catan_ladrillo': { color: '#fdfbf7', border: '3px solid #b91c1c', icon: 'fa-cubes', title: 'LADRILLO', text: 'Escribe el texto aquí...' },
+            'catan_trigo': { color: '#fdfbf7', border: '3px solid #ca8a04', icon: 'fa-wheat-awn', title: 'TRIGO', text: 'Escribe el texto aquí...' },
+            'catan_oveja': { color: '#fdfbf7', border: '3px solid #65a30d', icon: 'fa-cloud', title: 'OVEJA', text: 'Escribe el texto aquí...' },
+            'catan_piedra': { color: '#fdfbf7', border: '3px solid #475569', icon: 'fa-mountain', title: 'PIEDRA', text: 'Escribe el texto aquí...' },
+            'catan_desarrollo': { color: '#fdfbf7', border: '3px solid #0284c7', icon: 'fa-book', title: 'DESARROLLO', text: 'Escribe el texto aquí...' },
+            'catan_navegantes': { color: '#f0f9ff', border: '3px solid #0284c7', icon: 'fa-ship', title: 'NAVEGANTES', text: 'Explora nuevas islas...' },
+            'catan_ciudades': { color: '#fff7ed', border: '3px solid #d97706', icon: 'fa-chess-rook', title: 'CIUDADES', text: 'Mejora tus ciudades...' },
+
+            // ESCAPE Y MISTERIO
+            'escape_pista': { color: '#fff7ed', border: '2px dashed #c2410c', icon: 'fa-search', title: 'PISTA', text: 'Escribe la pista aquí...', italic: true },
+            'escape_codigo': { color: '#0f172a', border: '2px solid #38bdf8', icon: 'fa-lock', title: 'CÓDIGO', text: '_ _ _ _', colorText: '#38bdf8', mono: true },
+            'escape_objeto': { color: '#fefce8', border: '2px solid #ca8a04', icon: 'fa-box', title: 'OBJETO', text: 'Nombre del objeto' },
+            'escape_cluedo_sospechoso': { color: '#1e293b', border: '3px solid #4c1d95', icon: 'fa-user-secret', title: 'SOSPECHOSO', text: 'Nombre del sospechoso...', colorText: '#e2e8f0' },
+            'escape_cluedo_arma': { color: '#fef2f2', border: '3px solid #991b1b', icon: 'fa-gun', title: 'ARMA', text: 'Nombre del arma...' },
+            'escape_caso_cerrado': { color: '#f1f5f9', border: '3px solid #0f172a', icon: 'fa-folder-open', title: 'EVIDENCIA', text: 'Describe la evidencia...' },
+            'escape_sherlock': { color: '#f5f5dc', border: '3px solid #78350f', icon: 'fa-magnifying-glass', title: 'MISTERIO', text: 'Detalle de la investigación...', colorText: '#451a03' },
+
+            // OTROS JUEGOS
+            'juego_pandemic_rol': { color: '#f0fdf4', border: '3px solid #16a34a', icon: 'fa-user-doctor', title: 'ROL', text: 'Habilidad especial...' },
+            'juego_pandemic_evento': { color: '#fef2f2', border: '3px solid #dc2626', icon: 'fa-virus-covid', title: 'EVENTO', text: 'Efecto del evento...' },
+            'juego_dixit': { color: '#fdf4ff', border: '3px solid #a855f7', icon: 'fa-moon', title: 'DIXIT', text: 'Frase abstracta...', colorText: '#4c1d95' },
+            'juego_hombres_lobo': { color: '#292524', border: '3px solid #78350f', icon: 'fa-paw', title: 'HOMBRES LOBO', text: 'Rol o acción...', colorText: '#fcd34d' },
+            'juego_virus_organo': { color: '#f0fdf4', border: '3px solid #16a34a', icon: 'fa-heart-pulse', title: 'ÓRGANO', text: 'Nombre del órgano...' },
+            'juego_virus_medicina': { color: '#eff6ff', border: '3px solid #0284c7', icon: 'fa-syringe', title: 'MEDICINA', text: 'Cura un órgano...' },
+            'juego_zombies_evento': { color: '#111827', border: '3px solid #15803d', icon: 'fa-skull', title: 'ZOMBIES!!!', text: 'Ataque o evento...', colorText: '#4ade80' }
+        };
+
+        function crearCartaConDiseno(tipo) {
+            if (typeof insertarCarta !== 'function') return;
+            insertarCarta(); 
+            
+            setTimeout(() => {
+                const cartas = document.querySelectorAll('#canvas > .canvas-element');
+                const nuevaCarta = cartas[cartas.length - 1];
+                
+                if (nuevaCarta) {
+                    const front = nuevaCarta.querySelector('.carta-front');
+                    const back = nuevaCarta.querySelector('.carta-back');
+                    
+                    if (front && back) {
+                        const config = CATALOGO_DISEÑOS[tipo] || CATALOGO_DISEÑOS['evento'];
+                        
+                        let frontHTML = '';
+                        if (config.hideText) {
+                            frontHTML = `<i class="fa-solid ${config.icon} placeholder-icon" style="font-size: 80px; color: #94a3b8; position: absolute; z-index: 0; pointer-events: none;"></i><div class="carta-texto" style="display: none;"></div>`;
+                        } else {
+                            frontHTML = `
+                                ${config.icon ? `<i class="fa-solid ${config.icon}" style="font-size: 50px; color: ${config.colorText || '#1e293b'}; margin-bottom: 10px; position: relative; z-index: 10;"></i>` : ''}
+                                ${config.title ? `<h3 style="color: ${config.colorText || '#1e293b'}; font-family: 'Playfair Display'; font-size: 20px; margin: 0 0 10px 0; position: relative; z-index: 10;">${config.title}</h3>` : ''}
+                                <div class="carta-texto" style="color: ${config.colorText || '#1e293b'}; font-family: ${config.mono ? "'Courier New', monospace" : "'Merriweather'"}; font-size: ${config.bigText ? '32px' : '14px'}; font-weight: ${config.bigText ? '900' : 'normal'}; ${config.italic ? 'font-style: italic;' : ''} text-align: center; position: relative; z-index: 10;">${config.text}</div>
+                            `;
+                        }
+
+                        let backHTML = `<div class="carta-texto" style="color: #cbd5e1; font-size: 14px; position: relative; z-index: 10;">${config.back || 'Dorso de la carta...'}</div>`;
+
+                        front.className = 'carta-front';
+                        front.style.background = config.color;
+                        front.style.border = config.border;
+                        front.style.justifyContent = 'center';
+                        front.style.alignItems = 'center';
+                        front.innerHTML = frontHTML;
+
+                        back.className = 'carta-back';
+                        back.style.background = '#1e293b';
+                        back.style.border = '1px solid #0f172a';
+                        back.innerHTML = backHTML;
+                    }
+
+                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
+                    if (typeof showToast === 'function') showToast('Carta creada correctamente', 'success');
+                    if (typeof autosave === 'function') autosave();
+                }
+            }, 50); 
+        }
+
+        // ====================================================
+        // 5. FUNCIONES PARA TOKENS, PERSONAJES Y ZONAS
+        // ====================================================
+        function crearTokenSombras(nombre, color, icono) {
+            if (typeof insertarCarta !== 'function') return;
+            insertarCarta();
+            setTimeout(() => {
+                const cartas = document.querySelectorAll('#canvas > .canvas-element');
+                const nuevaCarta = cartas[cartas.length - 1];
+                if (nuevaCarta) {
+                    const front = nuevaCarta.querySelector('.carta-front');
+                    const back = nuevaCarta.querySelector('.carta-back');
+                    if (front && back) {
+                        nuevaCarta.style.width = '100px';
+                        nuevaCarta.style.height = '100px';
+                        front.style.borderRadius = '50%';
+                        front.style.background = color;
+                        front.style.border = '4px solid #D4AF37';
+                        front.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+                        front.innerHTML = `<i class="fa-solid ${icono}" style="font-size: 50px; color: #fff; z-index: 10;"></i><div class="carta-texto" style="display:none;"></div>`;
+                        back.style.display = 'none'; 
+                    }
+                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
+                    if (typeof showToast === 'function') showToast(`Token ${nombre} creado`, 'success');
+                    if (typeof autosave === 'function') autosave();
+                }
+            }, 50);
+        }
+
+        function crearTokenMitos(nombre, color, icono) {
+            if (typeof insertarCarta !== 'function') return;
+            insertarCarta();
+            setTimeout(() => {
+                const cartas = document.querySelectorAll('#canvas > .canvas-element');
+                const nuevaCarta = cartas[cartas.length - 1];
+                if (nuevaCarta) {
+                    const front = nuevaCarta.querySelector('.carta-front');
+                    const back = nuevaCarta.querySelector('.carta-back');
+                    if (front && back) {
+                        nuevaCarta.style.width = '100px';
+                        nuevaCarta.style.height = '100px';
+                        front.style.borderRadius = '50%';
+                        front.style.background = color;
+                        front.style.border = '4px solid #fff';
+                        front.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+                        front.innerHTML = `<i class="fa-solid ${icono}" style="font-size: 50px; color: #fff; z-index: 10;"></i><div class="carta-texto" style="display:none;"></div>`;
+                        back.style.display = 'none'; 
+                    }
+                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
+                    if (typeof showToast === 'function') showToast(`Token ${nombre} creado`, 'success');
+                    if (typeof autosave === 'function') autosave();
+                }
+            }, 50);
+        }
+
+        function crearPersonajeMitos(nombre, icono, color) {
+            if (typeof insertarCarta !== 'function') return;
+            insertarCarta();
+            setTimeout(() => {
+                const cartas = document.querySelectorAll('#canvas > .canvas-element');
+                const nuevaCarta = cartas[cartas.length - 1];
+                if (nuevaCarta) {
+                    const front = nuevaCarta.querySelector('.carta-front');
+                    const back = nuevaCarta.querySelector('.carta-back');
+                    if (front && back) {
+                        front.style.background = '#1e293b';
+                        front.style.border = `3px solid ${color}`;
+                        front.innerHTML = `
+                            <i class="fa-solid ${icono} placeholder-icon" style="font-size: 80px; color: ${color}; margin-bottom: 20px; z-index: 10;"></i>
+                            <h3 style="color: ${color}; font-family: 'Playfair Display'; font-size: 22px; text-align:center; z-index: 10;">${nombre}</h3>
+                            <div class="carta-texto" style="color: #e2e8f0; font-size: 12px; text-align:center; z-index: 10; display:none;">Habilidad...</div>
+                        `;
+                        back.innerHTML = `<div class="carta-texto" style="color: #cbd5e1; z-index: 10;">Habilidad especial...</div>`;
+                    }
+                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
+                    if (typeof showToast === 'function') showToast(`Personaje ${nombre} creado`, 'success');
+                    if (typeof autosave === 'function') autosave();
+                }
+            }, 50);
+        }
+
+        function crearZonaMitos(nombre, icono, color) {
+            if (typeof insertarCarta !== 'function') return;
+            insertarCarta();
+            setTimeout(() => {
+                const cartas = document.querySelectorAll('#canvas > .canvas-element');
+                const nuevaCarta = cartas[cartas.length - 1];
+                if (nuevaCarta) {
+                    const front = nuevaCarta.querySelector('.carta-front');
+                    const back = nuevaCarta.querySelector('.carta-back');
+                    if (front && back) {
+                        front.style.background = '#0f172a';
+                        front.style.border = `2px dashed ${color}`;
+                        front.innerHTML = `
+                            <i class="fa-solid ${icono} placeholder-icon" style="font-size: 60px; color: ${color}; z-index: 10;"></i>
+                            <h3 style="color: ${color}; font-family: 'Merriweather'; font-size: 18px; text-align:center; margin-top: 15px; z-index: 10;">${nombre}</h3>
+                            <div class="carta-texto" style="display:none;"></div>
+                        `;
+                        back.innerHTML = `<div class="carta-texto" style="color: #cbd5e1; z-index: 10;">Descripción del territorio...</div>`;
+                    }
+                    if (typeof seleccionarElemento === 'function') seleccionarElemento(nuevaCarta);
+                    if (typeof showToast === 'function') showToast(`Zona ${nombre} creada`, 'success');
+                    if (typeof autosave === 'function') autosave();
+                }
+            }, 50);
+        }
+
+        // --- IA ---
         function enviarMensajeAI() {
             const input = document.getElementById('ai-chat-input');
             const msg = input.value.trim();
