@@ -82,8 +82,6 @@
                     <button class="btn btn-outline" onclick="toggleLiveMode()" title="Proyector"><i class="fa-solid fa-tv"></i> Proyector</button>
                     <button class="btn btn-outline" onclick="abrirAI()" title="IA" style="color:#a855f7; border-color:#a855f7;"><i class="fa-solid fa-robot"></i> IA</button>
                     <button class="btn btn-outline" onclick="abrirWizard()" title="Asistente" style="color:#8B3A3A; border-color:#8B3A3A; font-weight:bold;"><i class="fa-solid fa-wand-magic-sparkles"></i> Asistente</button>
-                    
-                    <!-- NUEVO BOTÓN DE AYUDA -->
                     <button class="btn btn-outline" onclick="abrirAyuda()" title="Manual de Instrucciones" style="color:#0ea5e9; border-color:#0ea5e9; font-weight:bold;"><i class="fa-solid fa-circle-question"></i> Ayuda</button>
                 </div>
                 <div class="topbar-group">
@@ -241,6 +239,17 @@
                             <div class="tool-card" onclick="insertarPuertoCatan()"><div class="tool-icon" style="color:#8B4513;"><i class="fa-solid fa-anchor"></i></div><div class="tool-info"><h4>Puerto</h4><p>Aleatorio</p></div></div>
                             <div class="tool-card" onclick="insertarFichasNumeroCatan()"><div class="tool-icon" style="color:#ca8a04;"><i class="fa-solid fa-hashtag"></i></div><div class="tool-info"><h4>Todos los Números</h4><p>18 Fichas</p></div></div>
                             <div class="tool-card" onclick="insertarCartaCaballeroCatan()"><div class="tool-icon" style="color:#b91c1c;"><i class="fa-solid fa-chess-knight"></i></div><div class="tool-info"><h4>Carta Caballero</h4><p>Ladrón</p></div></div>
+                        </div>
+                    </details>
+                    <!-- NUEVA SECCIÓN DE ESCENARIOS -->
+                    <details class="ux-details" style="margin-top: 10px; border-top: 2px solid #cbd5e1; padding-top: 10px;">
+                        <summary style="color: #0284c7; font-weight: bold;"><i class="fa-solid fa-mountain-sun"></i> Escenarios de Fondo</summary>
+                        <div class="ux-details-content">
+                            <div class="tool-card" onclick="insertarEscenario('catan')"><div class="tool-icon" style="color:#0284c7;"><i class="fa-solid fa-water"></i></div><div class="tool-info"><h4>Isla de Catán</h4><p>Fondo Marino</p></div></div>
+                            <div class="tool-card" onclick="insertarEscenario('pandemic')"><div class="tool-icon" style="color:#dc2626;"><i class="fa-solid fa-earth-americas"></i></div><div class="tool-info"><h4>Mundo Pandemic</h4><p>Fondo Oscuro</p></div></div>
+                            <div class="tool-card" onclick="insertarEscenario('tavern')"><div class="tool-icon" style="color:#78350f;"><i class="fa-solid fa-mug-hot"></i></div><div class="tool-info"><h4>Taberna Medieval</h4><p>Fondo Madera</p></div></div>
+                            <div class="tool-card" onclick="insertarEscenario('space')"><div class="tool-icon" style="color:#a855f7;"><i class="fa-solid fa-rocket"></i></div><div class="tool-info"><h4>Espacio Profundo</h4><p>Fondo Estelar</p></div></div>
+                            <div class="tool-card" onclick="insertarEscenario('classroom')"><div class="tool-icon" style="color:#15803d;"><i class="fa-solid fa-chalkboard-user"></i></div><div class="tool-info"><h4>Sala de Clases</h4><p>Fondo Educativo</p></div></div>
                         </div>
                     </details>
                 </div>
@@ -407,17 +416,80 @@
         <button class="btn btn-outline" style="margin-top: 40px; color: #ef4444; border-color: #ef4444;" onclick="cerrarModoJuego()"><i class="fa-solid fa-xmark"></i> Salir del Juego</button>
     </div>
 
-    <!-- DRAWER DE IA FREIRE -->
-    <div id="ai-drawer" style="display: none; position: fixed; top: 0; right: 0; width: 400px; height: 100vh; background: white; box-shadow: -5px 0 20px rgba(0,0,0,0.2); z-index: 99999; flex-direction: column;">
+    <!-- DRAWER DE IA Y GENERADOR DE PROMPTS -->
+    <div id="ai-drawer" style="display: none; position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: white; box-shadow: -5px 0 20px rgba(0,0,0,0.2); z-index: 99999; flex-direction: column;">
+        <!-- Header -->
         <div style="background: #8B3A3A; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="margin: 0; font-family: 'Playfair Display'; font-size: 18px;"><i class="fa-solid fa-robot"></i> Asistente Freire</h3>
+            <h3 style="margin: 0; font-family: 'Playfair Display'; font-size: 18px;"><i class="fa-solid fa-robot"></i> Asistente IA</h3>
             <button onclick="cerrarAI()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
         </div>
-        <div id="ai-chat-messages" style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
-            <!-- Mensajes de IA van aquí -->
+        
+        <!-- Tabs -->
+        <div style="display: flex; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+            <button id="btn-tab-pedagogico" onclick="cambiarTabAI('pedagogico')" style="flex: 1; padding: 12px; border: none; background: none; font-weight: bold; font-size: 13px; cursor: pointer; border-bottom: 3px solid #8B3A3A; color: #8B3A3A;">
+                <i class="fa-solid fa-graduation-cap"></i> Freire
+            </button>
+            <button id="btn-tab-imagenes" onclick="cambiarTabAI('imagenes')" style="flex: 1; padding: 12px; border: none; background: none; font-weight: bold; font-size: 13px; cursor: pointer; border-bottom: 3px solid transparent; color: #64748b;">
+                <i class="fa-solid fa-image"></i> Prompts de Imagen
+            </button>
         </div>
-        <div style="padding: 15px; border-top: 1px solid #e2e8f0; background: #f8fafc;">
-            <input type="text" placeholder="Pide una idea pedagógica..." style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;" onkeypress="if(event.key==='Enter') alert('Modo Demo: Conecta tu API Key para usar la IA real.')">
+
+        <!-- TAB 1: ASISTENTE PEDAGÓGICO -->
+        <div id="ai-tab-pedagogico" style="flex: 1; display: flex; flex-direction: column;">
+            <div id="ai-chat-messages" style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                <div style="background:#e0f2fe; padding:10px; border-radius:8px; font-size:12px; color:#0284c7;">
+                    <b>Asistente Freire:</b> Hola. Soy tu asistente pedagógico. Puedo ayudarte a crear preguntas de debriefing o adaptar juegos a la Educación Popular.
+                </div>
+            </div>
+            <div style="padding: 15px; border-top: 1px solid #e2e8f0; background: #f8fafc; display: flex; gap: 10px;">
+                <input type="text" id="ai-chat-input" placeholder="Escribe tu mensaje..." style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;" onkeypress="if(event.key==='Enter') enviarMensajeAI()">
+                <button onclick="enviarMensajeAI()" style="background: #8B3A3A; color: white; border: none; padding: 0 15px; border-radius: 6px; cursor: pointer;"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+        <!-- TAB 2: GENERADOR DE PROMPTS -->
+        <div id="ai-tab-imagenes" style="flex: 1; display: none; flex-direction: column; padding: 20px; overflow-y: auto;">
+            <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Usa este generador para crear imágenes con <b>Bing Image Creator</b> y luego súbelas a tus cartas o tokens.</p>
+            
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; font-weight: bold; color: #1e293b;">1. Idea Básica</label>
+                <input type="text" id="ai-img-idea" placeholder="Ej: Un mago anciano, un dragón rojo..." style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 5px;">
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; font-weight: bold; color: #1e293b;">2. Estilo Visual</label>
+                <select id="ai-img-estilo" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 5px;">
+                    <option value="cartoon">Cartoon / Flat Vector (Juegos de Mesa)</option>
+                    <option value="acuarela">Acuarela (Educativo / Suave)</option>
+                    <option value="vintage">Vintage / Grabado (Libros Antiguos)</option>
+                    <option value="realista">Realista (Fotografía / 8K)</option>
+                    <option value="epico">Épico / Fantasía (D&D)</option>
+                    <option value="minimalista">Minimalista (Íconos)</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="font-size: 11px; font-weight: bold; color: #1e293b;">3. Tipo de Componente</label>
+                <select id="ai-img-tipo" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 5px;">
+                    <option value="carta">Carta (Encuadre vertical 2:3)</option>
+                    <option value="token">Token / Ficha (Centrado, fondo blanco)</option>
+                    <option value="tablero">Tablero (Panorámico)</option>
+                    <option value="personaje">Personaje (Cuerpo completo)</option>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" onclick="generarPromptBing()" style="width: 100%; padding: 12px; background: #8B3A3A; border: none; font-weight: bold;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Generar Prompt para Bing
+            </button>
+
+            <div id="ai-img-result-container" style="display: none; margin-top: 20px;">
+                <label style="font-size: 11px; font-weight: bold; color: #1e293b;">Tu Prompt (Cópialo en Bing Image Creator):</label>
+                <textarea id="ai-img-result" readonly style="width: 100%; height: 100px; padding: 10px; border: 2px dashed #0284c7; border-radius: 6px; margin-top: 5px; font-family: monospace; font-size: 11px; background: #f0f9ff; color: #0f172a; resize: none;"></textarea>
+                <button id="btn-copiar-prompt" onclick="copiarPrompt()" style="width: 100%; padding: 10px; margin-top: 10px; background: #0284c7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                    <i class="fa-solid fa-copy"></i> Copiar Prompt
+                </button>
+                <p style="font-size: 10px; color: #64748b; text-align: center; margin-top: 10px;">Ve a <b>bing.com/create</b>, pega el prompt y genera tu imagen.</p>
+            </div>
         </div>
     </div>
 
@@ -439,15 +511,11 @@
                     <div style="padding: 15px; border-bottom: 1px solid #e2e8f0;">
                         <input type="text" placeholder="Buscar juego..." oninput="renderAyuda(this.value)" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px;">
                     </div>
-                    <div id="help-list-container" style="flex: 1; overflow-y: auto;">
-                        <!-- Lista generada por JS -->
-                    </div>
+                    <div id="help-list-container" style="flex: 1; overflow-y: auto;"></div>
                 </div>
 
                 <!-- Content -->
-                <div id="help-detail-content" style="flex: 1; padding: 30px; overflow-y: auto; background: white;">
-                    <!-- Detalle generado por JS -->
-                </div>
+                <div id="help-detail-content" style="flex: 1; padding: 30px; overflow-y: auto; background: white;"></div>
             </div>
         </div>
     </div>
@@ -508,8 +576,9 @@
     <script src="js/game-mode.js"></script>
     <script src="js/ai-assistant.js"></script>
     <script src="js/collab.js"></script>
+    <script src="js/scenarios.js"></script>
+    <script src="js/minigames.js"></script>
     
-    <!-- Catálogo y Ayuda van de la mano: catálogo primero, luego ayuda -->
     <script src="js/catalogo.js"></script>
     <script src="js/help-data.js"></script>
     <script src="js/help.js"></script>
@@ -517,5 +586,33 @@
     <!-- App y Panel al final -->
     <script src="js/app.js"></script>
     <script src="js/panel-derecho.js"></script>
+    
+    <!-- SCRIPT DE SIMULACIÓN DE IA (Para que el chat funcione sin API) -->
+    <script>
+        function enviarMensajeAI() {
+            const input = document.getElementById('ai-chat-input');
+            const msg = input.value.trim();
+            if(!msg) return;
+            const chat = document.getElementById('ai-chat-messages');
+            
+            // Agregar mensaje del usuario
+            chat.innerHTML += `<div style="text-align:right; background:#f1f5f9; padding:10px; border-radius:8px; font-size:12px; margin-bottom:10px; color:#1e293b;">${msg}</div>`;
+            input.value = '';
+            chat.scrollTop = chat.scrollHeight;
+            
+            // Simular respuesta del asistente
+            setTimeout(() => {
+                const respuestas = [
+                    "¡Excelente pregunta! En la Educación Popular, partimos de la realidad del sujeto. ¿Cómo podrías aplicar esto en tu taller?",
+                    "Freire nos habla de la praxis: reflexión y acción. Te sugiero que al final del juego hagas una ronda de preguntas para conectar la mecánica con su vida diaria.",
+                    "Para adaptar esto, puedes cambiar las reglas para que nadie gane individualmente, fomentando así la cooperación y el diálogo.",
+                    "Recuerda que el error es una fuente de aprendizaje. Si el juego se pone difícil, pregunta: '¿Qué haríamos distinto como colectivo?'"
+                ];
+                const randomResp = respuestas[Math.floor(Math.random() * respuestas.length)];
+                chat.innerHTML += `<div style="background:#e0f2fe; padding:10px; border-radius:8px; font-size:12px; margin-bottom:10px; color:#0284c7;"><b>Asistente Freire:</b> ${randomResp}</div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
